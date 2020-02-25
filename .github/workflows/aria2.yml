@@ -1,0 +1,93 @@
+#=================================================
+# Lisence: MIT
+# Author: P3TERX
+# Blog: https://p3terx.com (chinese)
+#=================================================
+name: Docker images aria2
+
+on:
+#  release:
+#    types: [published]
+  push:
+#    branches:
+#      - master
+    paths:
+      - 'aria2/*'
+  schedule:
+    - cron: '30 2 */3 * *'
+#  watch:
+#    types: [started]
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Install buildx
+      run: |
+        curl -s https://api.github.com/repos/docker/buildx/releases/latest \
+        | grep "browser_download_url.*buildx-*.*linux-amd64" \
+        | cut -d : -f 2,3 \
+        | tr -d \" \
+        | wget -qi -
+        mkdir -p ~/.docker/cli-plugins/
+        mv buildx* ~/.docker/cli-plugins/docker-buildx
+        chmod +x ~/.docker/cli-plugins/docker-buildx
+    - name: Set up buildx
+      run: |
+        docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
+        docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+        docker buildx create --use --name multi-arch-builder
+    - name: Available platforms
+      run: |
+        docker buildx inspect --bootstrap | grep Platforms
+    - name: Login to Docker Hub
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build and push
+      env:
+        PLATFORMS: linux/amd64
+        IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/aria2
+        IMAGE_TAG: latest
+        DOCKERFILE: Dockerfile
+        FILE_PATH: .
+      run: |
+        cd aria2
+        git clone --depth 1 -b master https://github.com/P3TERX/aria2.conf.git ../aria2conf
+        mkdir -p ./root/.aria2
+        mv ../aria2conf/{aria2.conf,*.sh,*.dat} ./root/.aria2/ && rm -rf ../aria2conf
+        sed -i 's/rpc-secret/#rpc-secret/' ./root/.aria2/aria2.conf
+        sed -i 's/#disk-cache=/disk-cache=/' ./root/.aria2/aria2.conf
+        ARIA2_CONF=./root/.aria2/aria2.conf
+        TRACKER=$(
+            curl -fsSL https://trackerslist.com/all_aria2.txt ||
+                curl -fsSL https://cdn.jsdelivr.net/gh/XIU2/TrackersListCollection/all_aria2.txt ||
+                curl -fsSL https://trackerslist.p3terx.workers.dev/all_aria2.txt ||
+                {
+                    curl -fsSL https://ngosang.github.io/trackerslist/trackers_all.txt ||
+                    curl -fsSL https://cdn.jsdelivr.net/gh/ngosang/trackerslist/trackers_all.txt ||
+                        curl -fsSL https://ngosang-trackerslist.p3terx.workers.dev/trackers_all.txt
+                } | awk NF | sed ":a;N;s/\n/,/g;ta"
+        )
+        [ -z $TRACKER ] && echo -e "
+        $ERROR Unable to get trackers, network failure or invalid links." && exit 1
+        echo -e "
+        --------------------[TRACKERS]--------------------
+        ${TRACKER}
+        --------------------[TRACKERS]--------------------
+        "
+        [ -z $(grep "bt-tracker=" ${ARIA2_CONF}) ] && echo "bt-tracker=" >>${ARIA2_CONF}
+        sed -i "s@^\(bt-tracker=\).*@\1${TRACKER}@" ${ARIA2_CONF} && echo -e "$INFO Trackers added successfully!"
+        ARIA2_VER=$(curl -fsSL https://api.github.com/repos/aria2/aria2/releases | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g' | sed 's/release-//g')
+        AriaNg_VER=$(curl -fsSL https://api.github.com/repos/mayswind/AriaNg/releases | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g')
+        docker buildx build --push \
+          --platform ${PLATFORMS} \
+          --build-arg ARIA2_VER=$ARIA2_VER \
+          --build-arg AriaNg_VER=$AriaNg_VER \
+          -t ${IMAGE_NAME}:${IMAGE_TAG} \
+          -f ${DOCKERFILE} \
+          ${FILE_PATH}

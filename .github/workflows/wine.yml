@@ -1,0 +1,65 @@
+#=================================================
+# Lisence: MIT
+# Author: P3TERX
+# Blog: https://p3terx.com (chinese)
+#=================================================
+name: Docker images wine
+
+on:
+#  release:
+#    types: [published]
+#  push:
+#    branches:
+#      - master
+#    paths:
+#      - '*/*'
+  schedule:
+    - cron: '30 1 1 * *'
+#  watch:
+#    types: [started]
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Install buildx
+      run: |
+        curl -s https://api.github.com/repos/docker/buildx/releases/latest \
+        | grep "browser_download_url.*buildx-*.*linux-amd64" \
+        | cut -d : -f 2,3 \
+        | tr -d \" \
+        | wget -qi -
+        mkdir -p ~/.docker/cli-plugins/
+        mv buildx* ~/.docker/cli-plugins/docker-buildx
+        chmod +x ~/.docker/cli-plugins/docker-buildx
+    - name: Set up buildx
+      run: |
+        docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
+        docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+        docker buildx create --use --name multi-arch-builder
+    - name: Available platforms
+      run: |
+        docker buildx inspect --bootstrap | grep Platforms
+    - name: Login to Docker Hub
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build and push
+      env:
+        PLATFORMS: linux/amd64
+        IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/wine
+        IMAGE_TAG: latest
+        DOCKERFILE: Dockerfile
+        FILE_PATH: .
+      run: |
+        git clone https://github.com/jsda/docker-wine-linux.git ../wine && cd ../wine
+        svn co --force https://github.com/RokasUrbelis/docker-wine-linux/trunk/deb ../deb && svn revert -R ../deb && rm -rf deb/ && mv ../deb ./ && echo "deb更新成功" || echo "deb更新失败"
+        docker buildx build --push \
+          --platform ${PLATFORMS} \
+          -t ${IMAGE_NAME}:${IMAGE_TAG} \
+          -f ${DOCKERFILE} \
+          ${FILE_PATH}
