@@ -82,7 +82,7 @@ jobs:
         "
         [ -z $(grep "bt-tracker=" ${ARIA2_CONF}) ] && echo "bt-tracker=" >>${ARIA2_CONF}
         sed -i "s@^\(bt-tracker=\).*@\1${TRACKER}@" ${ARIA2_CONF} && echo -e "$INFO Trackers added successfully!"
-        ARIA2_VER=$(curl -fsSL https://api.github.com/repos/aria2/aria2/releases | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g' | sed 's/release-//g')
+        ARIA2_VER=$(curl -fsSL https://api.github.com/repos/jsda/aria2-builder/releases | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g' | sed 's/release-//g')
         AriaNg_VER=$(curl -fsSL https://api.github.com/repos/mayswind/AriaNg/releases | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g')
         docker buildx build --push \
           --platform ${PLATFORMS} \
