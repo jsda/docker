@@ -19,6 +19,7 @@ RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 && wget https://github.com/mayswind/AriaNg/releases/download/${AriaNg_VER}/AriaNg-${AriaNg_VER}.zip \
 && mkdir -p /usr/local/aria2/AriaNg/js/Originaljs \
 && unzip -d /usr/local/aria2/AriaNg AriaNg-${AriaNg_VER}.zip \
+&& sed -i 's/max:16/max:256/g' /usr/local/aria2/AriaNg/js/*.js \
 && rm -rf AriaNg-${AriaNg_VER}.zip \
 && addgroup -g 1000 -S alpine \
 && adduser -u 1000 -G alpine -h /home/alpine -D alpine \
