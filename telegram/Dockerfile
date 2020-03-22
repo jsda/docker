@@ -21,6 +21,7 @@ RUN apt-get update \
       libdrm2 \
       libice6 \
       libsm6 \
+      libegl1 \
       --no-install-recommends \
     && cd /tmp \
     && wget https://telegram.org/dl/desktop/linux -O telegram.tar.xz \
