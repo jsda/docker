@@ -22,15 +22,15 @@ RUN apt-get update \
       libice6 \
       libsm6 \
       libegl1-mesa \
-      libexif \
-      liblzma \
-      libice \
-      libicu \
+      libexif12 \
+      liblzma5 \
+      libice6 \
+      libicu63 \
       libxml2 \
       libfreetype6 \
-      libgpac \
-      libtheora \
-      libvorbis \
+      libgpac4 \
+      libtheora0 \
+      libvorbis0a \
       libxcb1 \
       libxcb-image0 \
       libxcb-shm0 \
@@ -40,15 +40,15 @@ RUN apt-get update \
       libatspi2.0 \
       libxcb-render-util0 \
       libxcb-util0 \
-      libxcb-xkb \
-      libxrender \
-      libasound \
-      libpulse \
-      libxcb-sync0 \
+      libxcb-xkb1 \
+      libxrender1 \
+      libasound2 \
+      libpulse0 \
+      libxcb-sync1 \
       libxcb-randr0 \
       libegl1-mesa \
-      libx11-xcb \
-      libffi \
+      libx11-xcb1 \
+      libffi6 \
       libncurses5 \
       --no-install-recommends \
     && cd /tmp \
