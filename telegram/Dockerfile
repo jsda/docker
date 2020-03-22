@@ -21,7 +21,35 @@ RUN apt-get update \
       libdrm2 \
       libice6 \
       libsm6 \
-      libegl1 \
+      libegl1-mesa \
+      libexif \
+      liblzma \
+      libice \
+      libicu \
+      libxml2 \
+      libfreetype6 \
+      libgpac \
+      libtheora \
+      libvorbis \
+      libxcb1 \
+      libxcb-image0 \
+      libxcb-shm0 \
+      libxcb-xfixes0 \
+      libxcb-keysyms1 \
+      libxcb-icccm4 \
+      libatspi2.0 \
+      libxcb-render-util0 \
+      libxcb-util0 \
+      libxcb-xkb \
+      libxrender \
+      libasound \
+      libpulse \
+      libxcb-sync0 \
+      libxcb-randr0 \
+      libegl1-mesa \
+      libx11-xcb \
+      libffi \
+      libncurses5 \
       --no-install-recommends \
     && cd /tmp \
     && wget https://telegram.org/dl/desktop/linux -O telegram.tar.xz \
