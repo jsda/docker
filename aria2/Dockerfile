@@ -2,7 +2,6 @@ FROM alpine:latest
 
 ARG ARIA2_VER=$ARIA2_VER
 ARG AriaNg_VER=$AriaNg_VER
-ENV RPC_SECRET=
 ENV TZ=Asia/Shanghai
 ENV ARIA2_DIR=/aria2
 ENV DOWNLOAD_DIR=/Downloads
@@ -22,10 +21,10 @@ RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 && mkdir -p /usr/local/aria2/AriaNg/js/Originaljs \
 && unzip -d /usr/local/aria2/AriaNg AriaNg-${AriaNg_VER}.zip \
 && rm -rf AriaNg-${AriaNg_VER}.zip \
+&& sed -i 's/max:16/max:256/g' /usr/local/aria2/AriaNg/js/*.js \
 && mkdir -p $DOWNLOAD_DIR \
 && mkdir -p $ARIA2_DIR \
-&& sed -i 's/max:16/max:256/g' /usr/local/aria2/AriaNg/js/*.js \
-&& sed -i "/^rpc-secret=/c\rpc-secret=$ARIA2C_SECRET" $ARIA2_DIR/aria2.conf \
+&& sed -i 's/rpc-secret/#rpc-secret/' $ARIA2_DIR/aria2.conf \
 && sed -i 's/max-connection-per-server=16/max-connection-per-server=256/' .$ARIA2_DIR/aria2.conf \
 && sed -i '9s/^.*/\n#是否校验证书\n#check-certificate=false/' $ARIA2_DIR/aria2.conf \
 && sed -i "/^dir=/c\dir=$DOWNLOAD_DIR" $ARIA2_DIR/aria2.conf \
