@@ -58,13 +58,10 @@ jobs:
       run: |
         cd aria2
         git clone --depth 1 -b master https://github.com/P3TERX/aria2.conf.git ../aria2conf
-        mkdir -p ./root/.aria2
-        mv ../aria2conf/{aria2.conf,*.sh,*.dat} ./root/.aria2/ && rm -rf ../aria2conf
-        sed -i 's/rpc-secret/#rpc-secret/' ./root/.aria2/aria2.conf
-        sed -i 's/#disk-cache=/disk-cache=/' ./root/.aria2/aria2.conf
-        sed -i 's/max-connection-per-server=16/max-connection-per-server=256/' ./root/.aria2/aria2.conf
-        sed -i '9s/^.*/\n#是否校验证书\n#check-certificate=false/' ./root/.aria2/aria2.conf
-        ARIA2_CONF=./root/.aria2/aria2.conf
+        mkdir -P ./conf
+        mv ../aria2conf/{aria2.conf,*.sh,*.dat} ./conf/ && rm -rf ../aria2conf
+        touch ./conf/aria2.session
+        ARIA2_CONF=./conf/aria2.conf
         TRACKER=$(
             curl -fsSL https://trackerslist.com/all_aria2.txt ||
                 curl -fsSL https://cdn.jsdelivr.net/gh/XIU2/TrackersListCollection/all_aria2.txt ||
