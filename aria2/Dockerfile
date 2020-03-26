@@ -29,6 +29,7 @@ RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 && sed -i 's/max-connection-per-server=16/max-connection-per-server=256/' .$ARIA2_DIR/aria2.conf \
 && sed -i '9s/^.*/\n#是否校验证书\n#check-certificate=false/' $ARIA2_DIR/aria2.conf \
 && sed -i "/^dir=/c\dir=$DOWNLOAD_DIR" $ARIA2_DIR/aria2.conf \
+&& sed -i 's/root\/.//g' $ARIA2_DIR/aria2.conf \
 && sed -i "/^DOWNLOAD_PATH='/c\DOWNLOAD_PATH='$DOWNLOAD_DIR'" $ARIA2_DIR/*.sh \
 && addgroup -g 1000 -S user \
 && adduser -u 1000 -G user -h $ARIA2_DIR -D user \
