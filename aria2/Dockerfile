@@ -19,11 +19,11 @@ RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 && rm -rf aria2-${ARIA2_VER}-amd64.zip \
 && echo "AriaNg-$AriaNg_VER" \
 && wget https://github.com/mayswind/AriaNg/releases/download/${AriaNg_VER}/AriaNg-${AriaNg_VER}.zip \
-&& mkdir -P /usr/local/aria2/AriaNg/js/Originaljs \
+&& mkdir -p /usr/local/aria2/AriaNg/js/Originaljs \
 && unzip -d /usr/local/aria2/AriaNg AriaNg-${AriaNg_VER}.zip \
 && rm -rf AriaNg-${AriaNg_VER}.zip \
-&& mkdir -P $DOWNLOAD_DIR \
-&& mkdir -P $ARIA2_DIR \
+&& mkdir -p $DOWNLOAD_DIR \
+&& mkdir -p $ARIA2_DIR \
 && sed -i 's/max:16/max:256/g' /usr/local/aria2/AriaNg/js/*.js \
 && sed -i "/^rpc-secret=/c\rpc-secret=$ARIA2C_SECRET" $ARIA2_DIR/aria2.conf \
 && sed -i 's/max-connection-per-server=16/max-connection-per-server=256/' .$ARIA2_DIR/aria2.conf \

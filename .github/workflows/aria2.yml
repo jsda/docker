@@ -58,7 +58,7 @@ jobs:
       run: |
         cd aria2
         git clone --depth 1 -b master https://github.com/P3TERX/aria2.conf.git ../aria2conf
-        mkdir -P ./conf
+        mkdir -p ./conf
         mv ../aria2conf/{aria2.conf,*.sh,*.dat} ./conf/ && rm -rf ../aria2conf
         touch ./conf/aria2.session
         ARIA2_CONF=./conf/aria2.conf
