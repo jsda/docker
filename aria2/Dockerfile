@@ -36,7 +36,7 @@ RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 && chown -R user $ARIA2_DIR \
 && chown -R user $DOWNLOAD_DIR \
 && chmod a+x /entrypoint.sh \
-&& chmod a+x /root/.aria2/*.sh
+&& chmod a+x $ARIA2_DIR/*.sh
 
 USER user
 
