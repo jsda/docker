@@ -22,7 +22,7 @@ RUN \
   sqlite3 libgpg-error-dev libxml2-dev autotools-dev dpkg-dev gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 \
   lzip libcppunit-dev libcurl4-openssl-dev libevent-dev ca-certificates libc6-dev-i386 \
   bin86 g++-multilib lib32z1-dev libz3-dev libgcrypt20-dev binutils-avr mt-st docutils-common \
-  manpages-dev libunistring-dev libelf-dev device-tree-compiler upx golang ffmpeg && \
+  manpages-dev libunistring-dev libelf-dev device-tree-compiler upx golang ffmpeg antlr3 gperf && \
   apt-get install -y cron screen net-tools iputils-ping dnsutils && \
   echo "root:password" | chpasswd && \
   useradd -d /home/lede -m -U lede && \
