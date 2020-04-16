@@ -56,7 +56,8 @@ jobs:
         DOCKERFILE: Dockerfile
         FILE_PATH: .
       run: |
-        cd atom && ATOM_VERSION=v$(curl -fsSL https://api.github.com/repos/atom/atom/releases | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g')
+        cd atom
+        ATOM_VERSION=v$(curl -fsSL https://api.github.com/repos/atom/atom/releases | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g')
         docker buildx build --push \
           --platform ${PLATFORMS} \
           --build-arg ATOM_VERSION=$ATOM_VERSION \
