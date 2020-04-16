@@ -53,5 +53,5 @@ ENV LC_CTYPE=zh_TW.UTF-8 \
     XMODIFIERS='@im=fcitx'
 
 USER user
-# Autorun atom
+
 CMD ["/usr/bin/atom","-f"]
