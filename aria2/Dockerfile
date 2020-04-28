@@ -1,6 +1,5 @@
 FROM alpine:latest
 
-ARG ARIA2_VER=$ARIA2_VER
 ARG AriaNg_VER=$AriaNg_VER
 ENV TZ=Asia/Shanghai
 ENV ARIA2_DIR=/aria2
@@ -11,11 +10,10 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 && rm -rf /var/cache/apk/* \
-&& echo "Aria2-$ARIA2_VER" \
-&& wget https://github.com/jsda/aria2-builder/raw/amd64/aria2-${ARIA2_VER}-amd64.zip \
-&& unzip -d /usr/local/bin aria2-${ARIA2_VER}-amd64.zip \
+&& wget https://github.com/jsda/aria2-builder/raw/amd64/aria2-amd64.zip \
+&& unzip -d /usr/local/bin aria2-*.zip \
 && chmod a+x /usr/local/bin/aria2c \
-&& rm -rf aria2-${ARIA2_VER}-amd64.zip \
+&& rm -rf aria2-*.zip /usr/local/bin/aria2-* \
 && echo "AriaNg-$AriaNg_VER" \
 && wget https://github.com/mayswind/AriaNg/releases/download/${AriaNg_VER}/AriaNg-${AriaNg_VER}.zip \
 && mkdir -p /usr/local/aria2/AriaNg/js/Originaljs \
