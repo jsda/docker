@@ -55,7 +55,7 @@ jobs:
         IMAGE_TAG: latest
         DOCKERFILE: Dockerfile
         FILE_PATH: .
-        TZ: Asia/Tappei
+        TZ: Asia/Taipei
         DEBIAN_FRONTEND: noninteractive
       run: |
         git clone --depth 1 https://github.com/jsda/docker-wine-linux.git ../wine && cd ../wine
