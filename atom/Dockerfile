@@ -56,3 +56,4 @@ ENV LC_CTYPE=zh_TW.UTF-8 \
 USER user
 
 CMD ["/usr/bin/atom/atom","-f"]
+
