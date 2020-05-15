@@ -5,4 +5,9 @@ docker buildx build --push \
   --platform ${PLATFORMS} \
   -t ${IMAGE_NAME}:${IMAGE_TAG} \
   -f ${DOCKERFILE} \
-  ${FILE_PATH}
+  ${FILE_PATH} && echo "构建成功" || \
+docker buildx build --push \
+  --platform ${PLATFORMS} \
+  -t ${IMAGE_NAME}:${IMAGE_TAG} \
+  -f ${DOCKERFILE} \
+  ${FILE_PATH} || echo "构建失败"
