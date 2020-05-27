@@ -5,6 +5,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y locales ttf-wqy-zenhei \
+    && apt-get install -y --no-install-suggests --no-install-recommends \
+    curl gnupg2 apt-transport-https ca-certificates libx11-xcb1 libasound2 libgtk-3-0 \
     && localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 \
     && apt install -y apt-utils curl dbus-x11 libx11-xcb1 gnupg apt-transport-https libasound2 \
     && curl -s https://updates.signal.org/desktop/apt/keys.asc | apt-key add - \
