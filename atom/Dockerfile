@@ -36,10 +36,13 @@ RUN apt-get update && \
     && apt-get install -y locales ttf-wqy-zenhei \
     && localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 \
     && apt-get autoclean -y \
-    && curl -L https://github.com/atom/atom/releases/download/${ATOM_VERSION}/atom-amd64.tar.gz > /tmp/atom-amd64.tar.gz \
-    && cd /tmp && tar -zxvf atom*.tar.gz \
-    && rm -f atom*.tar.gz \
-    && mv atom* /usr/bin/atom \
+    && curl -L https://github.com/atom/atom/releases/download/${ATOM_VERSION}/atom-amd64.deb > /tmp/atom.deb \
+    && dpkg -i /tmp/atom.deb \
+    && rm -f /tmp/atom.deb \
+    #&& curl -L https://github.com/atom/atom/releases/download/${ATOM_VERSION}/atom-amd64.tar.gz > /tmp/atom-amd64.tar.gz \
+    #&& cd /tmp && tar -zxvf atom*.tar.gz \
+    #&& rm -f atom*.tar.gz \
+    #&& mv atom* /usr/bin/atom \
     && groupadd -r user \
     && useradd -r -g user -G audio,video user \
     && mkdir -p /home/user/Downloads \
@@ -55,5 +58,5 @@ ENV LC_CTYPE=zh_TW.UTF-8 \
 
 USER user
 
-CMD ["/usr/bin/atom/atom","-f"]
-
+#CMD ["/usr/bin/atom/atom","-f"]
+CMD ["/usr/bin/atom/atom","--no-sandbox --disable-setuid-sandbox"]
