@@ -2,6 +2,8 @@ FROM debian:stable-slim
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 # https://github.com/jessfraz/dockerfiles/tree/master/firefox
 
+COPY local.conf /etc/fonts/local.conf
+
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y locales ttf-wqy-zenhei \
@@ -36,11 +38,8 @@ RUN apt-get update \
     && groupmod -g 1000 user \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY local.conf /etc/fonts/local.conf
-
 ENV LANG=zh_TW.UTF-8
-
-ENV LC_CTYPE=zh_TW.UTF-8 \
+    LC_CTYPE=zh_TW.UTF-8 \
     GTK_IM_MODULE=fcitx \
     QT_IM_MODULE=fcitx \
     XMODIFIERS='@im=fcitx'
