@@ -20,7 +20,7 @@ RUN apt-get update \
     && groupmod -g 1000 user \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV LANG=zh_TW.UTF-8
+ENV LANG=zh_TW.UTF-8 \
     LC_CTYPE=zh_TW.UTF-8 \
     GTK_IM_MODULE=fcitx \
     QT_IM_MODULE=fcitx \
