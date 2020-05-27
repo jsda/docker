@@ -18,6 +18,7 @@ RUN apt-get update \
     && chown -R user:user /home/user \
     && usermod -u 1000 user \
     && groupmod -g 1000 user \
+    && chown root:root /opt/Signal/chrome-sandbox && chmod 4755 /opt/Signal/chrome-sandbox \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV LANG=zh_TW.UTF-8 \
@@ -28,5 +29,4 @@ ENV LANG=zh_TW.UTF-8 \
 
 USER user
 
-ENTRYPOINT ["/usr/bin/signal-desktop"]
-CMD [ "--no-sandbox" ]
+ENTRYPOINT /usr/bin/signal-desktop "--no-sandbox" "--quiet >/dev/null 2>&1"

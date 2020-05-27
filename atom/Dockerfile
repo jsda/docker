@@ -58,5 +58,4 @@ ENV LC_CTYPE=zh_TW.UTF-8 \
 
 USER user
 
-ENTRYPOINT [ "/usr/bin/atom" ]
-CMD [ "-f", "--no-sandbox", "--disable-setuid-sandbox" ]
+ENTRYPOINT /usr/bin/atom "-f" "--no-sandbox" "--disable-setuid-sandbox" "--quiet >/dev/null 2>&1"

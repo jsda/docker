@@ -74,4 +74,4 @@ ENV LC_CTYPE=zh_TW.UTF-8 \
 
 USER user
 
-ENTRYPOINT ["/usr/bin/Telegram"]
+ENTRYPOINT /usr/bin/Telegram "--quiet >/dev/null 2>&1"

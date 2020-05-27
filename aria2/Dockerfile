@@ -1,12 +1,11 @@
 FROM alpine:latest
 
 ARG AriaNg_VER=$AriaNg_VER
-ENV TZ=Asia/Shanghai
+ENV TZ=Asia/Taipei
 ENV ARIA2_DIR=/aria2
 ENV DOWNLOAD_DIR=/Downloads
 
 COPY  conf/* /aria2/
-COPY entrypoint.sh /entrypoint.sh
 
 RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 && rm -rf /var/cache/apk/* \
@@ -39,4 +38,12 @@ RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 USER user
 
 EXPOSE 6800  8080  6881  6881/udp
-CMD /entrypoint.sh
+ENTRYPOINT darkhttpd "/usr/local/aria2/AriaNg" "--port 8080" & \
+    /usr/local/bin/aria2c \
+        "--conf-path=$ARIA2_DIR/aria2.conf" \
+        "--input-file=$ARIA2_DIR/aria2.session" \
+        "--save-session=$ARIA2_DIR/aria2.session" \
+        "--dht-file-path=$ARIA2_DIR/dht.dat" \
+        "--dht-file-path6=$ARIA2_DIR/dht6.dat" \
+        "--on-download-stop=$ARIA2_DIR/delete.sh" \
+        "--on-download-complete=$ARIA2_DIR/delete.aria2.sh"

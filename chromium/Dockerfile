@@ -47,10 +47,10 @@ RUN groupadd -r user \
 # Run as non privileged user
 USER user
 
-ENV LC_CTYPE=zh_TW.UTF-8 \
+ENV LANG=zh_TW.UTF-8 \
+    LC_CTYPE=zh_TW.UTF-8 \
     GTK_IM_MODULE=fcitx \
     QT_IM_MODULE=fcitx \
     XMODIFIERS='@im=fcitx'
 
-ENTRYPOINT [ "/usr/bin/chromium" ]
-CMD [ "--no-sandbox", "--incognito", "-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36" ]
+ENTRYPOINT /usr/bin/chromium "--no-sandbox" "--incognito" "-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36" "--quiet >/dev/null 2>&1"
