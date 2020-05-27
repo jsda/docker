@@ -37,7 +37,7 @@ RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 USER user
 
 EXPOSE 6800  8080  6881  6881/udp
-ENTRYPOINT darkhttpd "/usr/local/aria2/AriaNg" "--port 8080" & \
+ENTRYPOINT darkhttpd "/usr/local/aria2/AriaNg --port 8080" & \
     /usr/local/bin/aria2c \
         "--conf-path=$ARIA2_DIR/aria2.conf" \
         "--input-file=$ARIA2_DIR/aria2.session" \
