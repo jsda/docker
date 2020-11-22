@@ -15,8 +15,8 @@ on:
       - 'telegram/*'
   schedule:
     - cron: '30 2 */3 * *'
-#  watch:
-#    types: [started]
+  watch:
+    types: [started]
 
 jobs:
   publish:
