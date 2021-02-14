@@ -9,10 +9,10 @@ COPY  conf/* /aria2/
 
 RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 && rm -rf /var/cache/apk/* \
-&& wget https://github.com/jsda/aria2-builder/raw/amd64/aria2-amd64.zip \
-&& unzip -d /usr/local/bin aria2-*.zip \
+&& wget https://github.com/jsda/aria2-builder/raw/arm64/aria2-static-linux-arm64.tar.gz \
+&& tar -zxvf aria2-static* -C /usr/local/bin \
 && chmod a+x /usr/local/bin/aria2c \
-&& rm -rf aria2-*.zip /usr/local/bin/aria2-* \
+&& rm -rf aria2-* \
 && echo "AriaNg-$AriaNg_VER" \
 && wget https://github.com/mayswind/AriaNg/releases/download/${AriaNg_VER}/AriaNg-${AriaNg_VER}.zip \
 && mkdir -p /usr/local/aria2/AriaNg/js/Originaljs \
