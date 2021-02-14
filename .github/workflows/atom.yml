@@ -6,8 +6,7 @@
 name: Docker images atom
 
 on:
-#  release:
-#    types: [published]
+  workflow_dispatch:
   push:
 #    branches:
 #      - master
