@@ -9,7 +9,7 @@ COPY  conf/* /aria2/
 
 RUN apk add --no-cache bash ca-certificates darkhttpd tzdata \
 && rm -rf /var/cache/apk/* \
-&& wget https://github.com/jsda/aria2-builder/raw/arm64/aria2-static-linux-arm64.tar.gz \
+&& wget https://github.com/jsda/aria2-builder/raw/arm64/aria2-static-linux-amd64.tar.gz \
 && tar -zxvf aria2-static* -C /usr/local/bin \
 && chmod a+x /usr/local/bin/aria2c \
 && rm -rf aria2-* \
