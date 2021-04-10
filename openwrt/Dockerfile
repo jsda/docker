@@ -1,4 +1,4 @@
-FROM rdvde:builder
+FROM rdvde/builder:latest
 
 ARG REPO_URL=$REPO_URL
 ARG REPO_BRANCH=$REPO_BRANCH

@@ -7,7 +7,7 @@ name: Docker images openwrt
 
 on:
   workflow_dispatch:
-  push:
+#  push:
 #    branches:
 #      - master
 #    paths:
