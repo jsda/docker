@@ -1,7 +1,7 @@
 #=================================================
 # Lisence: MIT
 # Author: P3TERX
-# Blog: https://p3terx.com (chinese)
+# Blog: https://p3terx.com (chinese)``
 #=================================================
 name: Docker images openwrt
 
@@ -37,6 +37,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
+    - name: Remove
+      run: |
+        sudo swapoff /swapfile
+        sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        docker rmi `docker images -q`
+        sudo -E apt-get -q purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
     - name: Install buildx
       run: |
         curl -s https://api.github.com/repos/docker/buildx/releases/latest \
