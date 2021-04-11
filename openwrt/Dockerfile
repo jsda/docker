@@ -20,5 +20,7 @@ RUN \
   ../opbuild/$DIY_P3_SH && \
   make defconfig && \
   make download -j8 && \
+  find dl -maxdepth 1 -size -1024c | xargs ls -fl && \
+  find dl -maxdepth 1 -size -1024c | xargs rm -rf && \
   echo -e "$(nproc) thread compile" && \
   make -j16 || echo "over"
