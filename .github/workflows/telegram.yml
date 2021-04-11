@@ -13,7 +13,7 @@ on:
     paths:
       - 'telegram/*'
   schedule:
-    - cron: '30 2 */3 * *'
+    - cron: '30 2 * * 2,5'
   watch:
     types: [started]
 
