@@ -7,11 +7,11 @@ name: Docker images wine
 
 on:
   workflow_dispatch:
-  push:
+#  push:
 #    branches:
 #      - master
-    paths:
-      - 'wine/*'
+#    paths:
+#      - 'wine/*'
   schedule:
     - cron: '30 1 1 * *'
 #  watch:
