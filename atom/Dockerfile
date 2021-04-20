@@ -21,6 +21,7 @@ RUN apt-get update && \
       libgcrypt20 \
       libgtk2.0-0 \
       libgtk-3-0 \
+      libgbm1 \
       libnotify4 \
       libnss3 \
       libx11-xcb1 \
