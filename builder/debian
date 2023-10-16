@@ -1,0 +1,30 @@
+FROM debian:stable
+
+ENV DEBIAN_FRONTEND noninteractive
+ARG DEPENDS=$DEPENDS
+
+# Install dependencies
+RUN \
+  apt update -yqq && \
+  apt upgrade -yqq && \
+  echo "Asia/Taipei" > /etc/timezone && \
+  apt install -yqq locales && \
+  localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
+  apt install -yqq curl && \
+  DEPENDS=$(curl -fsSL https://github.com/jsda/docker/raw/master/builder/depends.txt | tr "\n" " ") && \
+  echo ${DEPENDS} && \
+  apt install -yqq ${DEPENDS} && \
+  apt install -yqq cron screen net-tools iputils-ping dnsutils && \
+  apt autoremove -yqq --purge && \
+  rm -rf /var/lib/apt/lists/* && \
+  apt clean -yqq && \
+  apt autoclean -yqq && \
+  echo "root:password" | chpasswd && \
+  useradd -d /home/lede -m -U lede && \
+  echo "lede:password" | chpasswd && \
+  usermod -aG sudo lede
+
+USER lede
+WORKDIR /home/lede
+#允许使用root进行编译
+ENV FORCE_UNSAFE_CONFIGURE 1
