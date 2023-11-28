@@ -1,11 +1,11 @@
 FROM openwrt/rootfs:x86-64
 ARG Build_Time=$Build_Time
-LABEL vsrsion=$Build_Time
 
 COPY openwrt/ipk/*.ipk /app/
 # RUN sed -i 's_downloads.openwrt.org_mirrors.tuna.tsinghua.edu.cn/openwrt_' /etc/opkg/distfeeds.conf
 RUN mkdir /var/lock
 RUN opkg update && \
+    sed -i 's/OpenWrt/OpenWrt Date$Build_Time/g' /etc/openwrt_release && \
     opkg remove dnsmasq && \
     opkg install coreutils-nohup \
     bash dnsmasq-full curl ca-certificates \
