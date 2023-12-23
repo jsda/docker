@@ -15,10 +15,10 @@ else
 	exit 1
 fi
 #预置OpenClash内核和GEO数据https://github.com/VIKINGYFY/OpenWRT-CI
-export CORE_VER=https://raw.githubusercontent.com/vernesong/OpenClash/core/dev/core_version
-export CORE_TUN=https://github.com/vernesong/OpenClash/raw/core/dev/premium/clash-linux
-export CORE_DEV=https://github.com/vernesong/OpenClash/raw/core/dev/dev/clash-linux
-export CORE_MATE=https://github.com/vernesong/OpenClash/raw/core/dev/meta/clash-linux
+export CORE_VER=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/core_version
+export CORE_TUN=https://github.com/vernesong/OpenClash/raw/core/master/premium/clash-linux
+export CORE_DEV=https://github.com/vernesong/OpenClash/raw/core/master/dev/clash-linux
+export CORE_MATE=https://github.com/vernesong/OpenClash/raw/core/master/meta/clash-linux
 
 export CORE_TYPE=amd64
 export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
@@ -30,10 +30,10 @@ export Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/maste
 
 mkdir -p openclash
 
-curl -sfL -o ./openclash/Country.mmdb $GEO_MMDB | echo "GEO_MMDB下载成功" || echo "GEO_MMDB下载失败"
-curl -sfL -o ./openclash/GeoSite.dat $GEO_SITE | echo "GEO_SITE下载成功" || echo "GEO_SITE下载失败"
-curl -sfL -o ./openclash/GeoIP.dat $GEO_IP | echo "GEO_IP下载成功" || echo "GEO_IP下载失败"
-curl -sfL -o ./openclash/accelerated-domains.china.conf $Domains_china | echo "Domains_china下载成功" || echo "Domains_china下载失败"
+curl -sfL -o ./openclash/Country.mmdb $GEO_MMDB && echo "GEO_MMDB下载成功" || echo "GEO_MMDB下载失败"
+curl -sfL -o ./openclash/GeoSite.dat $GEO_SITE && echo "GEO_SITE下载成功" || echo "GEO_SITE下载失败"
+curl -sfL -o ./openclash/GeoIP.dat $GEO_IP && echo "GEO_IP下载成功" || echo "GEO_IP下载失败"
+curl -sfL -o ./openclash/accelerated-domains.china.conf $Domains_china && echo "Domains_china下载成功" || echo "Domains_china下载失败"
 
 mkdir ./core && cd ./core
 
