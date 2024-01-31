@@ -65,19 +65,6 @@ chmod +x ./clash* ; rm -rf ./*.gz
 
 cd ../ && mv ./core ./openclash
 
-#ddns-go
-curl -s https://api.github.com/repos/sirpdboy/luci-app-ddns-go/releases/latest \
-| grep "browser_download_url.*ddns-go.*.ipk" \
-| cut -d : -f 2,3 \
-| tr -d \" \
-| wget -qi -
-if mv *.ipk ./ipk; then
-	echo "ddns-go下载成功"
-else
-	echo "ddns-go下载失败"
-	exit 1
-fi
-
 # luci-app-socat
 curl -s https://api.github.com/repos/chenmozhijin/luci-app-socat/releases/latest \
 | grep "browser_download_url.*socat.*.ipk" \

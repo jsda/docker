@@ -1,4 +1,6 @@
-FROM openwrt/rootfs:x86-64
+FROM openwrt/rootfs:x86_64
+# https://github.com/openwrt/docker
+
 ARG Build_Time=$Build_Time
 
 COPY openwrt/ipk/*.ipk /app/
@@ -14,7 +16,8 @@ RUN opkg update && \
     unzip kmod-nft-tproxy luci-compat luci \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn \
-    nano unzip wget openssh-sftp-server
+    nano unzip wget openssh-sftp-server \
+    openssl-util xxd coreutils-base64
 RUN opkg install /app/*.ipk && \
     rm -rf /app
 COPY openwrt/openclash/ /etc/openclash/
