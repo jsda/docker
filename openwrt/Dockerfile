@@ -19,7 +19,12 @@ RUN opkg update && \
     nano unzip wget openssh-sftp-server \
     openssl-util xxd coreutils-base64
 RUN opkg install /app/*.ipk && \
+    mv /app/AdGuardHome /usr/bin/ && \
+    chmod +x /usr/bin/AdGuardHome && \
     rm -rf /app
+
+#AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
+
 COPY openwrt/openclash/ /etc/openclash/
 RUN chmod a+x /etc/openclash/core/*
 #EXPOSE 80
