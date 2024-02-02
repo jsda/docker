@@ -3,7 +3,7 @@ FROM openwrt/rootfs:x86_64
 
 ARG Build_Time=$Build_Time
 
-COPY openwrt/ipk/*.ipk /app/
+COPY openwrt/ipk/* /app/
 # RUN sed -i 's_downloads.openwrt.org_mirrors.tuna.tsinghua.edu.cn/openwrt_' /etc/opkg/distfeeds.conf
 RUN mkdir /var/lock
 RUN opkg update && \
