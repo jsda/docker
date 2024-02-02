@@ -92,8 +92,8 @@ if tar -zxf ./AdGuardHome*.tar.gz; then
 	chmod +x ./AdGuardHome/AdGuardHome
 	mv ./AdGuardHome/AdGuardHome ./ipk
 	rm -rf ./AdGuardHome*
-	echo "AdGuardHome下载成功" >> $UPLOG
+	echo "AdGuardHome下载成功"
 else
-	echo "AdGuardHome下载失败" >> $UPLOG
+	echo "AdGuardHome下载失败"
 	exit 1
 fi
