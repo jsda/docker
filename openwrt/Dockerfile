@@ -17,6 +17,7 @@ RUN opkg update && \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn \
     nano unzip wget openssh-sftp-server \
+    luci-i18n-upnp-zh-cn \
     openssl-util xxd coreutils-base64
 RUN opkg install /app/*.ipk && \
     mv /app/AdGuardHome /usr/bin/ && \
