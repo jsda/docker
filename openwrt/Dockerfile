@@ -1,4 +1,4 @@
-FROM ghcr.io/openwrt/rootfs:x86_64
+FROM ghcr.io/openwrt/rootfs:x86_64-openwrt-23.05
 # https://github.com/openwrt/docker
 
 ARG Build_Time=$Build_Time
