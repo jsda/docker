@@ -8,10 +8,10 @@ COPY openwrt/ipk/* /app/
 RUN mkdir /var/lock
 RUN opkg update && \
     sed -i "s/OpenWrt/OpenWrt Date$Build_Time/g" /etc/openwrt_release && \
-    echo "$(uname -sr)" \
     opkg remove --force-remove dnsmasq && \
+    opkg install --force-overwrite dnsmasq-full \
     opkg install coreutils-nohup \
-    bash dnsmasq-full curl ca-certificates \
+    bash curl ca-certificates \
     ipset ip-full libcap libcap-bin \
     ruby ruby-yaml kmod-tun kmod-inet-diag \
     unzip kmod-nft-tproxy luci-compat luci \
