@@ -1,4 +1,4 @@
-FROM openwrt/rootfs:x86_64
+FROM ghcr.io/openwrt/rootfs:x86_64
 # https://github.com/openwrt/docker
 
 ARG Build_Time=$Build_Time
@@ -19,6 +19,7 @@ RUN opkg update && \
     luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn \
     nano unzip wget openssh-sftp-server \
     luci-i18n-upnp-zh-cn \
+    kmod-veth \
     openssl-util xxd coreutils-base64
 RUN opkg install /app/*.ipk && \
     mv /app/AdGuardHome /usr/bin/ && \
