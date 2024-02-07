@@ -9,7 +9,6 @@ RUN mkdir /var/lock
 RUN opkg update && \
     sed -i "s/OpenWrt/OpenWrt Date$Build_Time/g" /etc/openwrt_release && \
     opkg remove --force-remove dnsmasq && \
-    opkg install --force-overwrite dnsmasq-full \
     opkg install coreutils-nohup \
     bash curl ca-certificates \
     ipset ip-full libcap libcap-bin \
