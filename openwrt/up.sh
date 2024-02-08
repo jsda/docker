@@ -5,14 +5,18 @@ wget --no-check-certificate -qO- https://api.github.com/repos/$1/tags \
 | sed 's/release-//g'
 }
 
+echo -e "$(uname -r)" >> $GITHUB_STEP_SUMMARY
+echo -e "当前流程工作路径：$PATH" >> $GITHUB_STEP_SUMMARY
+echo -e "开始更新软件" >> $GITHUB_STEP_SUMMARY
+
 #Open_Clash
 export Open_Clash=https://github.com/vernesong/OpenClash/releases/download/v$(getversion vernesong/OpenClash)/luci-app-openclash_$(getversion vernesong/OpenClash)_all.ipk
 mkdir -p ipk
 if curl -sfL -o ./luci-app-openclash.ipk $Open_Clash; then
 	mv *.ipk ./ipk
-	echo "openclash下载成功"
+	echo "openclash下载成功" >> $GITHUB_STEP_SUMMARY
 else
-	echo "openclash下载失败"
+	echo "openclash下载失败" >> $GITHUB_STEP_SUMMARY
 	exit 1
 fi
 #预置OpenClash内核和GEO数据https://github.com/VIKINGYFY/OpenWRT-CI
@@ -41,25 +45,25 @@ mkdir ./core && cd ./core
 if curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz; then
 	gzip -d ./tun.gz
 	mv ./tun ./clash_tun
-	echo "tun下载成功"
+	echo "tun下载成功" >> $GITHUB_STEP_SUMMARY
 else
-	echo "tun下载失败"
+	echo "tun下载失败" >> $GITHUB_STEP_SUMMARY
   	exit 1
 fi
 
 if curl -sfL -o ./meta.tar.gz "$CORE_MATE"-"$CORE_TYPE".tar.gz; then
 	tar -zxf ./meta.tar.gz
 	mv ./clash ./clash_meta
-	echo "meta下载成功"
+	echo "meta下载成功" >> $GITHUB_STEP_SUMMARY
 else
-	echo "meta下载失败"
+	echo "meta下载失败" >> $GITHUB_STEP_SUMMARY
 	exit 1
 fi
 
 if curl -sfL -o ./dev.tar.gz "$CORE_DEV"-"$CORE_TYPE".tar.gz; then
-	echo "CORE_DEV下载成功"
+	echo "CORE_DEV下载成功" >> $GITHUB_STEP_SUMMARY
 else
-	echo "CORE_DEV下载失败"
+	echo "CORE_DEV下载失败" >> $GITHUB_STEP_SUMMARY
 	exit 1
 fi
 tar -zxf ./dev.tar.gz
@@ -75,9 +79,9 @@ curl -L https://api.github.com/repos/chenmozhijin/luci-app-socat/releases/latest
 | tr -d \" \
 | wget -qi -
 if mv *.ipk ./ipk; then
-	echo "luci-app-socat下载成功"
+	echo "luci-app-socat下载成功" >> $GITHUB_STEP_SUMMARY
 else
-	echo "luci-app-socat下载失败"
+	echo "luci-app-socat下载失败" >> $GITHUB_STEP_SUMMARY
 	exit 1
 fi
 
@@ -92,8 +96,8 @@ if tar -zxf ./AdGuardHome*.tar.gz; then
 	chmod +x ./AdGuardHome/AdGuardHome
 	mv ./AdGuardHome/AdGuardHome ./ipk
 	rm -rf ./AdGuardHome*
-	echo "AdGuardHome下载成功"
+	echo "AdGuardHome下载成功" >> $GITHUB_STEP_SUMMARY
 else
-	echo "AdGuardHome下载失败"
+	echo "AdGuardHome下载失败" >> $GITHUB_STEP_SUMMARY
 	exit 1
 fi
