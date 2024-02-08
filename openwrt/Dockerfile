@@ -4,8 +4,12 @@ FROM ghcr.io/openwrt/rootfs:x86_64
 
 ARG Build_Time=$Build_Time
 
-COPY openwrt/ipk/* /app/
 # RUN sed -i 's_downloads.openwrt.org_mirrors.tuna.tsinghua.edu.cn/openwrt_' /etc/opkg/distfeeds.conf
+
+RUN sed -i '6.1.74-1-83764a037d5da4b65844fa9bc9d55bc3/6.1.75-1-f9564b8bbbd1a0c3e49fc45580e1e810' /etc/opkg/distfeeds.conf
+
+COPY openwrt/ipk/* /app/
+
 RUN mkdir /var/lock
 RUN opkg update && \
     sed -i "s/OpenWrt/OpenWrt Date$Build_Time/g" /etc/openwrt_release && \
@@ -18,7 +22,6 @@ RUN opkg update && \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn \
     nano unzip wget openssh-sftp-server \
-    luci-i18n-upnp-zh-cn \
     kmod-veth \
     openssl-util xxd coreutils-base64
 RUN opkg install /app/*.ipk && \
