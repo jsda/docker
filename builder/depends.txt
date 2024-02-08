@@ -63,6 +63,7 @@ libc6-dev-i386
 libclang-cpp-dev
 libcppunit-dev
 libcurl4-openssl-dev
+libdbus-1-dev
 libelf-dev
 libevent-dev
 libexpat1-dev
