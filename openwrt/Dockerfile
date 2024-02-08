@@ -8,7 +8,7 @@ ARG Build_Time=$Build_Time
 
 COPY openwrt/ipk/* /app/
 
-RUN echo -e "$(uname -r)" >> $GITHUB_STEP_SUMMARY
+RUN echo -e "$(uname -r)"
 
 RUN mkdir /var/lock
 RUN opkg update && \
