@@ -6,7 +6,7 @@ ARG Build_Time=$Build_Time
 
 # RUN sed -i 's_downloads.openwrt.org_mirrors.tuna.tsinghua.edu.cn/openwrt_' /etc/opkg/distfeeds.conf
 
-RUN sed -i '6.1.74-1-83764a037d5da4b65844fa9bc9d55bc3/6.1.75-1-f9564b8bbbd1a0c3e49fc45580e1e810' /etc/opkg/distfeeds.conf
+RUN sed -i "s/6.1.74-1-83764a037d5da4b65844fa9bc9d55bc3/6.1.75-1-f9564b8bbbd1a0c3e49fc45580e1e810/g" /etc/opkg/distfeeds.conf
 
 COPY openwrt/ipk/* /app/
 
