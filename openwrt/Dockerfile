@@ -12,7 +12,7 @@ RUN echo -e "$(uname -r)"
 
 RUN mkdir /var/lock
 RUN opkg update && \
-    sed -i "s/Snapshot/Snapshot Build$Build_Time/g" /etc/openwrt_release && \
+    sed -i "s/SNAPSHOT/SNAPSHOT Build$Build_Time/g" /etc/openwrt_release && \
     opkg remove --force-remove dnsmasq && \
     opkg install coreutils-nohup \
     bash curl ca-certificates \
