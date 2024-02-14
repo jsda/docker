@@ -1,4 +1,4 @@
-FROM ghcr.io/openwrt/rootfs:x86_64-23.05.2
+FROM ghcr.io/openwrt/rootfs:x86_64
 # stable x86_64-23.05.2
 # https://github.com/openwrt/docker
 
@@ -12,7 +12,7 @@ RUN echo -e "$(uname -r)"
 
 RUN mkdir /var/lock
 RUN opkg update && \
-    sed -i "s/OpenWrt/OpenWrt Date$Build_Time/g" /etc/openwrt_release && \
+    sed -i "s/Snapshot/Snapshot Build$Build_Time/g" /etc/openwrt_release && \
     opkg remove --force-remove dnsmasq && \
     opkg install coreutils-nohup \
     bash curl ca-certificates \
