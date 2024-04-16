@@ -78,7 +78,7 @@ curl -s https://api.github.com/repos/sirpdboy/luci-app-ddns-go/releases/latest \
 | cut -d : -f 2,3 \
 | tr -d \" \
 | wget -qi -
-if mv *.ipk ./ipk; then
+if mv *.ipk ./ipk && wget -q https://downloads.immortalwrt.org/snapshots/packages/x86_64/packages/ddns-go_6.3.2-r1_x86_64.ipk ; then
 	echo "ddns-go下载成功" >> $GITHUB_STEP_SUMMARY
 else
 	echo "ddns-go下载失败" >> $GITHUB_STEP_SUMMARY
