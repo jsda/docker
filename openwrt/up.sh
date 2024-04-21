@@ -77,10 +77,11 @@ curl -s https://api.github.com/repos/jeessy2/ddns-go/releases/latest \
 | grep "browser_download_url.*ddns-go_*_linux_x86_64.tar.gz" \
 | cut -d : -f 2,3 \
 | tr -d \" \
-| wget -qi -
-if tar -zxf ./ddns-go*.tar.gz ; then
+| wget -qi -O ddns-go.tar.gz -
+if tar -zxf ./ddns-go.tar.gz ; then
 	chmod +x ./ddns-go
 	mv ./ddns-go ./ipk
+	rm -rf ./ddns-go*
 	echo "ddns-go下载成功" >> $GITHUB_STEP_SUMMARY
 else
 	echo "ddns-go下载失败" >> $GITHUB_STEP_SUMMARY
