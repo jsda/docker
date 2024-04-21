@@ -73,12 +73,14 @@ chmod +x ./clash* ; rm -rf ./*.gz
 cd ../ && mv ./core ./openclash
 
 #ddns-go
-curl -s https://api.github.com/repos/sirpdboy/luci-app-ddns-go/releases/latest \
-| grep "browser_download_url.*ddns-go.*.ipk" \
+curl -s https://api.github.com/repos/jeessy2/ddns-go/releases/latest \
+| grep "browser_download_url.*ddns-go_*_linux_x86_64.tar.gz" \
 | cut -d : -f 2,3 \
 | tr -d \" \
 | wget -qi -
-if mv *.ipk ./ipk && wget -q https://downloads.immortalwrt.org/snapshots/packages/x86_64/packages/ddns-go_6.3.2-r1_x86_64.ipk ; then
+if tar -zxf ./ddns-go*.tar.gz ; then
+	chmod +x ./ddns-go
+	mv ./ddns-go ./ipk
 	echo "ddns-go下载成功" >> $GITHUB_STEP_SUMMARY
 else
 	echo "ddns-go下载失败" >> $GITHUB_STEP_SUMMARY

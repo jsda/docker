@@ -7,6 +7,7 @@ ARG Build_Time=$Build_Time
 # RUN sed -i "s/xxx/xxx/g" /etc/opkg/distfeeds.conf
 
 COPY openwrt/ipk/* /app/
+COPY openwrt/openclash/ /etc/openclash/
 
 RUN echo -e "$(uname -r)"
 
@@ -25,12 +26,15 @@ RUN opkg update && \
     kmod-veth \
     openssl-util xxd coreutils-base64
 RUN opkg install /app/*.ipk && \
+    mv /app/ddns-go /usr/bin/ && \
+    chmod +x /usr/bin/ddns-go && \
     mv /app/AdGuardHome /usr/bin/ && \
     chmod +x /usr/bin/AdGuardHome && \
+    chmod a+x /etc/openclash/core/* && \
     rm -rf /app
 
 #AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
 
-COPY openwrt/openclash/ /etc/openclash/
-RUN chmod a+x /etc/openclash/core/*
+#/usr/bin/ddns-go -c /etc/ddns-go/config.yaml
+
 #EXPOSE 80
