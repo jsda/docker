@@ -74,12 +74,7 @@ cd ../ && mv ./core ./openclash
 
 #ddns-go
 mkdir ./ddns-go && cd ./ddns-go
-curl -s https://api.github.com/repos/jeessy2/ddns-go/releases/latest \
-| grep "browser_download_url.*ddns-go_*_linux_x86_64.tar.gz" \
-| cut -d : -f 2,3 \
-| tr -d \" \
-| wget -qi -
-mv ./* ./ddns-go.tar.gz
+wget -q -O ddns-go.tar.gz https://github.com/jeessy2/ddns-go/releases/download/v6.3.2/ddns-go_6.3.2_linux_x86_64.tar.gz
 if tar -zxf ./ddns-go.tar.gz ; then
 	chmod +x ./ddns-go
 	cd ../
