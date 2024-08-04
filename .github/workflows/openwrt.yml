@@ -48,7 +48,7 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/openwrt:latest
-#            ${{ secrets.DOCKER_USERNAME }}/openwrt:test
+            ${{ secrets.DOCKER_USERNAME }}/openwrt:test
           labels: |
             vsrsion=${{env.Build_Time}}
 
