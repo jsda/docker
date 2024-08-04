@@ -7,7 +7,7 @@ on:
 #      - 'ubuntu/*'
   schedule:
     - cron: '0 18 * * 6'
-name: Docker images openwrt
+name: Docker images openwrt-test
 
 jobs:
   build:
