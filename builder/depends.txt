@@ -78,9 +78,8 @@ libgtk2.0-dev
 libltdl-dev
 libmpc-dev
 libmpfr-dev
-libncurses6-dev
+libncurses-dev
 libncursesw6
-libncursesw6-dev
 libntlm0
 libpcre3-dev
 libpython3-dev
