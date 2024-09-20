@@ -73,14 +73,14 @@ libgmp-dev
 libgmp3-dev
 libgnutls28-dev
 libgpg-error-dev
-libgsasl7
+gsasl-common
 libgtk2.0-dev
 libltdl-dev
 libmpc-dev
 libmpfr-dev
-libncurses5-dev
-libncursesw5
-libncursesw5-dev
+libncurses6-dev
+libncursesw6
+libncursesw6-dev
 libntlm0
 libpcre3-dev
 libpython3-dev
@@ -147,3 +147,5 @@ xsltproc
 xxd
 zip
 zlib1g-dev
+adb
+fastboot
