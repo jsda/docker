@@ -5,7 +5,7 @@ docker run -it --rm \
   --net host \
   --cpuset-cpus 0 \
   -c 512 -m 2096m \
-  -e PGID=1000 -e PUID=1000 \
+  -e PUID=$UID -e PGID=$GID \
   -v $HOME/tools/chromium:/home/chromium/.config/chromium \
   -v $HOME/Downloads:/home/chromium/Downloads \
   -v /usr/share/fonts:/usr/share/fonts:ro \

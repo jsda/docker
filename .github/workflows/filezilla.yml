@@ -3,7 +3,7 @@
 # Author: P3TERX
 # Blog: https://p3terx.com (chinese)
 #=================================================
-name: Docker images firefox
+name: Docker images filezilla
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
 #    branches:
 #      - @master
 #    paths:
-#      - 'firefox/*'
+#      - 'filezilla/*'
   schedule:
     - cron: '30 2 * * 2,5'
 
@@ -42,18 +42,18 @@ jobs:
         context: .
         platforms: |
           linux/amd64
-        file: firefox/Dockerfile
+        file: filezilla/Dockerfile
         push: true
         tags: |
-          ${{ secrets.DOCKER_USERNAME }}/firefox:latest
+          ${{ secrets.DOCKER_USERNAME }}/filezilla:latest
 
     - name: Docker Hub Description
       uses: peter-evans/dockerhub-description@master
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: ${{ secrets.DOCKER_USERNAME }}/firefox
-        readme-filepath: firefox/README.md
+        repository: ${{ secrets.DOCKER_USERNAME }}/filezilla
+        readme-filepath: filezilla/README.md
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
