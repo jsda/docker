@@ -9,7 +9,7 @@ docker run -it --rm \
   -v $HOME/.mozilla/firefox:/home/user/.mozilla/firefox \
   -v $HOME/Downloads:/home/user/Downloads \
   -v /usr/share/fonts:/usr/share/fonts:ro \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   -e DISPLAY=unix$DISPLAY \
   --device /dev/snd \
   -v /dev/shm:/dev/shm \
