@@ -3,6 +3,9 @@
 ````javascript
 docker run -it --rm \
 	-v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+	-e PULSE_SERVER=unix:$XDG_RUNTIME_DIR/pulse/native \
+	-v $XDG_RUNTIME_DIR/pulse:$XDG_RUNTIME_DIR/pulse \
+	-v /etc/localtime:/etc/localtime:ro \
 	-e DISPLAY=unix$DISPLAY \
 	-e XAUTHORITY=/tmp/xauth \
 	-e DISPLAY=unix$DISPLAY \
