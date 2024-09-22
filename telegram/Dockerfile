@@ -45,7 +45,7 @@ ENV LANG=zh_TW.UTF-8 \
     LC_CTYPE=zh_TW.UTF-8 \
     GTK_IM_MODULE=fcitx \
     QT_IM_MODULE=fcitx \
-    XMODIFIERS='@im=fcitx'
+    XMODIFIERS='@im=fcitx' \
 	QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb
 
 USER user
