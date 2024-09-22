@@ -2,11 +2,11 @@ FROM debian:stable-slim
 
 RUN set -e \
 	&& apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y locales ttf-wqy-zenhei \
+    && apt-get upgrade -yqq \
+    && apt-get install -yqq locales ttf-wqy-zenhei \
     && localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 \
-    && apt-get install -y filezilla \
-    && apt-get autoclean -y \
+    && apt-get install -y filezilla mousepad \
+    && apt-get autoclean -yqq \
     && groupadd -r user \
     && useradd -r -g user -G audio,video user \
     && mkdir -p /home/user/Downloads \
