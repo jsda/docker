@@ -4,6 +4,7 @@
 docker run -it --rm \
   -e PUID=$UID -e PGID=$GID \
   -v $HOME/.config/filezilla:/home/user/.config/filezilla \
+  -v $HOME/.ssh:/home/user/.ssh:ro \
   -v $HOME/Downloads:/home/user/Downloads \
   -v /usr/share/fonts:/usr/share/fonts:ro \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
