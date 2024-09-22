@@ -23,4 +23,4 @@ ENV LANG=zh_TW.UTF-8 \
 
 USER user
 
-ENTRYPOINT /usr/bin/filezilla "--quiet >/dev/null 2>&1"
+ENTRYPOINT /usr/bin/filezilla ">/dev/null 2>&1"
