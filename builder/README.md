@@ -3,13 +3,17 @@
 ## 1， 安装docker环境
 
 ## 2， 拉取镜像，默认ubuntu环境:
-
+```
 $ docker pull rdvde/builder
-
+```
 
 ## 3, 运行容器:
-
-$ docker run -it --name lede --network host -v 你的本地文件夹:/home/lede rdvde/builder
+```
+$ docker run -it \
+	--name lede \
+	-v 你的本地文件夹:/home/lede \
+	rdvde/builder
+```
 
 #### git代码开始编译～
 #### 默认工作用户为lede
@@ -18,3 +22,8 @@ $ docker run -it --name lede --network host -v 你的本地文件夹:/home/lede 
 #### 以后再运行容器时运行的命令
 
 $ docker restart lede && docker attach lede
+
+## adb连接Android，添加参数
+```
+--privileged -v /dev/bus/usb:/dev/bus/usb:ro
+```
