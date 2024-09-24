@@ -8,11 +8,13 @@ ARG Build_Time=$Build_Time
 
 COPY openwrt/ipk/* /app/
 COPY openwrt/openclash/ /etc/openclash/
+COPY openwrt/daed/* /daed/
 
 RUN echo -e "$(uname -r)"
 
 RUN mkdir /var/lock
-RUN opkg update && \
+RUN set -e && \
+	opkg update && \
     sed -i "s/SNAPSHOT/SNAPSHOT Build$Build_Time/g" /etc/openwrt_release && \
     opkg remove --force-remove dnsmasq && \
     opkg install coreutils-nohup \
@@ -25,13 +27,19 @@ RUN opkg update && \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64
-RUN opkg install /app/*.ipk && \
+RUN set -e && \
+	opkg install /app/*.ipk && \
     mv /app/ddns-go /usr/bin/ && \
     chmod +x /usr/bin/ddns-go && \
     mv /app/AdGuardHome /usr/bin/ && \
     chmod +x /usr/bin/AdGuardHome && \
-    chmod a+x /etc/openclash/core/* && \
     rm -rf /app
+    chmod a+x /etc/openclash/core/* && \
+    mv /daed/daed /usr/bin && \
+    mkdir -p /usr/share/daed && \
+    ln -s /etc/openclash/GeoSite.dat /usr/share/daed/geosite.dat && \
+    ln -s /etc/openclash/GEO_IP.dat /usr/share/daed/geoip.dat && \
+    rm -rf /daed
 
 #AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
 

@@ -9,7 +9,7 @@ echo -e "$(uname -r)" >> $GITHUB_STEP_SUMMARY
 echo -e "当前流程工作路径：$PATH" >> $GITHUB_STEP_SUMMARY
 echo -e "开始更新软件" >> $GITHUB_STEP_SUMMARY
 
-#Open_Clash
+# Open_Clash
 export Open_Clash=https://github.com/vernesong/OpenClash/releases/download/v$(getversion vernesong/OpenClash)/luci-app-openclash_$(getversion vernesong/OpenClash)_all.ipk
 mkdir -p ipk
 if curl -sfL -o ./luci-app-openclash.ipk $Open_Clash; then
@@ -35,21 +35,21 @@ export Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/maste
 
 mkdir -p openclash
 
-curl -sfL -o ./openclash/Country.mmdb $GEO_MMDB && echo "GEO_MMDB下载成功" || echo "GEO_MMDB下载失败"
-curl -sfL -o ./openclash/GeoSite.dat $GEO_SITE && echo "GEO_SITE下载成功" || echo "GEO_SITE下载失败"
-curl -sfL -o ./openclash/GeoIP.dat $GEO_IP && echo "GEO_IP下载成功" || echo "GEO_IP下载失败"
-curl -sfL -o ./openclash/accelerated-domains.china.conf $Domains_china && echo "Domains_china下载成功" || echo "Domains_china下载失败"
+curl -sfL -o ./openclash/Country.mmdb $GEO_MMDB && echo "GEO_MMDB下载成功" >> $GITHUB_STEP_SUMMARY || echo "GEO_MMDB下载失败" >> $GITHUB_STEP_SUMMARY
+curl -sfL -o ./openclash/GeoSite.dat $GEO_SITE && echo "GEO_SITE下载成功" >> $GITHUB_STEP_SUMMARY || echo "GEO_SITE下载失败" >> $GITHUB_STEP_SUMMARY
+curl -sfL -o ./openclash/GeoIP.dat $GEO_IP && echo "GEO_IP下载成功" >> $GITHUB_STEP_SUMMARY || echo "GEO_IP下载失败" >> $GITHUB_STEP_SUMMARY
+curl -sfL -o ./openclash/accelerated-domains.china.conf $Domains_china && echo "Domains_china下载成功" >> $GITHUB_STEP_SUMMARY || echo "Domains_china下载失败" >> $GITHUB_STEP_SUMMARY
 
 mkdir ./core && cd ./core
 
-if curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz; then
-	gzip -d ./tun.gz
-	mv ./tun ./clash_tun
-	echo "tun下载成功" >> $GITHUB_STEP_SUMMARY
-else
-	echo "tun下载失败" >> $GITHUB_STEP_SUMMARY
-  	exit 1
-fi
+# if curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz; then
+# 	gzip -d ./tun.gz
+# 	mv ./tun ./clash_tun
+# 	echo "tun下载成功" >> $GITHUB_STEP_SUMMARY
+# else
+# 	echo "tun下载失败" >> $GITHUB_STEP_SUMMARY
+#   	exit 1
+# fi
 
 if curl -sfL -o ./meta.tar.gz "$CORE_MATE"-"$CORE_TYPE".tar.gz; then
 	tar -zxf ./meta.tar.gz
@@ -59,14 +59,6 @@ else
 	echo "meta下载失败" >> $GITHUB_STEP_SUMMARY
 	exit 1
 fi
-
-if curl -sfL -o ./dev.tar.gz "$CORE_DEV"-"$CORE_TYPE".tar.gz; then
-	echo "CORE_DEV下载成功" >> $GITHUB_STEP_SUMMARY
-else
-	echo "CORE_DEV下载失败" >> $GITHUB_STEP_SUMMARY
-	exit 1
-fi
-tar -zxf ./dev.tar.gz
 
 chmod +x ./clash* ; rm -rf ./*.gz
 
@@ -99,7 +91,7 @@ else
 	exit 1
 fi
 
-#AdGuardHome
+# AdGuardHome
 curl -L https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest \
 | grep "AdGuardHome_linux_amd64.tar.gz" \
 | grep "https" \
@@ -115,3 +107,20 @@ else
 	echo "AdGuardHome下载失败" >> $GITHUB_STEP_SUMMARY
 	exit 1
 fi
+
+# daed
+wget -O daed-linux-x86_64.zip https://github.com/daeuniverse/daed/releases/download/v$(getversion daeuniverse/daed)/daed-linux-x86_64.zip
+
+if unzip -d daed daed-linux-x86_64.zip ; then
+	rm -rf daed-linux-x86_64.zip
+	cd daed
+	chmod +x ./daed*
+	mv ./daed-linux-x86_64 ./daed
+	rm -rf geo*
+	echo "daed下载成功" >> $GITHUB_STEP_SUMMARY
+else
+	echo "daed下载失败" >> $GITHUB_STEP_SUMMARY
+	exit 1
+fi
+
+cd ../
