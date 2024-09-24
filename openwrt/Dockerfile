@@ -38,7 +38,7 @@ RUN set -e && \
     mv /daed/daed /usr/bin && \
     mkdir -p /usr/share/daed && \
     ln -s /etc/openclash/GeoSite.dat /usr/share/daed/geosite.dat && \
-    ln -s /etc/openclash/GEO_IP.dat /usr/share/daed/geoip.dat && \
+    ln -s /etc/openclash/GeoIP.dat /usr/share/daed/geoip.dat && \
     rm -rf /daed
 
 #AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
