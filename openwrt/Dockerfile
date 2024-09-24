@@ -33,7 +33,7 @@ RUN set -e && \
     chmod +x /usr/bin/ddns-go && \
     mv /app/AdGuardHome /usr/bin/ && \
     chmod +x /usr/bin/AdGuardHome && \
-    rm -rf /app
+    rm -rf /app && \
     chmod a+x /etc/openclash/core/* && \
     mv /daed/daed /usr/bin && \
     mkdir -p /usr/share/daed && \
