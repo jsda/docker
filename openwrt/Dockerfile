@@ -43,6 +43,10 @@ RUN set -e && \
 
 #AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
 
-#/usr/bin/ddns-go -c /etc/ddns-go/config.yaml
+# daed
+#nohup /usr/bin/daed run -c /etc/daed/ > /dev/null 2>&1 &
+
+# ddns-go
+#nohup ddns-go -c /etc/ddns-go/ddns-go-config.yaml > /dev/null 2>&1 &
 
 #EXPOSE 80
