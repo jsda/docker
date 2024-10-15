@@ -39,4 +39,4 @@ ENV LANG=zh_TW.UTF-8 \
 		QT_IM_MODULE=fcitx \
 		XMODIFIERS='@im=fcitx'
 
-ENTRYPOINT /opt/obsidian/obsidian ">/dev/null 2>&1"
+ENTRYPOINT /opt/obsidian/obsidian "--no-sandbox" ">/dev/null 2>&1"

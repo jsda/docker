@@ -10,7 +10,7 @@ docker run -it --rm \
 	-e DISPLAY=unix$DISPLAY \
 	--device /dev/snd \
 	-v /dev/shm:/dev/shm:ro \
-	--name filezilla \
+	--name obsidian \
 	rdvde/obsidian
 
 ````
