@@ -5,7 +5,7 @@ ARG OBSIDIAN_VERSION
 RUN set -e && \
 	apt update && \
 	apt upgrade -yqq && \
-	apt install -yqq locales ttf-wqy-zenhei && \
+	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates && \
 	localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 && \
 	DEBIAN_FRONTEND=noninteractive \
 	echo "**** install obsidian ****" && \
@@ -13,7 +13,6 @@ RUN set -e && \
 		OBSIDIAN_VERSION=$(curl -sX GET "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest"| awk '/tag_name/{print $4;exit}' FS='[""]'); \
 	fi && \
 	apt install -y --no-install-recommends \
-		curl ca-certificates \
 		git \
 		libgtk-3-bin \
 		libatk1.0-0 \
