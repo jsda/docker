@@ -15,8 +15,8 @@ RUN set -e && \
 	apt install -y --no-install-recommends \
 		git \
 		libgtk-3-bin \
-		libatk1.0 \
-		libatk-bridge2.0 \
+		libatk1.0-0 \
+		libatk-bridge2.0-0 \
 		libnss3 \
 		python3-xdg && \
 	cd /tmp && \
