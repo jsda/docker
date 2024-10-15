@@ -5,7 +5,7 @@ ARG OBSIDIAN_VERSION
 RUN set -e && \
 	apt update && \
 	apt upgrade -yqq && \
-	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates libdrm2 && \
+	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates libgbm1 libdrm2 && \
 	localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 && \
 	DEBIAN_FRONTEND=noninteractive \
 	echo "**** install obsidian ****" && \
