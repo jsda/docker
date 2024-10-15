@@ -3,7 +3,6 @@ FROM debian:stable-slim
 ARG OBSIDIAN_VERSION
 
 RUN set -e && \
-	
 	apt update && \
 	apt upgrade -yqq && \
 	apt install -yqq locales ttf-wqy-zenhei && \
