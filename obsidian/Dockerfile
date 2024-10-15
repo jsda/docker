@@ -33,10 +33,10 @@ RUN set -e && \
 	mkdir -p /Downloads && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV LANG=zh_TW.UTF-8 && \
-	LC_CTYPE=zh_TW.UTF-8 && \
-	GTK_IM_MODULE=fcitx && \
-	QT_IM_MODULE=fcitx && \
-	XMODIFIERS='@im=fcitx'
+ENV LANG=zh_TW.UTF-8 \
+		LC_CTYPE=zh_TW.UTF-8 \
+		GTK_IM_MODULE=fcitx \
+		QT_IM_MODULE=fcitx \
+		XMODIFIERS='@im=fcitx'
 
 ENTRYPOINT /opt/obsidian/obsidian ">/dev/null 2>&1"
