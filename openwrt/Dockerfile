@@ -13,7 +13,7 @@ COPY openwrt/daed/* /daed/
 RUN echo -e "$(uname -r)"
 
 RUN mkdir /var/lock
-RUN set -e && \
+RUN set -ex && \
 	opkg update && \
     sed -i "s/SNAPSHOT/SNAPSHOT Build$Build_Time/g" /etc/openwrt_release && \
     opkg remove --force-remove dnsmasq && \
@@ -28,7 +28,7 @@ RUN set -e && \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64
-RUN set -e && \
+RUN set -ex && \
 	opkg install /app/*.ipk && \
     mv /app/ddns-go /usr/bin/ && \
     chmod +x /usr/bin/ddns-go && \

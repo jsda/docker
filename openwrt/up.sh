@@ -9,10 +9,12 @@ echo -e "$(uname -r)" >> $GITHUB_STEP_SUMMARY
 echo -e "当前流程工作路径：$PATH" >> $GITHUB_STEP_SUMMARY
 echo -e "开始更新软件" >> $GITHUB_STEP_SUMMARY
 
+set -ex
+
 # Open_Clash
 export Open_Clash=https://github.com/vernesong/OpenClash/releases/download/v$(getversion vernesong/OpenClash)/luci-app-openclash_$(getversion vernesong/OpenClash)_all.ipk
 mkdir -p ipk
-if curl -sfL -o ./luci-app-openclash.ipk $Open_Clash; then
+if curl -L -o ./luci-app-openclash.ipk $Open_Clash; then
 	mv *.ipk ./ipk
 	echo "openclash下载成功" >> $GITHUB_STEP_SUMMARY
 else
@@ -20,13 +22,6 @@ else
 	exit 1
 fi
 #预置OpenClash内核和GEO数据https://github.com/VIKINGYFY/OpenWRT-CI
-export CORE_VER=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/core_version
-export CORE_TUN=https://github.com/vernesong/OpenClash/raw/core/master/premium/clash-linux
-export CORE_DEV=https://github.com/vernesong/OpenClash/raw/core/master/dev/clash-linux
-export CORE_MATE=https://github.com/vernesong/OpenClash/raw/core/master/meta/clash-linux
-
-export CORE_TYPE=amd64
-export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
 
 export GEO_MMDB=https://github.com/alecthw/mmdb_china_ip_list/raw/release/lite/Country.mmdb
 export GEO_SITE=https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat
@@ -35,25 +30,15 @@ export Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/maste
 
 mkdir -p openclash
 
-curl -sfL -o ./openclash/Country.mmdb $GEO_MMDB && echo "GEO_MMDB下载成功" >> $GITHUB_STEP_SUMMARY || echo "GEO_MMDB下载失败" >> $GITHUB_STEP_SUMMARY
-curl -sfL -o ./openclash/GeoSite.dat $GEO_SITE && echo "GEO_SITE下载成功" >> $GITHUB_STEP_SUMMARY || echo "GEO_SITE下载失败" >> $GITHUB_STEP_SUMMARY
-curl -sfL -o ./openclash/GeoIP.dat $GEO_IP && echo "GEO_IP下载成功" >> $GITHUB_STEP_SUMMARY || echo "GEO_IP下载失败" >> $GITHUB_STEP_SUMMARY
-curl -sfL -o ./openclash/accelerated-domains.china.conf $Domains_china && echo "Domains_china下载成功" >> $GITHUB_STEP_SUMMARY || echo "Domains_china下载失败" >> $GITHUB_STEP_SUMMARY
+curl -L -o ./openclash/Country.mmdb $GEO_MMDB && echo "GEO_MMDB下载成功" >> $GITHUB_STEP_SUMMARY || exit 1
+curl -L -o ./openclash/GeoSite.dat $GEO_SITE && echo "GEO_SITE下载成功" >> $GITHUB_STEP_SUMMARY || exit 1
+curl -L -o ./openclash/GeoIP.dat $GEO_IP && echo "GEO_IP下载成功" >> $GITHUB_STEP_SUMMARY || exit 1
+curl -L -o ./openclash/accelerated-domains.china.conf $Domains_china && echo "Domains_china下载成功" >> $GITHUB_STEP_SUMMARY || exit 1
 
 mkdir ./core && cd ./core
-
-# if curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz; then
-# 	gzip -d ./tun.gz
-# 	mv ./tun ./clash_tun
-# 	echo "tun下载成功" >> $GITHUB_STEP_SUMMARY
-# else
-# 	echo "tun下载失败" >> $GITHUB_STEP_SUMMARY
-#   	exit 1
-# fi
-
-if curl -sfL -o ./meta.tar.gz "$CORE_MATE"-"$CORE_TYPE".tar.gz; then
-	tar -zxf ./meta.tar.gz
-	mv ./clash ./clash_meta
+export CORE_MATE=https://github.com/MetaCubeX/mihomo/releases/download/v$(getversion MetaCubeX/mihomo)/mihomo-linux-amd64-compatible-v$(getversion MetaCubeX/mihomo).gz
+if curl -L -o ./clash_meta.gz $CORE_MATE ; then
+	gzip -d clash_meta.gz
 	echo "meta下载成功" >> $GITHUB_STEP_SUMMARY
 else
 	echo "meta下载失败" >> $GITHUB_STEP_SUMMARY
@@ -66,7 +51,7 @@ cd ../ && mv ./core ./openclash
 
 #ddns-go
 mkdir ./ddns-go && cd ./ddns-go
-wget -q -O ddns-go.tar.gz https://github.com/jeessy2/ddns-go/releases/download/v6.3.2/ddns-go_6.3.2_linux_x86_64.tar.gz
+wget -q -O ddns-go.tar.gz https://github.com/jeessy2/ddns-go/releases/download/v$(getversion jeessy2/ddns-go)/ddns-go_$(getversion jeessy2/ddns-go)_linux_x86_64.tar.gz
 if tar -zxf ./ddns-go.tar.gz ; then
 	chmod +x ./ddns-go
 	cd ../
