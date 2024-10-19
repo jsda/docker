@@ -45,13 +45,13 @@ RUN set -ex && \
     curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
     curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
     curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/packages/|') && \
-    opkg install /tmp/ipk/*.ipk && cd /tmp && \
+    opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk && cd /tmp && \
     mkdir ./ddns-go && cd ./ddns-go && \
     ddns_go=$(curl -sX GET "https://api.github.com/repos/jeessy2/ddns-go/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
     curl -L -o ./ddns-go.tar.gz https://github.com/jeessy2/ddns-go/releases/download/v${ddns_go}/ddns-go_${ddns_go}_linux_x86_64.tar.gz && \
-    tar -zxf ./ddns-go.tar.gz && mv ddns-go /usr/bin/ && chmod +x /usr/bin/ddns-go && rm -rf /ddns-go && cd /tmp && \
+    tar -zxf ./ddns-go.tar.gz && mv ddns-go /usr/bin/ && chmod +x /usr/bin/ddns-go && rm -rf /tmp/ddns-go && cd /tmp && \
     adg_h=$(curl -sX GET "https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
@@ -75,8 +75,7 @@ RUN set -ex && \
     unzip -d daed daed-linux-x86_64.zip && mv daed/daed-linux-x86_64 /usr/bin/daed && chmod +x /usr/bin/daed && rm -rf daed* && \
     mkdir -p /usr/share/daed && \
     ln -s /etc/openclash/GeoSite.dat /usr/share/daed/geosite.dat && \
-    ln -s /etc/openclash/GeoIP.dat /usr/share/daed/geoip.dat && \
-    rm -rf /tmp/*
+    ln -s /etc/openclash/GeoIP.dat /usr/share/daed/geoip.dat
 
 #AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
 
