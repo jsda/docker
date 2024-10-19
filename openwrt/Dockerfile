@@ -3,11 +3,11 @@ FROM ghcr.io/openwrt/rootfs:x86_64
 # https://github.com/openwrt/docker
 
 ARG Build_Time=$Build_Time
-ARG Open_Clash=$Open_Clash
-ARG CORE_MATE=$CORE_MATE
-ARG ddns_go=$ddns_go
-ARG adg_h=$adg_h
-ARG daed_v=$daed_v
+ARG Open_Clash
+ARG CORE_MATE
+ARG ddns_go
+ARG adg_h
+ARG daed_v
 
 ARG GEO_MMDB=https://github.com/alecthw/mmdb_china_ip_list/raw/release/lite/Country.mmdb
 ARG GEO_SITE=https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat
