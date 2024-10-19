@@ -66,7 +66,7 @@ RUN set -ex && \
     CORE_MATE=$(curl -sX GET "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o /tmp/clash_meta.gz.ipk https://github.com/MetaCubeX/mihomo/releases/download/v${CORE_MATE}/mihomo-linux-amd64-compatible-v${CORE_MATE}.gz && \
+    curl -L -o /tmp/clash_meta.gz https://github.com/MetaCubeX/mihomo/releases/download/v${CORE_MATE}/mihomo-linux-amd64-compatible-v${CORE_MATE}.gz && \
     gzip -d clash_meta.gz && mv clash_meta /etc/openclash/core && chmod a+x /etc/openclash/core/* && \
     daed_v=$(curl -sX GET "https://api.github.com/repos/daeuniverse/daed/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
