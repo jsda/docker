@@ -1,5 +1,5 @@
 getversion(){
-wget --no-check-certificate -qO- https://api.github.com/repos/$1/tags \
+wget -qO- https://api.github.com/repos/$1/tags \
 | grep 'name' | cut -d\" -f4 \
 | head -1 | sed 's/"//g;s/v//g' \
 | sed 's/release-//g'
@@ -94,7 +94,7 @@ else
 fi
 
 # daed
-wget -O daed-linux-x86_64.zip https://github.com/daeuniverse/daed/releases/download/v$(getversion daeuniverse/daed)/daed-linux-x86_64.zip
+wget -q -O daed-linux-x86_64.zip https://github.com/daeuniverse/daed/releases/download/v$(getversion daeuniverse/daed)/daed-linux-x86_64.zip
 
 if unzip -d daed daed-linux-x86_64.zip ; then
 	rm -rf daed-linux-x86_64.zip
