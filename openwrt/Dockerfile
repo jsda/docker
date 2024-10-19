@@ -35,16 +35,17 @@ RUN set -ex && \
     kmod-veth \
     openssl-util xxd coreutils-base64
 RUN set -ex && \
-    mkdir -p /tmp/ipk && cd /tmp && \
+    mkdir -p /tmp/ipk && cd /tmp/ipk && \
     Open_Clash=$(curl -sX GET "https://api.github.com/repos/vernesong/OpenClash/releases" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o /tmp/ipk/luci-app-openclash.ipk https://github.com/vernesong/OpenClash/releases/download/v${Open_Clash}/luci-app-openclash_${Open_Clash}_all.ipk && \
-    luci_socat=$(curl -sX GET "https://api.github.com/repos/chenmozhijin/luci-app-socat/releases/latest" \
-      | awk '/tag_name/{print $4;exit}' FS='[""]' \
-      | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o /tmp/ipk/luci-app-socat.ipk https://github.com/chenmozhijin/luci-app-socat/releases/download/v${luci_socat}/luci-app-socat_${luci_socat}_all.ipk && \
-    curl -L -o /tmp/ipk/luci-i18n-socat-zh-cn.ipk https://github.com/chenmozhijin/luci-app-socat/releases/download/v${luci_socat}/luci-i18n-socat-zh-cn_${luci_socat}_all.ipk && \
+    curl -L -O https://github.com/vernesong/OpenClash/releases/download/v${Open_Clash}/luci-app-openclash_${Open_Clash}_all.ipk && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-i18n-socat-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/packages/|') && \
+    opkg install /tmp/ipk/*.ipk && cd /tmp && \
     mkdir ./ddns-go && cd ./ddns-go && \
     ddns_go=$(curl -sX GET "https://api.github.com/repos/jeessy2/ddns-go/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
@@ -56,7 +57,6 @@ RUN set -ex && \
       | sed 's/"//g;s/v//g;s/release-//g') && \
     curl -L -o ./AdGuardHome.tar.gz https://github.com/AdguardTeam/AdGuardHome/releases/download/v${adg_h}/AdGuardHome_linux_amd64.tar.gz && \
     tar -zxf ./AdGuardHome*.tar.gz && mv ./AdGuardHome/AdGuardHome /usr/bin/ && chmod +x /usr/bin/AdGuardHome && rm -rf AdGuardHome* && \
-    opkg install /tmp/ipk/*.ipk && \
     mkdir -p /etc/openclash/core && \
     curl -L -o /etc/openclash/Country.mmdb $GEO_MMDB && \
     curl -L -o /etc/openclash/GeoSite.dat $GEO_SITE && \
