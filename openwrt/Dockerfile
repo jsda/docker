@@ -25,7 +25,7 @@ RUN set -ex && \
     unzip kmod-nft-tproxy luci-compat luci \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-firewall-zh-cn \
-    luci-app-opkg \
+    luci-i18n-opkg \
     ddns-scripts-cloudflare luci-i18n-ddns-zh-cn \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
