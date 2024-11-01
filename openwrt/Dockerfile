@@ -1,5 +1,5 @@
-FROM ghcr.io/openwrt/rootfs:x86_64
-# stable x86_64-23.05.2
+FROM ghcr.io/openwrt/rootfs:x86_64-openwrt-23.05
+
 # https://github.com/openwrt/docker
 
 ARG Build_Time=$Build_Time
@@ -25,7 +25,7 @@ RUN set -ex && \
     unzip kmod-nft-tproxy luci-compat luci \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-firewall-zh-cn \
-#    luci-app-opkg \
+    luci-app-opkg \
     ddns-scripts-cloudflare luci-i18n-ddns-zh-cn \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
