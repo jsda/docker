@@ -34,7 +34,7 @@ jobs:
         run: |
           export Build_Time=$(TZ=UTC-8 date +"%Y%m%d%H%M")
           echo "Build_Time=$Build_Time" >> $GITHUB_ENV
-          cd openwrt && ./up.sh
+#          cd openwrt && ./up.sh
 
       - name: Build and push
         uses: docker/build-push-action@master
