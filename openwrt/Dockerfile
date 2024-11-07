@@ -41,8 +41,6 @@ RUN set -ex && \
     curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
     curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
     curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/packages/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-app-daed_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/x86_64/luci/|') && \
     opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk && cd /tmp && \
     mkdir ./ddns-go && cd ./ddns-go && \
     ddns_go=$(curl -sX GET "https://api.github.com/repos/jeessy2/ddns-go/releases/latest" \
