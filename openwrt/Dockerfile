@@ -72,6 +72,7 @@ RUN set -ex && \
     mkdir -p /etc/openclash/core && \
     ln -s /usr/bin/mihomo /etc/openclash/core/clash_meta && \
     curl -L -o /etc/openclash/Country.mmdb $GEO_MMDB && \
+    rm -rf /etc/openclash/{GeoSite.dat,GeoIP.dat} && \
     ln -s /usr/share/v2ray/geosite.dat /etc/openclash/GeoSite.dat && \
     ln -s /usr/share/v2ray/geoip.dat /etc/openclash/GeoIP.dat && \
     curl -L -o /etc/homeproxy/resources/china_list.txt $CN_LIST && sed -i 's/^+\.//' /etc/homeproxy/resources/china_list.txt && \
