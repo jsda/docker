@@ -39,20 +39,20 @@ RUN set -ex && \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
     curl -L -O https://github.com/vernesong/OpenClash/releases/download/v${Open_Clash}/luci-app-openclash_${Open_Clash}_all.ipk && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-socat-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-socat-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
     miho_mo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
     curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-openwrt-23.05.tar.gz && \
     tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
     opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk/* && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
     opkg install --force-depends /tmp/ipk/*.ipk && rm -rf /tmp/ipk/ && cd /tmp && \
     mkdir ./ddns-go && cd ./ddns-go && \
     ddns_go=$(curl -sX GET "https://api.github.com/repos/jeessy2/ddns-go/releases/latest" \
