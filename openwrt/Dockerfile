@@ -52,7 +52,9 @@ RUN set -ex && \
     opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk/* && \
     curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
     curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="daed_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="daed-geosite_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
+    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
     opkg install --force-depends /tmp/ipk/*.ipk && rm -rf /tmp/ipk/ && cd /tmp && \
     mkdir ./ddns-go && cd ./ddns-go && \
     ddns_go=$(curl -sX GET "https://api.github.com/repos/jeessy2/ddns-go/releases/latest" \
