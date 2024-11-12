@@ -108,7 +108,7 @@ docker run -d \
     -v $PWD/openwrt/mihomo/subscriptions:/etc/mihomo/subscriptions \
     -v $PWD/openwrt/mihomo/proxies:/etc/mihomo/run/proxies \
     -v $PWD/openwrt/mihomo/rules:/etc/mihomo/run/rules \
-    -v $PWD/openwrt/mihomo/cache.db:/etc/mihomo/run/rules/cache.db \
+    -v $PWD/openwrt/mihomo/cache.db:/etc/mihomo/run/cache.db \
     -v $PWD/openwrt/mihomo/profiles:/etc/openclash/config \
     -v $PWD/openwrt/mihomo/proxies:/etc/openclash/proxies \
     -v $PWD/openwrt/mihomo/rules:/etc/openclash/rules \
