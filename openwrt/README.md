@@ -1,8 +1,12 @@
 # docker安装openwrt
 
-## 参考 https://github.com/yangyaofei/docker-openclash
-
-## A docker image for [OpenClash](https://github.com/vernesong/OpenClash)
+- https://github.com/openwrt/docker
+- https://downloads.immortalwrt.org
+- https://github.com/vernesong/OpenClash
+- https://github.com/morytyann/OpenWrt-mihomo
+- https://github.com/daeuniverse/daed
+- https://github.com/jeessy2/ddns-go
+- https://github.com/AdguardTeam/AdGuardHome
 
 #### 创建macvlan，parent后面为物理网卡名称，macnet为创建的macvlan名称
 ```
@@ -84,4 +88,36 @@ iface macvlan inet static
         dns-nameservers 192.168.1.254
         pre-up ip link add macvlan link eth0 type macvlan mode bridge
         post-down ip link del macvlan link eth0 type macvlan mode bridge
+```
+
+#### 最终启动示例
+
+```
+docker run -d \
+    --restart=always \
+    --privileged \
+    --network maclan \
+    --network macwan \
+    -v $PWD/openwrt/config:/etc/config \
+    -v $PWD/openwrt/crontabs:/etc/crontabs \
+    -v $PWD/openwrt/dropbear:/etc/dropbear \
+    -v $PWD/openwrt/rc.local:/etc/rc.local \
+    -v $PWD/openwrt/shadow:/etc/shadow \
+    -v $PWD/openwrt/sysctl.conf:/etc/sysctl.conf \
+    -v $PWD/openwrt/mihomo/profiles:/etc/mihomo/profiles \
+    -v $PWD/openwrt/mihomo/subscriptions:/etc/mihomo/subscriptions \
+    -v $PWD/openwrt/mihomo/proxies:/etc/mihomo/run/proxies \
+    -v $PWD/openwrt/mihomo/rules:/etc/mihomo/run/rules \
+    -v $PWD/openwrt/mihomo/cache.db:/etc/mihomo/run/rules/cache.db \
+    -v $PWD/openwrt/mihomo/profiles:/etc/openclash/config \
+    -v $PWD/openwrt/mihomo/proxies:/etc/openclash/proxies \
+    -v $PWD/openwrt/mihomo/rules:/etc/openclash/rules \
+    -v $PWD/openwrt/mihomo/cache.db:/etc/openclash/cache.db \
+    -v $PWD/openwrt/adguardhome:/etc/adguardhome \
+    -v $PWD/openwrt/ddns-go:/etc/ddns-go \
+    --ip 192.168.10.254 \
+    --name=openwrt \
+    --hostname owrt \
+    rdvde/openwrt:latest \
+    /sbin/init
 ```

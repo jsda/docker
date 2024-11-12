@@ -1,7 +1,5 @@
 FROM ghcr.io/openwrt/rootfs:x86_64-openwrt-23.05
 
-# https://github.com/openwrt/docker
-
 ARG ARCH=x86_64
 
 ARG Build_Time=$Build_Time
@@ -10,6 +8,8 @@ ARG GEO_MMDB=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/
 ARG GEO_SITE=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geosite.dat
 ARG GEO_IP=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geoip.dat
 ARG CN_LIST=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/cn.list
+ARG ASN_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
+ARG META_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb
 ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
 
 #COPY openwrt/ipk/* /app/
@@ -69,6 +69,13 @@ RUN set -ex && \
     tar -zxf ./AdGuardHome*.tar.gz && mv ./AdGuardHome/AdGuardHome /usr/bin/ && chmod +x /usr/bin/AdGuardHome && rm -rf AdGuardHome* && \
     curl -L -o /usr/share/v2ray/geosite.dat $GEO_SITE && \
     curl -L -o /usr/share/v2ray/geoip.dat $GEO_IP && \
+    mkdir -p /etc/mihomo/run/ui && \
+    curl -L -o /etc/mihomo/run/ASN.mmdb $ASN_DB && \
+    curl -L -o /etc/mihomo/run/geoip.metadb $META_DB && \
+    ln -s /usr/share/v2ray/geosite.dat /etc/mihomo/run/geosite.dat && \
+    ln -s /usr/share/v2ray/geoip.dat /etc/mihomo/run/geoip.dat && \
+    cd /etc/mihomo/run/ui && \
+    curl -L -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
     mkdir -p /etc/openclash/core && \
     ln -s /usr/bin/mihomo /etc/openclash/core/clash_meta && \
     curl -L -o /etc/openclash/Country.mmdb $GEO_MMDB && \
