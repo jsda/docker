@@ -7,7 +7,7 @@ on:
 #      - 'ubuntu/*'
   schedule:
     - cron: '0 18 * * 6'
-name: Docker images openwrt-test
+name: Docker images openwrt-iwrt
 
 jobs:
   build:
@@ -41,12 +41,12 @@ jobs:
           context: .
           platforms: |
             linux/amd64
-          file: openwrt/Dockerfile
+          file: openwrt/iwrt
           build-args: |
             Build_Time=${{env.Build_Time}}
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/openwrt:test
+            ${{ secrets.DOCKER_USERNAME }}/openwrt:iwrt
           labels: |
             vsrsion=${{env.Build_Time}}
 

@@ -1,0 +1,80 @@
+FROM docker.io/immortalwrt/rootfs:x86-64-openwrt-23.05
+
+ARG ARCH=x86_64
+
+ARG Build_Time=$Build_Time
+
+ARG GEO_MMDB=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/country.mmdb
+ARG GEO_SITE=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geosite.dat
+ARG GEO_IP=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geoip.dat
+ARG CN_LIST=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/cn.list
+ARG ASN_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
+ARG META_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb
+ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
+
+#COPY openwrt/ipk/* /app/
+
+RUN echo -e "$(uname -r)"
+
+RUN mkdir /var/lock
+RUN set -ex && \
+	opkg update && \
+    sed -i "s/SNAPSHOT/SNAPSHOT Build$Build_Time/g" /etc/openwrt_release && \
+    opkg remove --force-remove dnsmasq && \
+    opkg install coreutils-nohup \
+    bash curl ca-certificates \
+    ipset ip-full libcap libcap-bin \
+    ruby ruby-yaml kmod-tun kmod-inet-diag \
+    unzip kmod-nft-tproxy luci-compat luci \
+    luci-base luci-i18n-base-zh-cn \
+    luci-i18n-firewall-zh-cn \
+    luci-i18n-opkg-zh-cn \
+    ddns-scripts-cloudflare luci-i18n-ddns-zh-cn \
+    nano unzip wget openssh-sftp-server \
+    kmod-veth \
+    openssl-util xxd coreutils-base64 \
+    luci-i18n-socat-zh-cn \
+    luci-i18n-homeproxy-zh-cn \
+    luci-i18n-daed-zh-cn \
+    luci-i18n-ddns-go-zh-cn \
+    adguardhome \
+    luci-app-syncdial \
+    luci-i18n-mwan3-zh-cn
+
+RUN set -ex && \
+    mkdir -p /tmp/ipk && cd /tmp/ipk && \
+    miho_mo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
+      | awk '/tag_name/{print $4;exit}' FS='[""]' \
+      | sed 's/"//g;s/v//g;s/release-//g') && \
+    curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-openwrt-23.05.tar.gz && \
+    tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
+    opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk/* && \
+    cd /tmp && \
+    curl -L -o /usr/share/v2ray/geosite.dat $GEO_SITE && \
+    curl -L -o /usr/share/v2ray/geoip.dat $GEO_IP && \
+    mkdir -p /etc/mihomo/run/ui && \
+    curl -L -o /etc/mihomo/run/ASN.mmdb $ASN_DB && \
+    curl -L -o /etc/mihomo/run/geoip.metadb $META_DB && \
+    ln -s /usr/share/v2ray/geosite.dat /etc/mihomo/run/geosite.dat && \
+    ln -s /usr/share/v2ray/geoip.dat /etc/mihomo/run/geoip.dat && \
+    cd /etc/mihomo/run/ui && \
+    curl -L -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
+    mkdir -p /etc/openclash/core && \
+    ln -s /usr/bin/mihomo /etc/openclash/core/clash_meta && \
+    curl -L -o /etc/openclash/Country.mmdb $GEO_MMDB && \
+    rm -rf /etc/openclash/GeoSite.dat /etc/openclash/GeoIP.dat && \
+    ln -s /usr/share/v2ray/geosite.dat /etc/openclash/GeoSite.dat && \
+    ln -s /usr/share/v2ray/geoip.dat /etc/openclash/GeoIP.dat && \
+    curl -L -o /etc/homeproxy/resources/china_list.txt $CN_LIST && sed -i 's/^+\.//' /etc/homeproxy/resources/china_list.txt && \
+    curl -L -o /etc/openclash/accelerated-domains.china.conf $Domains_china && \
+    sed -i '/microsoft/d; /live\.com/d; /office\.net/d; /onedrive/d; /youtube/d; /twnic\.tw/d; /opendns\.com/d; /akadns/d; /msedge/d; /edgekey/d; /akamai/d; /mktossl/d; /mktoweb/d; /amazon/d; /awsdns/d; /fastly/d; /bing/d; /mktoweb/d; /mozilla/d' /etc/openclash/accelerated-domains.china.conf
+
+#AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
+
+# daed
+#nohup /usr/bin/daed run -c /etc/daed/ > /dev/null 2>&1 &
+
+# ddns-go
+#nohup ddns-go -c /etc/ddns-go/ddns-go-config.yaml > /dev/null 2>&1 &
+
+#EXPOSE 80
