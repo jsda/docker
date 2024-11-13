@@ -1,9 +1,7 @@
 FROM ghcr.io/openwrt/rootfs:x86_64-openwrt-23.05
 
+# ARG Build_Time=$Build_Time
 ARG ARCH=x86_64
-
-ARG Build_Time=$Build_Time
-
 ARG GEO_MMDB=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/country.mmdb
 ARG GEO_SITE=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geosite.dat
 ARG GEO_IP=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geoip.dat
@@ -14,12 +12,10 @@ ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/a
 
 #COPY openwrt/ipk/* /app/
 
-RUN echo -e "$(uname -r)"
-
-RUN mkdir /var/lock
 RUN set -ex && \
-	opkg update && \
-    sed -i "s/SNAPSHOT/SNAPSHOT Build$Build_Time/g" /etc/openwrt_release && \
+    echo -e "$(uname -r)" && mkdir /var/lock && \
+    opkg update && \
+    sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d%H%M")/g" /etc/openwrt_release && \
     opkg remove --force-remove dnsmasq && \
     opkg install coreutils-nohup \
     bash curl ca-certificates \
