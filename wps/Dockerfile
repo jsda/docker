@@ -10,9 +10,14 @@ RUN set -e && \
 	apt install -yqq libqt5gui5 && \
 	echo "**** install ****" && \
 	if [ -z ${WPS_VERSION+x} ]; then \
-		WPS_VERSION=$(curl -s https://www.wps.cn/product/wpslinux | grep -oP 'https://[^"]+/wps/download/ep/[^"]+\.deb' | head -n 1 | sed -r 's/.*\/([^\/]+)\/[^\/]+\.deb/\1/'); \
+		WPS_VERSION=$(curl -s https://www.wps.cn/product/wpslinux | grep -oP 'https://[^"]+/wps/download/ep/[^"]+\.deb' | head -n 1 | sed -r 's/.*_([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)_.*\.deb/\1/'); \
 		echo "Extracted WPS_VERSION: $WPS_VERSION"; \
-		deb_url=$(curl -s https://www.wps.cn/product/wpslinux | grep -oP 'https://[^"]+/wps/download/ep/[^"]+\.deb' | head -n 1); \
+		base_url=$(curl -s https://www.wps.cn/product/wpslinux | grep -oP 'https://[^"]+/wps/download/ep/[^"]+\.deb' | head -n 1); \
+		uri="${base_url#https://wps-linux-personal.wpscdn.cn}"; \
+		securityKey="7f8faaaa468174dc1c9cd62e5f218a5b"; \
+		timestamp10=$(date '+%s'); \
+		md5hash=$(echo -n "${securityKey}${uri}${timestamp10}" | md5sum | awk '{print $1}'); \
+		deb_url="${base_url}?t=${timestamp10}&k=${md5hash}"; \
 	fi && \
 	curl -L "$deb_url" -o /tmp/wps.deb && \
 	apt install -y /tmp/wps.deb && \
