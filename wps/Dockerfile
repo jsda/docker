@@ -48,4 +48,4 @@ ENV LANG=zh_CN.UTF-8 \
 # /usr/bin/et
 # /usr/bin/wpp
 # /usr/bin/wpspdf
-ENTRYPOINT /usr/bin/wps "--no-sandbox" ">/dev/null 2>&1"
+# ENTRYPOINT /usr/bin/wps ">/dev/null 2>&1
