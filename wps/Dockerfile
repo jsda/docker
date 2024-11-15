@@ -1,5 +1,6 @@
 FROM debian:stable-slim
 # https://github.com/linuxserver/docker-wps-office
+
 ARG WPS_VERSION
 
 RUN set -e && \
