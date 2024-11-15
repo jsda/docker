@@ -44,7 +44,7 @@ ENV LANG=zh_CN.UTF-8 \
 		QT_IM_MODULE=fcitx \
 		XMODIFIERS='@im=fcitx'
 
-ENTRYPOINT /usr/bin/wps ">/dev/null 2>&1"
+ENTRYPOINT /usr/bin/wps "--no-sandbox" ">/dev/null 2>&1"
 
 # /usr/bin/wps
 # /usr/bin/et
