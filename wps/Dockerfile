@@ -34,7 +34,7 @@ RUN set -e && \
   ln -s \
 		/usr/lib/x86_64-linux-gnu/libtiff.so.6.0.0 \
 		/usr/lib/x86_64-linux-gnu/libtiff.so.5 && \
-	apt purge -y bsdmainutils && apt autoremove --purge -y && apt autoclean -yqq && \
+	apt autoclean -yqq && \
 	mkdir -p /Downloads && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -44,9 +44,8 @@ ENV LANG=zh_CN.UTF-8 \
 		QT_IM_MODULE=fcitx \
 		XMODIFIERS='@im=fcitx'
 
-ENTRYPOINT /usr/bin/wps "--no-sandbox" ">/dev/null 2>&1"
-
 # /usr/bin/wps
 # /usr/bin/et
 # /usr/bin/wpp
 # /usr/bin/wpspdf
+ENTRYPOINT /usr/bin/wps "--no-sandbox" ">/dev/null 2>&1"
