@@ -7,7 +7,7 @@ RUN set -e && \
 	apt upgrade -yqq && \
 	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates libgbm1 libdrm2 libasound2 xdg-utils && \
 	localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 && \
-	apt install -yqq libqt5gui5 && \
+	apt install -yqq libqt5gui5 bsdmainutils && \
 	echo "**** install ****" && \
 	if [ -z ${WPS_VERSION+x} ]; then \
 		WPS_VERSION=$(curl -s https://www.wps.cn/product/wpslinux | grep -oP 'https://[^"]+/wps/download/ep/[^"]+\.deb' | head -n 1 | sed -r 's/.*_([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)_.*\.deb/\1/'); \
@@ -34,7 +34,7 @@ RUN set -e && \
   ln -s \
 		/usr/lib/x86_64-linux-gnu/libtiff.so.6.0.0 \
 		/usr/lib/x86_64-linux-gnu/libtiff.so.5 && \
-	apt autoclean -yqq && \
+	apt purge -y bsdmainutils && apt autoremove --purge -y && apt autoclean -yqq && \
 	mkdir -p /Downloads && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
