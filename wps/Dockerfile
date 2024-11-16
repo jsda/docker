@@ -8,7 +8,12 @@ RUN set -e && \
 	apt upgrade -yqq && \
 	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates libgbm1 libdrm2 libasound2 xdg-utils && \
 	localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 && \
-	apt install -yqq libqt5gui5 bsdmainutils && \
+	apt install -yqq  --no-install-recommends \
+	libqt5gui5 bsdmainutils \
+	dbus-x11 \
+	libx11-xcb1 \
+	libasound2 \
+	apulse && \
 	echo "**** install ****" && \
 	if [ -z ${WPS_VERSION+x} ]; then \
 		WPS_VERSION=$(curl -s https://www.wps.cn/product/wpslinux | grep -oP 'https://[^"]+/wps/download/ep/[^"]+\.deb' | head -n 1 | sed -r 's/.*_([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)_.*\.deb/\1/'); \
@@ -22,7 +27,14 @@ RUN set -e && \
 	fi && \
 	curl -L "$deb_url" -o /tmp/wps.deb && \
 	apt install -y /tmp/wps.deb && \
-	mkdir -p /root/.config/Kingsoft /root/.local/share/Kingsoft/office6/data/backup && \
+	mkdir -p $HOME/.config/Kingsoft $HOME/.local/share/Kingsoft/office6/data/backup && \
+	if [ ! -f $HOME/.config/Kingsoft/Office.conf ]; then \
+		mkdir -p $HOME/.config/Kingsoft; \
+		echo "[kdcsdk]; \
+		NotFirstOpen=true; \
+		[6.0]; \
+		common\AcceptedEULA=true" > $HOME/.config/Kingsoft/Office.conf
+	fi && \
 	mkdir /tmp/fonts && \
 	curl -o \
 		/tmp/fonts.tar.gz -L \
@@ -35,6 +47,7 @@ RUN set -e && \
   ln -s \
 		/usr/lib/x86_64-linux-gnu/libtiff.so.6.0.0 \
 		/usr/lib/x86_64-linux-gnu/libtiff.so.5 && \
+	apt purge -y curl bsdmainutils && \
 	apt autoclean -yqq && \
 	mkdir -p /Downloads && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -45,8 +58,6 @@ ENV LANG=zh_CN.UTF-8 \
 		QT_IM_MODULE=fcitx \
 		XMODIFIERS='@im=fcitx'
 
-# /usr/bin/wps
-# /usr/bin/et
-# /usr/bin/wpp
-# /usr/bin/wpspdf
-# ENTRYPOINT /usr/bin/wps ">/dev/null 2>&1
+# WPS_VERSION=$(curl -s https://wps-linux-365.wpscdn.cn | grep -oP 'wps/download/ep/Linux365/[^"]+amd64\.deb' | head -n 1 | sed -r 's/.*_([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)[^\/]*\.deb/\1/')
+# deb_url=$(curl -s https://wps-linux-365.wpscdn.cn | grep -oP 'wps/download/ep/Linux365/[^"]+amd64\.deb' | head -n 1)
+# deb_url="https://wps-linux-365.wpscdn.cn/$deb_url"
