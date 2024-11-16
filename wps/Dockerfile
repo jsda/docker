@@ -28,13 +28,7 @@ RUN set -e && \
 	curl -L "$deb_url" -o /tmp/wps.deb && \
 	apt install -y /tmp/wps.deb && \
 	mkdir -p $HOME/.config/Kingsoft $HOME/.local/share/Kingsoft/office6/data/backup && \
-	if [ ! -f $HOME/.config/Kingsoft/Office.conf ]; then \
-		mkdir -p $HOME/.config/Kingsoft; \
-		echo "[kdcsdk]; \
-		NotFirstOpen=true; \
-		[6.0]; \
-		common\AcceptedEULA=true" > $HOME/.config/Kingsoft/Office.conf
-	fi && \
+	echo -e "[kdcsdk]\nNotFirstOpen=true\n[6.0]\ncommon\AcceptedEULA=true" > $HOME/.config/Kingsoft/Office.conf && \
 	mkdir /tmp/fonts && \
 	curl -o \
 		/tmp/fonts.tar.gz -L \
