@@ -2,6 +2,7 @@ FROM ghcr.io/openwrt/rootfs:x86_64-openwrt-23.05
 
 # ARG Build_Time=$Build_Time
 ARG ARCH=x86_64
+ARG IMMORTAL=https://downloads.immortalwrt.org/releases/packages-23.05/x86_64
 ARG GEO_MMDB=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/country.mmdb
 ARG GEO_SITE=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geosite.dat
 ARG GEO_IP=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geoip.dat
@@ -35,22 +36,28 @@ RUN set -ex && \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
     curl -L -O https://github.com/vernesong/OpenClash/releases/download/v${Open_Clash}/luci-app-openclash_${Open_Clash}_all.ipk && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-socat-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
-    miho_mo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
+    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-socat-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
+    OpenWrt-mihomo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-openwrt-23.05.tar.gz && \
-    tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
+    curl -L -o ./OpenWrt-mihomo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${OpenWrt-mihomo}/mihomo_$ARCH-openwrt-23.05.tar.gz && \
+    tar -zxf ./OpenWrt-mihomo.tar.gz &&  rm -rf ./OpenWrt-mihomo.tar.gz && \
     opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk/* && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/luci/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="daed_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="daed-geosite_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
-    curl -L -O $(curl -s https://downloads.immortalwrt.org/snapshots/packages/$ARCH/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|https://downloads.immortalwrt.org/snapshots/packages/'$ARCH'/packages/|') && \
+    mihomo=$(curl -sX GET "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" \
+      | awk '/tag_name/{print $4;exit}' FS='[""]' \
+      | sed 's/"//g;s/v//g;s/release-//g') && \
+    curl -L -o ./mihomo.gz https://github.com/MetaCubeX/mihomo/releases/download/v${mihomo}/mihomo-linux-amd64-compatible-v${mihomo}.gz && \
+    gzip -d ./mihomo*.gz && mv mihomo /usr/bin && chmod +x /usr/bin/mihomo && rm -rf /tmp/ipk/* && \
+    grep -q '^mihomo:' /etc/group && chown root:mihomo /usr/bin/mihomo || echo "group none" && \
+    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
+    curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geosite_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
+    curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     opkg install --force-depends /tmp/ipk/*.ipk && rm -rf /tmp/ipk/ && cd /tmp && \
     mkdir ./ddns-go && cd ./ddns-go && \
     ddns_go=$(curl -sX GET "https://api.github.com/repos/jeessy2/ddns-go/releases/latest" \
