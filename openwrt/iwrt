@@ -1,4 +1,4 @@
-FROM docker.io/immortalwrt/rootfs:x86-64-openwrt-23.05
+FROM docker.io/immortalwrt/rootfs:x86_64
 
 ARG ARCH=x86_64
 ARG GEO_MMDB=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/country.mmdb
@@ -11,22 +11,21 @@ ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/a
 
 RUN set -ex && \
     echo -e "$(uname -r)" && mkdir /var/lock && \
-    opkg update && \
     sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d%H%M")/g" /etc/openwrt_release && \
-    opkg remove --force-remove dnsmasq && \
-    opkg install coreutils-nohup \
+    apk del dnsmasq && \
+    apk --update-cache add dnsmasq-full \
+    coreutils-nohup \
     bash curl ca-certificates \
     ipset ip-full libcap libcap-bin \
     ruby ruby-yaml kmod-tun kmod-inet-diag \
     unzip kmod-nft-tproxy luci-compat luci \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-firewall-zh-cn \
-    luci-i18n-opkg-zh-cn \
     ddns-scripts-cloudflare luci-i18n-ddns-zh-cn \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64 \
-    socat \
+    luci-i18n-socat-zh-cn \
     luci-i18n-homeproxy-zh-cn \
     luci-i18n-daed-zh-cn \
     luci-i18n-ddns-go-zh-cn \
@@ -35,13 +34,13 @@ RUN set -ex && \
     luci-i18n-mwan3-zh-cn
 
 RUN set -ex && \
-    mkdir -p /tmp/ipk && cd /tmp/ipk && \
+    mkdir -p /tmp/apk && cd /tmp/apk && \
     miho_mo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-openwrt-23.05.tar.gz && \
+    curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-openwrt-24.10.tar.gz && \
     tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
-    opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk/* && \
+    apk add --allow-untrusted /tmp/apk/*.apk && rm -rf /tmp/apk/* && \
     cd /tmp && \
     curl -L -o /usr/share/v2ray/geosite.dat $GEO_SITE && \
     curl -L -o /usr/share/v2ray/geoip.dat $GEO_IP && \
