@@ -53,8 +53,8 @@ RUN set -ex && \
     curl -L -o ./mihomo.gz https://github.com/MetaCubeX/mihomo/releases/download/v${miho_mo}/mihomo-linux-amd64-compatible-v${miho_mo}.gz && \
     gzip -d ./mihomo*.gz && mv -f mihomo /usr/bin/mihomo && chmod +x /usr/bin/mihomo && rm -rf /tmp/ipk/* && \
     if grep -q '^mihomo:' /etc/group; then \
-      chown root:mihomo /usr/bin/mihomo；\
-    else; \
+      chown root:mihomo /usr/bin/mihomo; \
+    else \
       echo "group none"; \
     fi && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
