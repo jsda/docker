@@ -41,25 +41,34 @@ RUN set -ex && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    OpenWrt-mihomo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
+    op_mihomo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./OpenWrt-mihomo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${OpenWrt-mihomo}/mihomo_$ARCH-openwrt-23.05.tar.gz && \
-    tar -zxf ./OpenWrt-mihomo.tar.gz &&  rm -rf ./OpenWrt-mihomo.tar.gz && \
+    curl -L -o ./op_mihomo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${op_mihomo}/mihomo_$ARCH-openwrt-23.05.tar.gz && \
+    tar -zxf ./op_mihomo.tar.gz && \
     opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk/* && \
-    mihomo=$(curl -sX GET "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" \
+    miho_mo=$(curl -sX GET "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./mihomo.gz https://github.com/MetaCubeX/mihomo/releases/download/v${mihomo}/mihomo-linux-amd64-compatible-v${mihomo}.gz && \
-    gzip -d ./mihomo*.gz && mv mihomo /usr/bin && chmod +x /usr/bin/mihomo && rm -rf /tmp/ipk/* && \
-    grep -q '^mihomo:' /etc/group && chown root:mihomo /usr/bin/mihomo || echo "group none" && \
+    curl -L -o ./mihomo.gz https://github.com/MetaCubeX/mihomo/releases/download/v${miho_mo}/mihomo-linux-amd64-compatible-v${miho_mo}.gz && \
+    gzip -d ./mihomo*.gz && mv -f mihomo /usr/bin/mihomo && chmod +x /usr/bin/mihomo && rm -rf /tmp/ipk/* && \
+    if grep -q '^mihomo:' /etc/group; then \
+      chown root:mihomo /usr/bin/mihomo；\
+    else \
+      echo "group none"; \
+    fi && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geosite_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    opkg install --force-depends /tmp/ipk/*.ipk && rm -rf /tmp/ipk/ && cd /tmp && \
-    mkdir ./ddns-go && cd ./ddns-go && \
+    opkg install --force-depends /tmp/ipk/*.ipk && rm -rf /tmp/ipk/* && \
+    da_ed=$(curl -sX GET "https://api.github.com/repos/daeuniverse/daed/releases/latest" \
+      | awk '/tag_name/{print $4;exit}' FS='[""]' \
+      | sed 's/"//g;s/v//g;s/release-//g') && \
+    curl -L -o ./da_ed.gz https://github.com/daeuniverse/daed/releases/download/v${da_ed}/daed-linux-$ARCH.zip && \
+    unzip ./da_ed*.zip && mv -f daed-linux-x86_64 /usr/bin/daed && chmod +x /usr/bin/daed && rm -rf /tmp/ipk/ && \
+    cd /tmp && mkdir ddns-go && cd ddns-go && \
     ddns_go=$(curl -sX GET "https://api.github.com/repos/jeessy2/ddns-go/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
