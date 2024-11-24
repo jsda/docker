@@ -54,7 +54,7 @@ RUN set -ex && \
     gzip -d ./mihomo*.gz && mv -f mihomo /usr/bin/mihomo && chmod +x /usr/bin/mihomo && rm -rf /tmp/ipk/* && \
     if grep -q '^mihomo:' /etc/group; then \
       chown root:mihomo /usr/bin/mihomo；\
-    else \
+    else; \
       echo "group none"; \
     fi && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
