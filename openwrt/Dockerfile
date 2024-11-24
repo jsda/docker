@@ -66,7 +66,7 @@ RUN set -ex && \
     da_ed=$(curl -sX GET "https://api.github.com/repos/daeuniverse/daed/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./da_ed.gz https://github.com/daeuniverse/daed/releases/download/v${da_ed}/daed-linux-$ARCH.zip && \
+    curl -L -o ./da_ed.zip https://github.com/daeuniverse/daed/releases/download/v${da_ed}/daed-linux-$ARCH.zip && \
     unzip ./da_ed*.zip && mv -f daed-linux-x86_64 /usr/bin/daed && chmod +x /usr/bin/daed && rm -rf /tmp/ipk/ && \
     cd /tmp && mkdir ddns-go && cd ddns-go && \
     ddns_go=$(curl -sX GET "https://api.github.com/repos/jeessy2/ddns-go/releases/latest" \
