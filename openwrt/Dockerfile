@@ -47,6 +47,11 @@ RUN set -ex && \
     curl -L -o ./op_mihomo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${op_mihomo}/mihomo_$ARCH-openwrt-23.05.tar.gz && \
     tar -zxf ./op_mihomo.tar.gz && \
     opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk/* && \
+    sing_box=$(curl -sX GET "https://api.github.com/repos/SagerNet/sing-box/releases/latest" \
+      | awk '/tag_name/{print $4;exit}' FS='[""]' \
+      | sed 's/"//g;s/v//g;s/release-//g') && \
+    curl -L -o ./sing_box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v${sing_box}/sing-box-${sing_box}-linux-amd64.tar.gz && \
+    tar -zxf ./sing_box*.tar.gz && mv -f sing-box-*/sing-box /usr/bin/sing-box && chown root:root /usr/bin/sing-box && chmod +x /usr/bin/sing-box && rm -rf /tmp/ipk/* && \
     miho_mo=$(curl -sX GET "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
