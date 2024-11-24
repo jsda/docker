@@ -12,7 +12,6 @@ ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/a
 RUN set -ex && \
     echo -e "$(uname -r)" && mkdir /var/lock && \
     sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d%H%M")/g" /etc/openwrt_release && \
-    apk del dnsmasq && \
     apk --update-cache add dnsmasq-full \
     coreutils-nohup \
     bash curl ca-certificates \
