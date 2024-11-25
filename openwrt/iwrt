@@ -12,9 +12,17 @@ ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/a
 RUN set -ex && \
     sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d%H%M")/g" /etc/openwrt_release && \
     mkdir -p /var/lock /var/log /var/cache/apk && touch /var/log/apk.log && \
-    apk add --update-cache dnsmasq-full \
+    apk add --no-cache --no-logfile --no-interactive --force-overwrite curl && \
+    mkdir -p /tmp/apk && cd /tmp/apk && \
+    miho_mo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
+      | awk '/tag_name/{print $4;exit}' FS='[""]' \
+      | sed 's/"//g;s/v//g;s/release-//g') && \
+    curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-SNAPSHOT.tar.gz && \
+    tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
+    apk add --no-cache --no-logfile --no-interactive --force-overwrite --allow-untrusted /tmp/apk/*.apk && rm -rf /tmp/apk && \
+    apk add --no-cache --no-logfile --no-interactive --force-overwrite dnsmasq-full \
     coreutils-nohup \
-    bash curl ca-certificates \
+    bash ca-certificates \
     ipset ip-full libcap libcap-bin \
     ruby ruby-yaml kmod-tun kmod-inet-diag \
     unzip kmod-nft-tproxy luci-compat luci \
@@ -25,23 +33,16 @@ RUN set -ex && \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64 \
-    socat \
+    luci-i18n-socat-zh-cn \
     luci-i18n-homeproxy-zh-cn \
     luci-i18n-daed-zh-cn \
     luci-i18n-ddns-go-zh-cn \
     adguardhome \
     luci-app-syncdial \
-    luci-i18n-mwan3-zh-cn
+    luci-i18n-mwan3-zh-cn && \
+    apk cache clean && rm -rf /var/cache/* /va/log/*
 
 RUN set -ex && \
-    mkdir -p /tmp/apk && cd /tmp/apk && \
-    miho_mo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
-      | awk '/tag_name/{print $4;exit}' FS='[""]' \
-      | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-SNAPSHOT.tar.gz && \
-    tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
-    apk add --allow-untrusted /tmp/apk/*.apk && rm -rf /tmp/apk && \
-    apk cache clean && rm -rf /var/cache/* /va/log/* && \
     cd /tmp && \
     curl -L -o /usr/share/v2ray/geosite.dat $GEO_SITE && \
     curl -L -o /usr/share/v2ray/geoip.dat $GEO_IP && \
