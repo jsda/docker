@@ -38,7 +38,7 @@ RUN set -ex && \
     miho_mo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-openwrt-SNAPSHOT.tar.gz && \
+    curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-SNAPSHOT.tar.gz && \
     tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
     apk add --allow-untrusted /tmp/apk/*.apk && rm -rf /tmp/apk && \
     apk cache clean && rm -rf /var/cache/* /va/log/* && \
