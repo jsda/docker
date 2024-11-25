@@ -25,7 +25,7 @@ RUN set -ex && \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64 \
-    luci-i18n-socat-zh-cn \
+    socat \
     luci-i18n-homeproxy-zh-cn \
     luci-i18n-daed-zh-cn \
     luci-i18n-ddns-go-zh-cn \
