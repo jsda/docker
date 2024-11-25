@@ -10,7 +10,7 @@ ARG META_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest
 ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
 
 RUN set -ex && \
-    echo -e "$(uname -r)" && mkdir -p /var/{lock,log} && \
+    echo -e "$(uname -r)" && mkdir -p /var/{lock,log} /var/cache/apk && \
     sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d%H%M")/g" /etc/openwrt_release && \
     apk add --update-cache dnsmasq-full \
     coreutils-nohup \
