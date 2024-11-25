@@ -10,8 +10,8 @@ ARG META_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest
 ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
 
 RUN set -ex && \
-    echo -e "$(uname -r)" && mkdir -p /var/{lock,log} /var/cache/apk && \
     sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d%H%M")/g" /etc/openwrt_release && \
+    mkdir -p /var/{lock,log} /var/cache/apk && touch /var/log/apk.log && \
     apk add --update-cache dnsmasq-full \
     coreutils-nohup \
     bash curl ca-certificates \
@@ -41,6 +41,7 @@ RUN set -ex && \
     curl -L -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-openwrt-SNAPSHOT.tar.gz && \
     tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
     apk add --allow-untrusted /tmp/apk/*.apk && rm -rf /tmp/apk && \
+    apk cache clean && rm -rf /var/cache/* /va/log/* && \
     cd /tmp && \
     curl -L -o /usr/share/v2ray/geosite.dat $GEO_SITE && \
     curl -L -o /usr/share/v2ray/geoip.dat $GEO_IP && \
