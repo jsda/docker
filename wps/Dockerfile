@@ -14,6 +14,7 @@ RUN set -e && \
 	libx11-xcb1 \
 	libasound2 \
 	apulse && \
+	apt install -yqq fcitx5-rime && \
 	echo "**** install ****" && \
 	if [ -z ${WPS_VERSION+x} ]; then \
 		WPS_VERSION=$(curl -s https://www.wps.cn/product/wpslinux | grep -oP 'https://[^"]+/wps/download/ep/[^"]+\.deb' | head -n 1 | sed -r 's/.*_([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)_.*\.deb/\1/'); \
