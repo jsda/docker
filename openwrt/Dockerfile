@@ -26,7 +26,6 @@ RUN set -ex && \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-firewall-zh-cn \
     luci-i18n-opkg-zh-cn \
-    ddns-scripts-cloudflare luci-i18n-ddns-zh-cn \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64
@@ -73,17 +72,7 @@ RUN set -ex && \
       | sed 's/"//g;s/v//g;s/release-//g') && \
     curl -L -o ./da_ed.zip https://github.com/daeuniverse/daed/releases/download/v${da_ed}/daed-linux-$ARCH.zip && \
     unzip ./da_ed*.zip && mv -f daed-linux-x86_64 /usr/bin/daed && chmod +x /usr/bin/daed && rm -rf /tmp/ipk/ && \
-    cd /tmp && mkdir ddns-go && cd ddns-go && \
-    ddns_go=$(curl -sX GET "https://api.github.com/repos/jeessy2/ddns-go/releases/latest" \
-      | awk '/tag_name/{print $4;exit}' FS='[""]' \
-      | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./ddns-go.tar.gz https://github.com/jeessy2/ddns-go/releases/download/v${ddns_go}/ddns-go_${ddns_go}_linux_$ARCH.tar.gz && \
-    tar -zxf ./ddns-go.tar.gz && mv ddns-go /usr/bin/ && chmod +x /usr/bin/ddns-go && rm -rf /tmp/ddns-go && cd /tmp && \
-    adg_h=$(curl -sX GET "https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest" \
-      | awk '/tag_name/{print $4;exit}' FS='[""]' \
-      | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./AdGuardHome.tar.gz https://github.com/AdguardTeam/AdGuardHome/releases/download/v${adg_h}/AdGuardHome_linux_amd64.tar.gz && \
-    tar -zxf ./AdGuardHome*.tar.gz && mv ./AdGuardHome/AdGuardHome /usr/bin/ && chmod +x /usr/bin/AdGuardHome && rm -rf AdGuardHome* && \
+    cd /tmp && \
     curl -L -o /usr/share/v2ray/geosite.dat $GEO_SITE && \
     curl -L -o /usr/share/v2ray/geoip.dat $GEO_IP && \
     mkdir -p /etc/mihomo/run/ui && \

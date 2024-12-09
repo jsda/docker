@@ -29,15 +29,12 @@ RUN set -ex && \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-package-manager-zh-cn \
     luci-i18n-firewall-zh-cn \
-    ddns-scripts-cloudflare luci-i18n-ddns-zh-cn \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64 \
     luci-i18n-socat-zh-cn \
     luci-i18n-homeproxy-zh-cn \
     luci-i18n-daed-zh-cn \
-    luci-i18n-ddns-go-zh-cn \
-    adguardhome \
     luci-app-syncdial \
     luci-i18n-mwan3-zh-cn && \
     apk cache clean && rm -rf /var/cache/* /va/log/*
