@@ -1,11 +1,10 @@
 FROM alpine:latest AS builder
 
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl grep sed
 
 ARG OPVER=https://downloads.openwrt.org/releases/24.10-SNAPSHOT/targets/x86/64
-ARG ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|')
-
-RUN echo "$ROOTFS_URL"
+RUN ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
+    echo "$ROOTFS_URL"
 
 ENV ROOTFS_URL=$ROOTFS_URL
 
@@ -13,7 +12,7 @@ FROM scratch
 
 ARG ROOTFS_URL
 ENV ROOTFS_URL=$ROOTFS_URL
-COPY --from=builder /bin/wget /bin/wget
+# COPY --from=builder /bin/wget /bin/wget
 
 ADD $ROOTFS_URL /
 
