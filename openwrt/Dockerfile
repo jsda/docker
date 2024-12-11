@@ -7,7 +7,7 @@ RUN apk add --no-cache curl grep sed wget && \
     echo "$ROOTFS_URL" && \
     curl -L -o /rootfs.tar.gz $ROOTFS_URL && \
     mkdir -p /rootfs && \
-    tar -zxf /rootfs.tar.gz /rootfs/ --strip-components 1
+    tar -zxf /rootfs.tar.gz -C /rootfs/ --strip-components 1
 
 FROM scratch
 COPY --from=builder /rootfs/ /
