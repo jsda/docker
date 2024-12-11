@@ -6,17 +6,13 @@ RUN apk add --no-cache curl grep sed wget
 
 ARG OPVER
 RUN ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
-    echo "$ROOTFS_URL"
-
-ARG ROOTFS_URL=$ROOTFS_URL
-ENV ROOTFS_URL=$ROOTFS_URL
+    echo "$ROOTFS_URL" > /ROOTFS_URL.txt
 
 FROM scratch
 
-ARG ROOTFS_URL
-ENV ROOTFS_URL=$ROOTFS_URL
 COPY --from=builder /usr/bin/wget /usr/bin/wget
-
+COPY --from=builder /ROOTFS_URL.txt /ROOTFS_URL.txt
+RUN ROOTFS_URL=$(cat /ROOTFS_URL.txt)
 ADD $ROOTFS_URL /
 
 # ARG Build_Time=$Build_Time
