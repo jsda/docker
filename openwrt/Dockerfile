@@ -42,9 +42,6 @@ RUN set -ex && \
     | wget -qi - && \
     tar -zxf ./mihomo_*.tar.gz && rm -rf mihomo_*.tar.gz && \
     # luci-app-daed
-    #curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
-    #| jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
-    #| wget -qi - && \
     curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("luci-.*_all.ipk$")) | .browser_download_url' \
     | wget -qi - && \
@@ -60,10 +57,14 @@ RUN set -ex && \
     | wget -qi - && \
     gzip -d ./mihomo*.gz && mv -f mihomo* /tmp/core/mihomo && \
     # daed
-    curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
-    | jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
+    curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
+    | jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
     | wget -qi - && \
-    unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
+    tar -zxf ./daed*.ipk -C . ./data.tar.gz && tar -zxf ./data.tar.gz --strip-components=3 -C . ./usr/bin/daed && mv daed /tmp/core && rm -rf daed* data.tar.gz && \
+    #curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
+    #| jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
+    #| wget -qi - && \
+    #unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
     # curl
     curl -sL https://api.github.com/repos/stunnel/static-curl/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("curl-linux-x86_64-glibc-.*.tar.xz$")) | .browser_download_url' \
@@ -90,8 +91,8 @@ USER root
 
 RUN set -ex && \
     echo -e "$(uname -r)" && mkdir /var/lock && \
+    echo "$(TZ=UTC-8 date +"%Y%m%d")" > /etc/openwrt_version && \
     opkg update && \
-    sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d")/g" /etc/openwrt_release && \
     opkg remove --force-remove dnsmasq && \
     opkg install coreutils-nohup \
     bash curl ca-certificates \
