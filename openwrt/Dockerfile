@@ -8,6 +8,7 @@ ARG OPVER
 RUN ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
     echo "$ROOTFS_URL"
 
+ARG ROOTFS_URL=$ROOTFS_URL
 ENV ROOTFS_URL=$ROOTFS_URL
 
 FROM scratch
