@@ -38,7 +38,7 @@ RUN set -ex && \
     tar -zxf ./mihomo_*.tar.gz && rm -rf mihomo_*.tar.gz && \
     # luci-app-daed
     curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
-    | jq -r '.assets[] | select(.browser_download_url | test("daed.*x86_64.ipk$")) | .browser_download_url' \
+    | jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
     | wget -qi - && \
     curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("luci-.*_all.ipk$")) | .browser_download_url' \
@@ -102,7 +102,7 @@ RUN set -ex && \
 
 RUN set -ex && \
     mkdir -p /tmp/daed && mv /tmp/ipk/*daed* /tmp/daed && mv /tmp/ipk/libcron* /tmp/daed && \
-    opkg install --force-depends /tmp/daed/*.ipk && rm -rf /tmp/daed && \
+    opkg install --force-depends --force-overwrite /tmp/daed/*.ipk && rm -rf /tmp/daed && \
     opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk && \
     chown -R root:root /tmp/core /tmp/data && \
     chmod +x /tmp/core/* && mv -f /tmp/core/* /usr/bin && rm -rf /tmp/core && \
