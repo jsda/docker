@@ -14,7 +14,7 @@ FROM scratch
 
 ARG ROOTFS_URL
 ENV ROOTFS_URL=$ROOTFS_URL
-# COPY --from=builder /bin/wget /bin/wget
+COPY --from=builder /bin/wget /bin/wget
 
 ADD $ROOTFS_URL /
 
