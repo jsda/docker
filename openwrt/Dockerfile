@@ -30,6 +30,7 @@ RUN set -ex && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
+    curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="libcron_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     # OpenWrt-mihomo
     curl -sL https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("mihomo_'$ARCH'-openwrt-24.10.tar.gz$")) | .browser_download_url' \
@@ -100,7 +101,7 @@ RUN set -ex && \
     openssl-util xxd coreutils-base64
 
 RUN set -ex && \
-    mkdir -p /tmp/daed && mv /tmp/ipk/*daed* /tmp/daed && \
+    mkdir -p /tmp/daed && mv /tmp/ipk/*daed* /tmp/daed && mv /tmp/ipk/libcron* /tmp/daed && \
     opkg install --force-depends /tmp/daed/*.ipk && rm -rf /tmp/daed && \
     opkg install /tmp/ipk/*.ipk && rm -rf /tmp/ipk && \
     chown -R root:root /tmp/core /tmp/data && \
