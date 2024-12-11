@@ -10,7 +10,7 @@ RUN ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar
     curl -L -o /rootfs.tar.gz $ROOTFS_URL
 
 FROM scratch
-
+COPY --from=builder /usr/bin/wget /usr/bin/wget
 ADD --from=builder /rootfs.tar.gz /
 
 # ARG Build_Time=$Build_Time
