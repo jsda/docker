@@ -2,7 +2,7 @@ ARG OPVER=https://downloads.openwrt.org/releases/24.10-SNAPSHOT/targets/x86/64
 
 FROM alpine:latest AS builder
 
-RUN apk add --no-cache curl grep sed
+RUN apk add --no-cache curl grep sed wget
 
 ARG OPVER
 RUN ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
