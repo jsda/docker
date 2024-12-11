@@ -30,17 +30,19 @@ RUN set -ex && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
-    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
-    curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geosite_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="libcron_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     # OpenWrt-mihomo
     curl -sL https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("mihomo_'$ARCH'-openwrt-24.10.tar.gz$")) | .browser_download_url' \
     | wget -qi - && \
     tar -zxf ./mihomo_*.tar.gz && rm -rf mihomo_*.tar.gz && \
+    # luci-app-daed
+    curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
+    | jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
+    | wget -qi - && \
+    curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
+    | jq -r '.assets[] | select(.browser_download_url | test("luci-.*_all.ipk$")) | .browser_download_url' \
+    | wget -qi - && \
     cd /tmp && \
     # sing-box
     curl -sL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
@@ -53,10 +55,10 @@ RUN set -ex && \
     | wget -qi - && \
     gzip -d ./mihomo*.gz && mv -f mihomo* /tmp/core/mihomo && \
     # daed
-    curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
-    | jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
-    | wget -qi - && \
-    unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
+    #curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
+    #| jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
+    #| wget -qi - && \
+    #unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
     # curl
     curl -sL https://api.github.com/repos/stunnel/static-curl/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("curl-linux-x86_64-glibc-.*.tar.xz$")) | .browser_download_url' \
