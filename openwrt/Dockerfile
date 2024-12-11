@@ -4,14 +4,13 @@ FROM alpine:latest AS builder
 
 RUN apk add --no-cache curl grep sed
 
-ARG OPVER
 RUN ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
     echo "$ROOTFS_URL" && \
     curl -L -o /rootfs.tar.gz $ROOTFS_URL
 
 FROM scratch
-COPY --from=builder /rootfs.tar.gz /
-ADD /rootfs.tar.gz /
+ADD --from=builder /rootfs.tar.gz /
+RUN tar -xzf /rootfs.tar.gz -C /
 
 # ARG Build_Time=$Build_Time
 ARG ARCH=x86_64
