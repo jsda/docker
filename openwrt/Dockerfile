@@ -1,4 +1,19 @@
-FROM ghcr.io/openwrt/rootfs:x86_64-openwrt-23.05
+FROM alpine:latest AS builder
+
+RUN apk add --no-cache curl
+
+ARG OPVER=https://downloads.openwrt.org/releases/24.10-SNAPSHOT/targets/x86/64
+ARG ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|')
+
+ENV ROOTFS_URL=$ROOTFS_URL
+
+FROM scratch
+
+ARG ROOTFS_URL
+ENV ROOTFS_URL=$ROOTFS_URL
+# COPY --from=builder /bin/wget /bin/wget
+
+ADD $ROOTFS_URL /
 
 # ARG Build_Time=$Build_Time
 ARG ARCH=x86_64
@@ -16,7 +31,7 @@ ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/a
 RUN set -ex && \
     echo -e "$(uname -r)" && mkdir /var/lock && \
     opkg update && \
-    sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d%H%M")/g" /etc/openwrt_release && \
+    sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d")/g" /etc/openwrt_release && \
     opkg remove --force-remove dnsmasq && \
     opkg install coreutils-nohup \
     bash curl ca-certificates \
