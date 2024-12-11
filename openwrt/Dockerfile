@@ -37,7 +37,7 @@ RUN set -ex && \
     unzip kmod-nft-tproxy luci-compat luci \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-firewall-zh-cn \
-    luci-i18n-opkg-zh-cn \
+    luci-i18n-package-manager-zh-cn \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64
