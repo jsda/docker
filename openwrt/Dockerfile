@@ -52,12 +52,12 @@ RUN set -ex && \
     curl -sL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("mihomo-linux-amd64-compatible-v.*.gz$")) | .browser_download_url' \
     | wget -qi - && \
-    gzip -d ./mihomo*.gz && mv -f mihomo /tmp/core && rm -rf mihomo*.gz && \
+    gzip -d ./mihomo*.gz && mv -f mihomo* /tmp/core/mihomo && \
     # daed
-    curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
-    | jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
-    | wget -qi - && \
-    unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed*.zip && \
+    #curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
+    #| jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
+    #| wget -qi - && \
+    #unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed*.zip && \
     # curl
     curl -sL https://api.github.com/repos/stunnel/static-curl/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("curl-linux-x86_64-glibc-.*.tar.xz$")) | .browser_download_url' \
