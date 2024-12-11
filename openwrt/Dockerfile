@@ -4,6 +4,7 @@ FROM alpine:latest AS builder
 
 RUN apk add --no-cache curl grep sed
 
+ARG OPVER
 RUN ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
     echo "$ROOTFS_URL" && \
     curl -L -o /rootfs.tar.gz $ROOTFS_URL
