@@ -37,7 +37,7 @@ RUN set -ex && \
     luci-i18n-daed-zh-cn \
     luci-app-syncdial \
     luci-i18n-mwan3-zh-cn && \
-    apk cache clean && rm -rf /var/cache/* /va/log/*
+    apk cache clean && rm -rf /var/cache/* /var/log/*
 
 RUN set -ex && \
     cd /tmp && \
@@ -49,7 +49,7 @@ RUN set -ex && \
     ln -s /usr/share/v2ray/geosite.dat /etc/mihomo/run/geosite.dat && \
     ln -s /usr/share/v2ray/geoip.dat /etc/mihomo/run/geoip.dat && \
     cd /etc/mihomo/run/ui && \
-    curl -L -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
+    curl -L -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip -qo metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
     mkdir -p /etc/openclash/core && \
     ln -s /usr/bin/mihomo /etc/openclash/core/clash_meta && \
     curl -L -o /etc/openclash/Country.mmdb $GEO_MMDB && \
