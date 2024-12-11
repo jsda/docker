@@ -1,17 +1,16 @@
-ARG OPVER=https://downloads.openwrt.org/releases/24.10-SNAPSHOT/targets/x86/64
-
 FROM alpine:latest AS builder
 
-RUN apk add --no-cache curl grep sed
+ARG OPVER=https://downloads.openwrt.org/releases/24.10-SNAPSHOT/targets/x86/64
 
-ARG OPVER
-RUN ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
+RUN apk add --no-cache curl grep sed wget && \
+    ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
     echo "$ROOTFS_URL" && \
-    curl -L -o /rootfs.tar.gz $ROOTFS_URL
+    curl -L -o /rootfs.tar.gz $ROOTFS_URL && \
+    mkdir -p /rootfs && \
+    tar -zxf rootfs.tar.gz /rootfs --strip-components 1
 
 FROM scratch
-COPY --from=builder /rootfs.tar.gz /
-RUN tar -xzf /rootfs.tar.gz -C /
+COPY --from=builder /rootfs /
 
 # ARG Build_Time=$Build_Time
 ARG ARCH=x86_64
@@ -24,7 +23,7 @@ ARG ASN_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/
 ARG META_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb
 ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
 
-#COPY openwrt/ipk/* /app/
+USER root
 
 RUN set -ex && \
     echo -e "$(uname -r)" && mkdir /var/lock && \
@@ -105,6 +104,8 @@ RUN set -ex && \
     curl -L -o /etc/openclash/accelerated-domains.china.conf $Domains_china && \
     sed -i '/microsoft/d; /live\.com/d; /office\.net/d; /onedrive/d; /youtube/d; /twnic\.tw/d; /opendns\.com/d; /akadns/d; /msedge/d; /edgekey/d; /akamai/d; /mktossl/d; /mktoweb/d; /amazon/d; /awsdns/d; /fastly/d; /bing/d; /mktoweb/d; /mozilla/d' /etc/openclash/accelerated-domains.china.conf
 
+# EXPOSE 22 80 443
+CMD ["/sbin/init"]
 #AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
 
 # daed
