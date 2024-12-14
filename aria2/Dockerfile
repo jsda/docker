@@ -1,6 +1,6 @@
 FROM alpine:latest AS builder
 
-RUN apk add --no-cache curl wget darkhttpd jq grep sed && \
+RUN apk add --no-cache bash curl wget darkhttpd jq grep sed && \
     # aria2
     wget https://raw.githubusercontent.com/jsda/aria2-builder/refs/heads/amd64/aria2-amd64.zip && \
     unzip -oq aria2-amd64.zip && rm -rf aria2-amd64.zip && chmod +x aria2c && \
