@@ -2,7 +2,7 @@ FROM alpine:latest AS builder
 
 RUN apk add --no-cache bash curl wget darkhttpd jq grep sed && \
     # aria2
-    wget https://raw.githubusercontent.com/jsda/aria2-builder/refs/heads/amd64/aria2-amd64.zip && \
+    wget -q https://raw.githubusercontent.com/jsda/aria2-builder/refs/heads/amd64/aria2-amd64.zip && \
     unzip -oq aria2-amd64.zip && rm -rf aria2-amd64.zip && chmod +x aria2c && \
     # AriaNg
     mkdir -p /root/AriaNg && cd /root/AriaNg && \
@@ -11,11 +11,10 @@ RUN apk add --no-cache bash curl wget darkhttpd jq grep sed && \
       | sed 's/"//g;s/v//g;s/release-//g') && \
     curl -L -o ./AriaNg.zip https://github.com/mayswind/AriaNg/releases/download/${Aria_Ng}/AriaNg-${Aria_Ng}.zip && \
     unzip -oq AriaNg.zip && rm -rf AriaNg.zip && \
-    mkdir -p /root/Download && \
-    ln -sf /root/Download /root/AriaNg/ && \
+    mkdir -p /root/Download && ln -sf /root/Download /root/AriaNg/ && \
     # aria2.conf
     mkdir -p /root/.aria2 && cd /root/.aria2 && \
-    wget https://github.com/P3TERX/aria2.conf/archive/refs/heads/master.tar.gz && \
+    wget -q https://github.com/P3TERX/aria2.conf/archive/refs/heads/master.tar.gz && \
     tar -zxvf master.tar.gz --strip-components=1 && \
     rm -rf master.tar.gz && \
     sed -i 's|rpc-secret|#rpc-secret|g' ./aria2.conf && \
@@ -38,7 +37,7 @@ ENV DHT_LISTEN_PORT="6888"
 ENV HTTP_PORT="6880"
 EXPOSE 6800  6881  6881/udp  6880
 
-ENTRYPOINT darkhttpd /usr/local/aria2/AriaNg --port $HTTP_PORT --daemon && \
+ENTRYPOINT darkhttpd /root/AriaNg --port $HTTP_PORT --daemon && \
     aria2c \
         "--rpc-secret=$RPC_SECRET" \
         "--rpc-listen-port=$RPC_PORT" \
