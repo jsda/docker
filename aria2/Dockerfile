@@ -11,6 +11,7 @@ RUN apk add --no-cache bash curl wget darkhttpd jq grep sed && \
       | sed 's/"//g;s/v//g;s/release-//g') && \
     curl -L -o ./AriaNg.zip https://github.com/mayswind/AriaNg/releases/download/${Aria_Ng}/AriaNg-${Aria_Ng}.zip && \
     unzip -oq AriaNg.zip && rm -rf AriaNg.zip && \
+    sed -i 's/max:16/max:256/g' js/*.js && \
     mkdir -p /root/Download && ln -sf /root/Download /root/AriaNg/ && \
     # aria2.conf
     mkdir -p /root/.aria2 && cd /root/.aria2 && \

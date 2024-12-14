@@ -15,7 +15,7 @@ docker run -d \
   -p 6888:6888 \
   -p 6888:6888/udp \
   -p 6880:6880 \
-  -v $HOME/Downloads:/Downloads \
+  -v $HOME/Downloads:/root/Download \
   --restart always \
   --name aria2 \
   docker.io/rdvde/aria2
