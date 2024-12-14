@@ -4,6 +4,15 @@ RUN apk add --no-cache bash curl wget darkhttpd jq grep sed && \
     # aria2
     wget https://raw.githubusercontent.com/jsda/aria2-builder/refs/heads/amd64/aria2-amd64.zip && \
     unzip -oq aria2-amd64.zip && rm -rf aria2-amd64.zip && chmod +x aria2c && \
+    # AriaNg
+    mkdir -p /root/AriaNg && cd /root/AriaNg && \
+    Aria_Ng=$(curl -sX GET "https://api.github.com/repos/mayswind/AriaNg/releases/latest" \
+      | awk '/tag_name/{print $4;exit}' FS='[""]' \
+      | sed 's/"//g;s/v//g;s/release-//g') && \
+    curl -L -o ./AriaNg.zip https://github.com/mayswind/AriaNg/releases/download/${Aria_Ng}/AriaNg-${Aria_Ng}.zip && \
+    unzip -oq AriaNg.zip && rm -rf AriaNg.zip && \
+    mkdir -p /root/Download && \
+    ln -sf /root/Download /root/AriaNg/ && \
     # aria2.conf
     mkdir -p /root/.aria2 && cd /root/.aria2 && \
     wget https://github.com/P3TERX/aria2.conf/archive/refs/heads/master.tar.gz && \
@@ -11,16 +20,7 @@ RUN apk add --no-cache bash curl wget darkhttpd jq grep sed && \
     rm -rf master.tar.gz && \
     sed -i 's|rpc-secret|#rpc-secret|g' ./aria2.conf && \
     touch /root/.aria2/aria2.session && \
-    ./tracker.sh && \
-    mkdir -p /root/AriaNg && cd /root/AriaNg && \
-    # AriaNg
-    Aria_Ng=$(curl -sX GET "https://api.github.com/repos/mayswind/AriaNg/releases/latest" \
-      | awk '/tag_name/{print $4;exit}' FS='[""]' \
-      | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -L -o ./AriaNg.zip https://github.com/mayswind/AriaNg/releases/download/${Aria_Ng}/AriaNg-${Aria_Ng}.zip && \
-    unzip -oq AriaNg.zip && rm -rf AriaNg.zip && \
-    mkdir -p /root/Download && \
-    ln -sf /root/Download /root/AriaNg/
+    ./tracker.sh
 
 FROM alpine:latest
 
