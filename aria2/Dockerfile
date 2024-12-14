@@ -38,7 +38,7 @@ ENV DHT_LISTEN_PORT="6888"
 ENV HTTP_PORT="6888"
 EXPOSE 6800  6881  6881/udp  6880
 
-ENTRYPOINT darkhttpd /usr/local/aria2/AriaNg --port $HTTP_PORT --daemon --no-cache --dir-listing --index index.html && \
+ENTRYPOINT darkhttpd /usr/local/aria2/AriaNg --port $HTTP_PORT --daemon --dir-listing --index index.html && \
     aria2c \
         "--rpc-secret=$RPC_SECRET" \
         "--rpc-listen-port=$RPC_PORT" \
