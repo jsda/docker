@@ -28,8 +28,8 @@ COPY --from=builder /usr/bin/darkhttpd /usr/bin/
 COPY --from=builder /root/.aria2 /root/.aria2
 COPY --from=builder /root/AriaNg /root/AriaNg
 COPY --from=builder /root/Download /root/Download
-COPY --from=builder /usr/bin/bash /usr/bin/
-COPY --from=builder /usr/bin/curl /usr/bin/
+COPY --from=builder /bin/bash /bin/bash
+COPY --from=builder /usr/bin/curl /usr/bin/curl
 
 ENV PUID=0 PGID=0 UMASK=022
 ENV RPC_SECRET="password"
@@ -45,4 +45,3 @@ ENTRYPOINT sed -i "s|^rpc-secret=[^ ]*|rpc-secret=$RPC_SECRET|g, s|^rpc-listen-p
     aria2c \
         #"--rpc-secret=$RPC_SECRET" \
         "--conf-path=/root/.aria2/aria2.conf"
-        
