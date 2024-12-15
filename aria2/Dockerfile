@@ -1,6 +1,6 @@
 FROM alpine:latest AS builder
 
-RUN apk add --no-cache bash curl wget darkhttpd jq grep sed && \
+RUN apk add --no-cache bash curl wget && \
     # aria2
     wget -q https://raw.githubusercontent.com/jsda/aria2-builder/refs/heads/amd64/aria2-amd64.zip && \
     unzip -oq aria2-amd64.zip && rm -rf aria2-amd64.zip && chmod +x aria2c && \
@@ -24,12 +24,10 @@ RUN apk add --no-cache bash curl wget darkhttpd jq grep sed && \
 FROM alpine:latest
 
 COPY --from=builder /aria2c /usr/bin/
-COPY --from=builder /usr/bin/darkhttpd /usr/bin/
 COPY --from=builder /root/.aria2 /root/.aria2
 COPY --from=builder /root/AriaNg /root/AriaNg
-COPY --from=builder /root/Download /root/Download
-COPY --from=builder /bin/bash /bin/bash
-COPY --from=builder /usr/bin/curl /usr/bin/curl
+
+RUN apk add --no-cache darkhttpd bash
 
 ENV PUID=0 PGID=0 UMASK=022
 ENV RPC_SECRET="password"
