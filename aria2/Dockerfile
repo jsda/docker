@@ -41,7 +41,7 @@ EXPOSE 6800  6888  6888/udp  6880
 
 WORKDIR /root/.aria2
 
-ENTRYPOINT sed -i "s|^rpc-secret=[^ ]*|rpc-secret=$RPC_SECRET|g, s|^rpc-listen-port=[^ ]*|rpc-listen-port=$RPC_PORT|g, s|^listen-port=[^ ]*|listen-port=$LISTEN_PORT|g, s|^dht-listen-port=[^ ]*|dht-listen-port=$DHT_LISTEN_PORT|g" /root/.aria2/aria2.conf && darkhttpd /root/AriaNg --port $HTTP_PORT --daemon && \
+ENTRYPOINT sed -i -e "s|^rpc-secret=[^ ]*|rpc-secret=$RPC_SECRET|g" -e "s|^rpc-listen-port=[^ ]*|rpc-listen-port=$RPC_PORT|g" -e "s|^listen-port=[^ ]*|listen-port=$LISTEN_PORT|g" -e "s|^dht-listen-port=[^ ]*|dht-listen-port=$DHT_LISTEN_PORT|g" /root/.aria2/aria2.conf && darkhttpd /root/AriaNg --port $HTTP_PORT --daemon && \
     aria2c \
         #"--rpc-secret=$RPC_SECRET" \
         "--conf-path=/root/.aria2/aria2.conf"
