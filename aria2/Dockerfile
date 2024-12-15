@@ -18,7 +18,6 @@ RUN apk add --no-cache bash curl wget darkhttpd jq grep sed && \
     wget -q https://github.com/P3TERX/aria2.conf/archive/refs/heads/master.tar.gz && \
     tar -zxvf master.tar.gz --strip-components=1 && \
     rm -rf master.tar.gz && \
-    sed -i 's|rpc-secret|#rpc-secret|g' ./aria2.conf && \
     touch /root/.aria2/aria2.session && \
     ./tracker.sh
 
@@ -29,6 +28,8 @@ COPY --from=builder /usr/bin/darkhttpd /usr/bin/
 COPY --from=builder /root/.aria2 /root/.aria2
 COPY --from=builder /root/AriaNg /root/AriaNg
 COPY --from=builder /root/Download /root/Download
+COPY --from=builder /usr/bin/bash /usr/bin/
+COPY --from=builder /usr/bin/curl /usr/bin/
 
 ENV PUID=0 PGID=0 UMASK=022
 ENV RPC_SECRET="password"
@@ -38,11 +39,10 @@ ENV DHT_LISTEN_PORT="6888"
 ENV HTTP_PORT="6880"
 EXPOSE 6800  6888  6888/udp  6880
 
-ENTRYPOINT darkhttpd /root/AriaNg --port $HTTP_PORT --daemon && \
+WORKDIR /root/.aria2
+
+ENTRYPOINT sed -i "s|^rpc-secret=[^ ]*|rpc-secret=$RPC_SECRET|g, s|^rpc-listen-port=[^ ]*|rpc-listen-port=$RPC_PORT|g, s|^listen-port=[^ ]*|listen-port=$LISTEN_PORT|g, s|^dht-listen-port=[^ ]*|dht-listen-port=$DHT_LISTEN_PORT|g" /root/.aria2/aria2.conf && darkhttpd /root/AriaNg --port $HTTP_PORT --daemon && \
     aria2c \
-        "--rpc-secret=$RPC_SECRET" \
-        "--rpc-listen-port=$RPC_PORT" \
-        "--listen-port=$LISTEN_PORT" \
-        "--dht-listen-port=$DHT_LISTEN_PORT" \
+        #"--rpc-secret=$RPC_SECRET" \
         "--conf-path=/root/.aria2/aria2.conf"
         
