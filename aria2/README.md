@@ -10,7 +10,7 @@ docker run -d \
   -e LISTEN_PORT=6888 \
   -e DHT_LISTEN_PORT=6888 \
   -e HTTP_PORT=6880 \
-  -e RPC_SECRET=password \
+  -e RPC_SECRET="password" \
   -p 6800:6800 \
   -p 6888:6888 \
   -p 6888:6888/udp \

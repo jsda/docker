@@ -30,7 +30,7 @@ COPY --from=builder /root/AriaNg /root/AriaNg
 RUN apk add --no-cache darkhttpd bash
 
 ENV PUID=0 PGID=0 UMASK=022
-ENV RPC_SECRET="password"
+ENV RPC_SECRET=""
 ENV RPC_PORT="6800"
 ENV LISTEN_PORT="6888"
 ENV DHT_LISTEN_PORT="6888"
