@@ -30,8 +30,8 @@ RUN set -ex && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    #curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
-    #curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -L -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geosite_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     curl -L -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
@@ -41,10 +41,6 @@ RUN set -ex && \
     | jq -r '.assets[] | select(.browser_download_url | test("mihomo_'$ARCH'-openwrt-24.10.tar.gz$")) | .browser_download_url' \
     | wget -qi - && \
     tar -zxf ./mihomo_*.tar.gz && rm -rf mihomo_*.tar.gz && \
-    # luci-app-daed
-    curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
-    | jq -r '.assets[] | select(.browser_download_url | test("luci-.*_all.ipk$")) | .browser_download_url' \
-    | wget -qi - && \
     cd /tmp && \
     # sing-box
     curl -sL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
@@ -57,14 +53,14 @@ RUN set -ex && \
     | wget -qi - && \
     gzip -d ./mihomo*.gz && mv -f mihomo* /tmp/core/mihomo && \
     # daed
-    curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
-    | jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
-    | wget -qi - && \
-    tar -zxf ./daed*.ipk -C . ./data.tar.gz && tar -zxf ./data.tar.gz --strip-components=3 -C . ./usr/bin/daed && mv daed /tmp/core && rm -rf daed* data.tar.gz && \
-    #curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
-    #| jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
+    #curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
+    #| jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
     #| wget -qi - && \
-    #unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
+    #tar -zxf ./daed*.ipk -C . ./data.tar.gz && tar -zxf ./data.tar.gz --strip-components=3 -C . ./usr/bin/daed && mv daed /tmp/core && rm -rf daed* data.tar.gz && \
+    curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
+    | jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
+    | wget -qi - && \
+    unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
     # curl
     curl -sL https://api.github.com/repos/stunnel/static-curl/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("curl-linux-x86_64-glibc-.*.tar.xz$")) | .browser_download_url' \
@@ -78,8 +74,7 @@ RUN set -ex && \
     curl -L -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip -qo metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
     curl -L -o ./Country.mmdb $GEO_MMDB && \
     curl -L -o ./china_list.txt $CN_LIST && sed -i 's/^+\.//' ./china_list.txt && \
-    curl -L -o ./accelerated-domains.china.conf $Domains_china && \
-    sed -i '/microsoft/d; /live\.com/d; /office\.net/d; /onedrive/d; /youtube/d; /twnic\.tw/d; /opendns\.com/d; /akadns/d; /msedge/d; /edgekey/d; /akamai/d; /mktossl/d; /mktoweb/d; /amazon/d; /awsdns/d; /fastly/d; /bing/d; /mktoweb/d; /mozilla/d' ./accelerated-domains.china.conf
+    curl -L -o ./accelerated-domains.china.conf $Domains_china
 
 FROM scratch
 COPY --from=builder /rootfs/ /
@@ -90,7 +85,7 @@ COPY --from=builder /tmp/data/ /tmp/data/
 USER root
 
 RUN set -ex && \
-    echo -e "$(uname -r)" && mkdir /var/lock && \
+    mkdir /var/lock && \
     echo "$(TZ=UTC-8 date +"%Y%m%d")" > /etc/openwrt_version && \
     opkg update && \
     opkg remove --force-remove dnsmasq && \
@@ -102,6 +97,7 @@ RUN set -ex && \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-firewall-zh-cn \
     luci-i18n-package-manager-zh-cn \
+    luci-i18n-ddns-zh-cn ddns-scripts-cloudflare ddns-scripts-dnspod \
     nano wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64
@@ -141,8 +137,5 @@ CMD ["/sbin/init"]
 
 # daed
 #nohup /usr/bin/daed run -c /etc/daed/ > /dev/null 2>&1 &
-
-# ddns-go
-#nohup ddns-go -c /etc/ddns-go/ddns-go-config.yaml > /dev/null 2>&1 &
 
 #EXPOSE 80

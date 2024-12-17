@@ -29,6 +29,7 @@ RUN set -ex && \
     luci-base luci-i18n-base-zh-cn \
     luci-i18n-package-manager-zh-cn \
     luci-i18n-firewall-zh-cn \
+    luci-i18n-ddns-zh-cn ddns-scripts-cloudflare ddns-scripts-dnspod \
     nano unzip wget openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64 \
@@ -57,15 +58,11 @@ RUN set -ex && \
     ln -s /usr/share/v2ray/geosite.dat /etc/openclash/GeoSite.dat && \
     ln -s /usr/share/v2ray/geoip.dat /etc/openclash/GeoIP.dat && \
     curl -L -o /etc/homeproxy/resources/china_list.txt $CN_LIST && sed -i 's/^+\.//' /etc/homeproxy/resources/china_list.txt && \
-    curl -L -o /etc/openclash/accelerated-domains.china.conf $Domains_china && \
-    sed -i '/microsoft/d; /live\.com/d; /office\.net/d; /onedrive/d; /youtube/d; /twnic\.tw/d; /opendns\.com/d; /akadns/d; /msedge/d; /edgekey/d; /akamai/d; /mktossl/d; /mktoweb/d; /amazon/d; /awsdns/d; /fastly/d; /bing/d; /mktoweb/d; /mozilla/d' /etc/openclash/accelerated-domains.china.conf
+    curl -L -o /etc/openclash/accelerated-domains.china.conf $Domains_china
 
 #AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
 
 # daed
 #nohup /usr/bin/daed run -c /etc/daed/ > /dev/null 2>&1 &
-
-# ddns-go
-#nohup ddns-go -c /etc/ddns-go/ddns-go-config.yaml > /dev/null 2>&1 &
 
 #EXPOSE 80
