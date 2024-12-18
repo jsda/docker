@@ -5,13 +5,13 @@ RUN set -e && \
 	apt-get upgrade -y && \
 	apt-get install -y locales ttf-wqy-zenhei && \
 	localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 && \
-	apt-get install -y \
+	apt-get install -yqq \
 	apt-utils \
 	software-properties-common \
     wget \
     xz-utils \
     curl \
-	apt-utils \
+    apt-utils \
     dbus-x11 \
     dunst \
     hunspell-en-us \
@@ -27,10 +27,12 @@ RUN set -e && \
     libegl1-mesa-dev \
     libgl1-mesa-glx \
     --no-install-recommends && \
+  apt install -yqq fcitx5 fcitx5-rime && \
 	cd /tmp && \
 	wget https://telegram.org/dl/desktop/linux -O telegram.tar.xz && \
 	tar xvfJ telegram.tar.xz && \
 	mv Telegram/Telegram /usr/bin/Telegram && \
+	ln -s /usr/bin/Telegram /usr/bin/telegram && \
 	rm -rf telegram* && \
 	apt-get autoclean -y && \
 	groupadd -r user && \
@@ -39,6 +41,7 @@ RUN set -e && \
 	chown -R user:user /home/user && \
 	usermod -u 1000 user && \
 	groupmod -g 1000 user && \
+	apt purge -y wget xz-utils curl && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV LANG=zh_TW.UTF-8 \
@@ -50,4 +53,4 @@ ENV LANG=zh_TW.UTF-8 \
 
 USER user
 
-ENTRYPOINT /usr/bin/Telegram "--quiet >/dev/null 2>&1"
+ENTRYPOINT nohup /usr/bin/Telegram "--quiet >/dev/null 2>&1" & /usr/bin/fcitx5 -s 10
