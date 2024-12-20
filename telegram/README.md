@@ -15,6 +15,8 @@ docker run -it --rm \
 	-v $HOME/telegram:/home/user/.local/share/TelegramDesktop \
 	-v $HOME/Downloads:/home/user/Downloads \
 	-v /usr/share/fonts:/usr/share/fonts:ro \
+	-v $HOME/.local/share/fcitx5:/root/.local/share/fcitx5:ro \
+	-v $HOME/.config/fcitx5:/root/.config/fcitx5:ro \
 	-e PUID=$UID -e PGID=$GID \
 	--name telegram \
 	rdvde/telegram

@@ -4,6 +4,8 @@ docker run -it --rm \
 	-e PUID=$UID -e PGID=$GID \
 	-v $HOME/wps/backup:/config/.local/share/Kingsoft/office6/data/backup \
 	-v $HOME/Downloads:/root/Downloads \
+	-v $HOME/.local/share/fcitx5:/root/.local/share/fcitx5:ro \
+	-v $HOME/.config/fcitx5:/root/.config/fcitx5:ro \
 	-v /tmp/.X11-unix:/tmp/.X11-unix:ro \
 	-e DISPLAY=unix$DISPLAY \
 	-e XDG_RUNTIME_DIR=/run/user/$(id -u) \
