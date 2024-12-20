@@ -49,7 +49,7 @@ RUN set -ex && \
     curl -sL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("mihomo-linux-amd64-compatible-v.*.gz$")) | .browser_download_url' \
     | wget -qi - && \
-    gzip -d ./mihomo*.gz && mv -f mihomo* mihomo && mv -f mihomo /tmp/core/mihomo && \
+    gzip -d ./mihomo*.gz && mv -f mihomo* mihomo && mv -f mihomo /tmp/core && \
     # daed
     #curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
     #| jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
