@@ -52,4 +52,4 @@ ENV LANG=zh_TW.UTF-8 \
 
 USER user
 
-ENTRYPOINT nohup /usr/bin/Telegram "--quiet >/dev/null 2>&1" & /usr/bin/fcitx5 -s 10 
+ENTRYPOINT /usr/bin/fcitx5 -s 10 & /usr/bin/Telegram
