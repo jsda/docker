@@ -58,7 +58,7 @@ RUN set -ex && \
     curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
     | wget -qi - && \
-    unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
+    unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 daed && mv -f daed /tmp/core && rm -rf daed* && \
     # curl
     curl -sL https://api.github.com/repos/stunnel/static-curl/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("curl-linux-x86_64-glibc-.*.tar.xz$")) | .browser_download_url' \
