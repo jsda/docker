@@ -5,8 +5,6 @@
 - https://github.com/vernesong/OpenClash
 - https://github.com/morytyann/OpenWrt-mihomo
 - https://github.com/daeuniverse/daed
-- https://github.com/jeessy2/ddns-go
-- https://github.com/AdguardTeam/AdGuardHome
 
 #### 创建macvlan，parent后面为物理网卡名称，macnet为创建的macvlan名称
 ```
@@ -113,9 +111,7 @@ docker run -d \
     -v $PWD/openwrt/mihomo/proxies:/etc/openclash/proxies \
     -v $PWD/openwrt/mihomo/rules:/etc/openclash/rules \
     -v $PWD/openwrt/mihomo/cache.db:/etc/openclash/cache.db \
-    -v $PWD/openwrt/adguardhome:/etc/adguardhome \
-    -v $PWD/openwrt/ddns-go:/etc/ddns-go \
-    --ip 192.168.10.254 \
+    --ip 192.168.1.254 \
     --name=openwrt \
     --hostname owrt \
     rdvde/openwrt:latest \

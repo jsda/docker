@@ -1,13 +1,11 @@
 FROM docker.io/immortalwrt/rootfs:x86_64
 
 ARG ARCH=x86_64
-ARG GEO_MMDB=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/country.mmdb
 ARG GEO_SITE=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geosite.dat
 ARG GEO_IP=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geoip.dat
 ARG CN_LIST=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/cn.list
 ARG ASN_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
 ARG META_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb
-ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
 
 RUN set -ex && \
     sed -i "s/SNAPSHOT/SNAPSHOT $(TZ=UTC-8 date +"%Y%m%d%H%M")/g" /etc/openwrt_release && \
@@ -21,16 +19,14 @@ RUN set -ex && \
     tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
     apk add --no-cache --no-logfile --no-interactive --force-overwrite --allow-untrusted /tmp/apk/*.apk && rm -rf /tmp/apk && \
     apk add --no-cache --no-logfile --no-interactive --force-overwrite dnsmasq-full \
-    coreutils-nohup \
-    bash ca-certificates \
-    ipset ip-full libcap libcap-bin \
-    ruby ruby-yaml kmod-tun kmod-inet-diag \
-    unzip kmod-nft-tproxy luci-compat luci \
-    luci-base luci-i18n-base-zh-cn \
+    bash \
+    luci-i18n-base-zh-cn \
     luci-i18n-package-manager-zh-cn \
     luci-i18n-firewall-zh-cn \
     luci-i18n-ddns-zh-cn ddns-scripts-cloudflare ddns-scripts-dnspod \
-    nano unzip wget openssh-sftp-server \
+    nano \
+    unzip \
+    openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64 \
     luci-i18n-socat-zh-cn \
@@ -51,14 +47,7 @@ RUN set -ex && \
     ln -s /usr/share/v2ray/geoip.dat /etc/mihomo/run/geoip.dat && \
     cd /etc/mihomo/run/ui && \
     curl -sL -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip -qo metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
-    mkdir -p /etc/openclash/core && \
-    ln -s /usr/bin/mihomo /etc/openclash/core/clash_meta && \
-    curl -sL -o /etc/openclash/Country.mmdb $GEO_MMDB && \
-    rm -rf /etc/openclash/GeoSite.dat /etc/openclash/GeoIP.dat && \
-    ln -s /usr/share/v2ray/geosite.dat /etc/openclash/GeoSite.dat && \
-    ln -s /usr/share/v2ray/geoip.dat /etc/openclash/GeoIP.dat && \
-    curl -sL -o /etc/homeproxy/resources/china_list.txt $CN_LIST && sed -i 's/^+\.//' /etc/homeproxy/resources/china_list.txt && \
-    curl -sL -o /etc/openclash/accelerated-domains.china.conf $Domains_china
+    curl -sL -o /etc/homeproxy/resources/china_list.txt $CN_LIST && sed -i 's/^+\.//' /etc/homeproxy/resources/china_list.txt
 
 #AdGuardHome --no-check-update -c /etc/adguardhome/conf/AdGuardHome.yaml -w /etc/adguardhome/work -s install
 

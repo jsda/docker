@@ -3,13 +3,11 @@ FROM alpine:latest AS builder
 ARG OPVER=https://downloads.openwrt.org/releases/24.10-SNAPSHOT/targets/x86/64
 ARG ARCH=x86_64
 ARG IMMORTAL=https://downloads.immortalwrt.org/releases/packages-24.10/x86_64
-ARG GEO_MMDB=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/country.mmdb
 ARG GEO_SITE=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geosite.dat
 ARG GEO_IP=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geoip.dat
 ARG CN_LIST=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/cn.list
 ARG ASN_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
 ARG META_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb
-ARG Domains_china=https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
 
 RUN apk add --no-cache curl jq grep sed wget && \
     ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
@@ -19,11 +17,11 @@ RUN apk add --no-cache curl jq grep sed wget && \
     tar -zxf /rootfs.tar.gz -C /rootfs/ --strip-components 1
 
 RUN set -ex && \
-    mkdir -p /tmp/ipk /tmp/core /tmp/data && cd /tmp/ipk && \
     # OpenClash
-    curl -sL https://api.github.com/repos/vernesong/OpenClash/releases \
-    | jq -r '.[0].assets[] | select(.browser_download_url | test("luci-app-openclash_.*_all.ipk$")) | .browser_download_url' \
-    | wget -qi - && \
+    #mkdir -p /tmp/ipk /tmp/core /tmp/data && cd /tmp/ipk && \
+    #curl -sL https://api.github.com/repos/vernesong/OpenClash/releases \
+    #| jq -r '.[0].assets[] | select(.browser_download_url | test("luci-app-openclash_.*_all.ipk$")) | .browser_download_url' \
+    #| wget -qi - && \
     # immortalwrt
     curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-socat-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
@@ -72,9 +70,7 @@ RUN set -ex && \
     curl -sL -o ./ASN.mmdb $ASN_DB && \
     curl -sL -o ./geoip.metadb $META_DB && \
     curl -sL -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip -qo metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
-    curl -sL -o ./Country.mmdb $GEO_MMDB && \
-    curl -sL -o ./china_list.txt $CN_LIST && sed -i 's/^+\.//' ./china_list.txt && \
-    curl -sL -o ./accelerated-domains.china.conf $Domains_china
+    curl -sL -o ./china_list.txt $CN_LIST && sed -i 's/^+\.//' ./china_list.txt
 
 FROM scratch
 COPY --from=builder /rootfs/ /
@@ -89,16 +85,15 @@ RUN set -ex && \
     echo "$(TZ=UTC-8 date +"%Y%m%d")" > /etc/openwrt_version && \
     opkg update && \
     opkg remove --force-remove dnsmasq && \
-    opkg install coreutils-nohup \
-    bash curl ca-certificates \
-    ipset ip-full libcap libcap-bin \
-    ruby ruby-yaml kmod-tun kmod-inet-diag \
-    unzip kmod-nft-tproxy luci-compat luci \
-    luci-base luci-i18n-base-zh-cn \
+    opkg install \
+    dnsmasq-full \
+    bash \
+    luci-i18n-base-zh-cn \
     luci-i18n-firewall-zh-cn \
     luci-i18n-package-manager-zh-cn \
     luci-i18n-ddns-zh-cn ddns-scripts-cloudflare ddns-scripts-dnspod \
-    nano wget openssh-sftp-server \
+    nano \
+    openssh-sftp-server \
     kmod-veth \
     openssl-util xxd coreutils-base64
 
@@ -116,14 +111,7 @@ RUN set -ex && \
     ln -s /usr/share/v2ray/geosite.dat /etc/mihomo/run/geosite.dat && \
     ln -s /usr/share/v2ray/geoip.dat /etc/mihomo/run/geoip.dat && \
     mv /tmp/data/metacubexd /etc/mihomo/run/ui && \
-    mkdir -p /etc/openclash/core && \
-    ln -s /usr/bin/mihomo /etc/openclash/core/clash_meta && \
-    mv /tmp/data/Country.mmdb /etc/openclash/Country.mmdb && \
-    rm -rf /etc/openclash/GeoSite.dat /etc/openclash/GeoIP.dat && \
-    ln -s /usr/share/v2ray/geosite.dat /etc/openclash/GeoSite.dat && \
-    ln -s /usr/share/v2ray/geoip.dat /etc/openclash/GeoIP.dat && \
     mv /tmp/data/china_list.txt /etc/homeproxy/resources/china_list.txt && \
-    mv /tmp/data/accelerated-domains.china.conf /etc/openclash/accelerated-domains.china.conf && \
     if grep -q '^mihomo:' /etc/group; then \
       chown root:mihomo /usr/bin/mihomo; \
     else \
