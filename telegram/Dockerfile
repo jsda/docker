@@ -8,7 +8,6 @@ RUN set -e && \
 	apt-get install -yqq \
 	apt-utils \
 	software-properties-common \
-    wget \
     xz-utils \
     curl \
     apt-utils \
@@ -29,7 +28,7 @@ RUN set -e && \
     --no-install-recommends && \
   apt install -yqq fcitx5 fcitx5-rime && \
 	cd /tmp && \
-	wget https://telegram.org/dl/desktop/linux -O telegram.tar.xz && \
+	curl -sL -o ./telegram.tar.xz https://telegram.org/dl/desktop/linux  && \
 	tar xvfJ telegram.tar.xz && \
 	mv Telegram/Telegram /usr/bin/Telegram && \
 	ln -s /usr/bin/Telegram /usr/bin/telegram && \
@@ -41,7 +40,7 @@ RUN set -e && \
 	chown -R user:user /home/user && \
 	usermod -u 1000 user && \
 	groupmod -g 1000 user && \
-	apt purge -y wget xz-utils curl && \
+	apt purge -y xz-utils curl && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV LANG=zh_TW.UTF-8 \
@@ -53,4 +52,4 @@ ENV LANG=zh_TW.UTF-8 \
 
 USER user
 
-ENTRYPOINT nohup /usr/bin/Telegram "--quiet >/dev/null 2>&1" & /usr/bin/fcitx5 -s 10
+ENTRYPOINT nohup /usr/bin/fcitx5 -d -s 10 "--quiet >/dev/null 2>&1" & /usr/bin/Telegram 

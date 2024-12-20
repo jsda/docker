@@ -3,7 +3,7 @@ FROM debian:stable-slim
 
 ARG WPS_VERSION
 
-RUN set -e && \
+RUN set -ex && \
 	apt update && \
 	apt upgrade -yqq && \
 	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates libgbm1 libdrm2 libasound2 xdg-utils && \
@@ -26,13 +26,13 @@ RUN set -e && \
 		md5hash=$(echo -n "${securityKey}${uri}${timestamp10}" | md5sum | awk '{print $1}'); \
 		deb_url="${base_url}?t=${timestamp10}&k=${md5hash}"; \
 	fi && \
-	curl -L "$deb_url" -o /tmp/wps.deb && \
+	curl -sL "$deb_url" -o /tmp/wps.deb && \
 	apt install -y /tmp/wps.deb && \
 	mkdir -p $HOME/.config/Kingsoft $HOME/.local/share/Kingsoft/office6/data/backup && \
 	echo -e "[kdcsdk]\nNotFirstOpen=true\n[6.0]\ncommon\AcceptedEULA=true" > $HOME/.config/Kingsoft/Office.conf && \
 	mkdir /tmp/fonts && \
 	curl -o \
-		/tmp/fonts.tar.gz -L \
+		/tmp/fonts.tar.gz -sL \
 		"https://github.com/BannedPatriot/ttf-wps-fonts/archive/refs/heads/master.tar.gz" && \
   tar xf \
 		/tmp/fonts.tar.gz -C \
@@ -52,7 +52,9 @@ ENV LANG=zh_CN.UTF-8 \
 		GTK_IM_MODULE=fcitx \
 		QT_IM_MODULE=fcitx \
 		XMODIFIERS='@im=fcitx'
+ENV STARTUP="wps"
 
+ENTRYPOINT nohup /usr/bin/fcitx5 -d -s 10 "--quiet >/dev/null 2>&1" & /usr/bin/$STARTUP
 # WPS_VERSION=$(curl -s https://wps-linux-365.wpscdn.cn | grep -oP 'wps/download/ep/Linux365/[^"]+amd64\.deb' | head -n 1 | sed -r 's/.*_([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)[^\/]*\.deb/\1/')
 # deb_url=$(curl -s https://wps-linux-365.wpscdn.cn | grep -oP 'wps/download/ep/Linux365/[^"]+amd64\.deb' | head -n 1)
 # deb_url="https://wps-linux-365.wpscdn.cn/$deb_url"

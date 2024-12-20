@@ -9,17 +9,18 @@ docker run -it --rm \
 	-v /tmp/.X11-unix:/tmp/.X11-unix:ro \
 	-e DISPLAY=unix$DISPLAY \
 	-e XDG_RUNTIME_DIR=/run/user/$(id -u) \
+	-e STARTUP=wps \
 	--device /dev/snd \
 	--name wps \
 	docker.io/rdvde/wps \
 	/usr/bin/wps
 ```
-run
+env
 ```
-/usr/bin/wps
-/usr/bin/et
-/usr/bin/wpp
-/usr/bin/wpspdf
+STARTUP=wps
+STARTUP=et
+STARTUP=wpp
+STARTUP=wpspdf
 ```
 config
 ```
