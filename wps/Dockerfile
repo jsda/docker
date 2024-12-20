@@ -54,7 +54,7 @@ ENV LANG=zh_CN.UTF-8 \
 		XMODIFIERS='@im=fcitx'
 ENV STARTUP="wps"
 
-ENTRYPOINT nohup /usr/bin/$STARTUP "--quiet >/dev/null 2>&1" & /usr/bin/fcitx5 -s 10
+ENTRYPOINT /usr/bin/fcitx5 -s 10 & /usr/bin/$STARTUP
 # WPS_VERSION=$(curl -s https://wps-linux-365.wpscdn.cn | grep -oP 'wps/download/ep/Linux365/[^"]+amd64\.deb' | head -n 1 | sed -r 's/.*_([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)[^\/]*\.deb/\1/')
 # deb_url=$(curl -s https://wps-linux-365.wpscdn.cn | grep -oP 'wps/download/ep/Linux365/[^"]+amd64\.deb' | head -n 1)
 # deb_url="https://wps-linux-365.wpscdn.cn/$deb_url"
