@@ -17,11 +17,7 @@ RUN apk add --no-cache curl jq grep sed wget && \
     tar -zxf /rootfs.tar.gz -C /rootfs/ --strip-components 1
 
 RUN set -ex && \
-    # OpenClash
-    #mkdir -p /tmp/ipk /tmp/core /tmp/data && cd /tmp/ipk && \
-    #curl -sL https://api.github.com/repos/vernesong/OpenClash/releases \
-    #| jq -r '.[0].assets[] | select(.browser_download_url | test("luci-app-openclash_.*_all.ipk$")) | .browser_download_url' \
-    #| wget -qi - && \
+    mkdir -p /tmp/ipk /tmp/core /tmp/data && cd /tmp/ipk && \
     # immortalwrt
     curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
     curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-socat-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
@@ -49,7 +45,7 @@ RUN set -ex && \
     curl -sL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("mihomo-linux-amd64-compatible-v.*.gz$")) | .browser_download_url' \
     | wget -qi - && \
-    gzip -d ./mihomo*.gz && mv -f mihomo* mihomo && mv -f mihomo /tmp/core && \
+    gzip -d ./mihomo*.gz && mv -f mihomo* /tmp/core/mihomo && \
     # daed
     #curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
     #| jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
@@ -58,7 +54,7 @@ RUN set -ex && \
     curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
     | wget -qi - && \
-    unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 daed && mv -f daed /tmp/core && rm -rf daed* && \
+    unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
     # curl
     curl -sL https://api.github.com/repos/stunnel/static-curl/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("curl-linux-x86_64-glibc-.*.tar.xz$")) | .browser_download_url' \
