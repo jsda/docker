@@ -18,8 +18,10 @@ RUN set -ex && \
     curl -sL -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-SNAPSHOT.tar.gz && \
     tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
     apk add --no-cache --no-logfile --no-interactive --force-overwrite --allow-untrusted /tmp/apk/*.apk && rm -rf /tmp/apk && \
-    apk add --no-cache --no-logfile --no-interactive --force-overwrite dnsmasq-full \
+    apk add --no-cache --no-logfile --no-interactive --force-overwrite \
+    dnsmasq-full \
     bash \
+    zoneinfo-asia \
     luci-compat \
     luci-i18n-base-zh-cn \
     luci-i18n-package-manager-zh-cn \

@@ -84,6 +84,7 @@ RUN set -ex && \
     opkg install \
     dnsmasq-full \
     bash \
+    zoneinfo-asia \
     luci-compat \
     luci-i18n-base-zh-cn \
     luci-i18n-firewall-zh-cn \
