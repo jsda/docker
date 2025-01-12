@@ -2,12 +2,12 @@ FROM debian:stable-slim
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 # https://github.com/jessfraz/dockerfiles/tree/master/firefox
 
-COPY firefox/local.conf /etc/fonts/local.conf
+# COPY firefox/local.conf /etc/fonts/local.conf
 
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y locales ttf-wqy-zenhei \
-    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
+    && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
     && apt-get install -y \
       dirmngr \
       gnupg \
@@ -40,8 +40,8 @@ RUN apt-get update \
     && groupmod -g 1000 user \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV LANG=en_US.UTF-8 \
-    LC_CTYPE=en_US.UTF-8 \
+ENV LANG=zh_CN.UTF-8 \
+    LC_CTYPE=zh_CN.UTF-8 \
     GTK_IM_MODULE=fcitx \
     QT_IM_MODULE=fcitx \
     XMODIFIERS='@im=fcitx'
