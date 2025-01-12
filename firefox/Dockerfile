@@ -2,8 +2,6 @@ FROM debian:stable-slim
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 # https://github.com/jessfraz/dockerfiles/tree/master/firefox
 
-COPY firefox/local.conf /etc/fonts/local.conf
-
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y locales ttf-wqy-zenhei \
