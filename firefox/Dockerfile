@@ -7,7 +7,7 @@ COPY firefox/local.conf /etc/fonts/local.conf
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y locales ttf-wqy-zenhei \
-    && localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 \
+    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
     && apt-get install -y \
       dirmngr \
       gnupg \
@@ -28,6 +28,7 @@ RUN apt-get update \
       fonts-noto \
       fonts-noto-cjk \
       fonts-noto-color-emoji \
+      pulseaudio \
       --no-install-recommends \
     && apt-get autoclean -y \
     && groupadd -r user \
@@ -38,12 +39,12 @@ RUN apt-get update \
     && groupmod -g 1000 user \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV LANG=zh_TW.UTF-8 \
-    LC_CTYPE=zh_TW.UTF-8 \
+ENV LANG=en_US.UTF-8 \
+    LC_CTYPE=en_US.UTF-8 \
     GTK_IM_MODULE=fcitx \
     QT_IM_MODULE=fcitx \
     XMODIFIERS='@im=fcitx'
 
 USER user
 
-ENTRYPOINT /usr/bin/firefox "--quiet >/dev/null 2>&1"
+ENTRYPOINT /usr/bin/firefox -profile "/home/user/.mozilla/firefox/Profiles"

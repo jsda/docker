@@ -2,10 +2,9 @@
 
 ````javascript
 docker run -it --rm \
-  --cpuset-cpus 0 \
-  -c 512 -m 2096m \
+  -c 512 -m 8g \
   -e PUID=$UID -e PGID=$GID \
-  -v $HOME/.mozilla/firefox:/home/user/.mozilla/firefox \
+  -v $HOME/.mozilla/firefox/Profiles:/home/user/.mozilla/firefox/Profiles \
   -v $HOME/Downloads:/home/user/Downloads \
   -v /usr/share/fonts:/usr/share/fonts:ro \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
