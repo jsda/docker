@@ -2,6 +2,8 @@ FROM debian:stable-slim
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 # https://github.com/jessfraz/dockerfiles/tree/master/firefox
 
+COPY local.conf /etc/fonts/local.conf
+
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y locales ttf-wqy-zenhei \
@@ -32,6 +34,7 @@ RUN apt-get update \
     && groupadd -r user \
     && useradd -r -g user -G audio,video user \
     && mkdir -p /home/user/Downloads \
+    && mkdir -p /home/user/.mozilla/firefox/Profiles \
     && chown -R user:user /home/user \
     && usermod -u 1000 user \
     && groupmod -g 1000 user \

@@ -4,6 +4,7 @@
 docker run -it --rm \
   -c 512 -m 8g \
   -e PUID=$UID -e PGID=$GID \
+  --user root \
   -v $HOME/.mozilla/firefox/Profiles:/home/user/.mozilla/firefox/Profiles \
   -v $HOME/Downloads:/home/user/Downloads \
   -v /usr/share/fonts:/usr/share/fonts:ro \

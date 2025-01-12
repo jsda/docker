@@ -4,7 +4,7 @@ RUN set -e && \
 	apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y locales ttf-wqy-zenhei && \
-	localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 && \
+	# localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
 	apt-get install -yqq \
 	apt-utils \
 	software-properties-common \
@@ -43,12 +43,12 @@ RUN set -e && \
 	apt purge -y xz-utils curl && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV LANG=zh_TW.UTF-8 \
-    LC_CTYPE=zh_TW.UTF-8 \
+ENV LANG=en_US.UTF-8 \
+    LC_CTYPE=en_US.UTF-8 \
     GTK_IM_MODULE=fcitx \
     QT_IM_MODULE=fcitx \
     XMODIFIERS='@im=fcitx' \
-	QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb
+    QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb
 
 USER user
 
