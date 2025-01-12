@@ -2,7 +2,7 @@ FROM debian:stable-slim
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 # https://github.com/jessfraz/dockerfiles/tree/master/firefox
 
-COPY local.conf /etc/fonts/local.conf
+COPY firefox/local.conf /etc/fonts/local.conf
 
 RUN apt-get update \
     && apt-get upgrade -y \
