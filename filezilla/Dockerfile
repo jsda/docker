@@ -4,7 +4,7 @@ RUN set -e \
 	&& apt-get update \
     && apt-get upgrade -yqq \
     && apt-get install -yqq locales ttf-wqy-zenhei \
-    && localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 \
+    && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
     && apt-get install -y filezilla mousepad \
     && apt-get autoclean -yqq \
     && groupadd -r user \
@@ -15,8 +15,8 @@ RUN set -e \
     && groupmod -g 1000 user \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV LANG=zh_TW.UTF-8 \
-    LC_CTYPE=zh_TW.UTF-8 \
+ENV LANG=zh_CN.UTF-8 \
+    LC_CTYPE=zh_CN.UTF-8 \
     GTK_IM_MODULE=fcitx \
     QT_IM_MODULE=fcitx \
     XMODIFIERS='@im=fcitx'

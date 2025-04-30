@@ -6,7 +6,7 @@ RUN set -e && \
 	apt update && \
 	apt upgrade -yqq && \
 	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates libgbm1 libdrm2 libasound2 xdg-utils && \
-	localedef -i zh_TW -c -f UTF-8 -A /usr/share/locale/locale.alias zh_TW.UTF-8 && \
+	localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 && \
 	DEBIAN_FRONTEND=noninteractive \
 	echo "**** install obsidian ****" && \
 	if [ -z ${OBSIDIAN_VERSION+x} ]; then \
@@ -33,8 +33,8 @@ RUN set -e && \
 	mkdir -p /Downloads && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV LANG=zh_TW.UTF-8 \
-		LC_CTYPE=zh_TW.UTF-8 \
+ENV LANG=zh_CN.UTF-8 \
+		LC_CTYPE=zh_CN.UTF-8 \
 		GTK_IM_MODULE=fcitx \
 		QT_IM_MODULE=fcitx \
 		XMODIFIERS='@im=fcitx'
