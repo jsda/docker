@@ -30,7 +30,7 @@ RUN set -ex && \
   curl -o \
     /tmp/shotcut-tarball.txz -L \
     "https://github.com/mltframework/shotcut/releases/download/${SHOTCUT_RELEASE}/shotcut-linux-x86_64-${SHOTCUT_SHORT_VER}.txz" && \
-  tar zxf /tmp/shotcut-tarball.txz -C \
+  tar xJf /tmp/shotcut-tarball.txz -C \
     /app/shotcut --strip-components=2 && \
   echo "**** cleanup ****" && \
   apt-get clean && \
