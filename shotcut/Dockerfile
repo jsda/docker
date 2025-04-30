@@ -16,6 +16,26 @@ RUN set -ex && \
     libgl1 libegl1 libgles2-mesa libxrender1 libxkbcommon0 \
     dbus-x11 \
     libx11-xcb1 \
+    libxcb1 \
+    libxcb-glx0 \
+    libxcb-keysyms1 \
+    libxcb-image0 \
+    libxcb-shm0 \
+    libxcb-icccm4 \
+    libxcb-sync1 \
+    libxcb-xfixes0 \
+    libxcb-shape0 \
+    libxcb-randr0 \
+    libxcb-render-util0 \
+    libxrender1 \
+    libxi6 \
+    libxext6 \
+    libxfixes3 \
+    libegl1 \
+    libgl1 \
+    libdbus-1-3 \
+    libfontconfig1 \
+    libfreetype6 \
     apulse \
     pulseaudio \
     libasound2 \
