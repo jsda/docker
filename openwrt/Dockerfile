@@ -30,11 +30,11 @@ RUN set -ex && \
     curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geosite_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="libcron_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    # OpenWrt-mihomo
-    curl -sL https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest \
-    | jq -r '.assets[] | select(.browser_download_url | test("mihomo_'$ARCH'-openwrt-24.10.tar.gz$")) | .browser_download_url' \
+    # OpenWrt-nikki
+    curl -sL https://api.github.com/repos/nikkinikki-org/OpenWrt-nikki/releases/latest \
+    | jq -r '.assets[] | select(.browser_download_url | test("nikki_'$ARCH'-openwrt-24.10.tar.gz$")) | .browser_download_url' \
     | wget -qi - && \
-    tar -zxf ./mihomo_*.tar.gz && rm -rf mihomo_*.tar.gz && \
+    tar -zxf ./nikki_*.tar.gz && rm -rf nikki_*.tar.gz && \
     cd /tmp && \
     # sing-box
     curl -sL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
@@ -103,12 +103,12 @@ RUN set -ex && \
     chmod +x /tmp/core/* && mv -f /tmp/core/* /usr/bin && rm -rf /tmp/core && \
     mv /tmp/data/geosite.dat /usr/share/v2ray/geosite.dat && \
     mv /tmp/data/geoip.dat /usr/share/v2ray/geoip.dat && \
-    mkdir -p /etc/mihomo/run/ui && \
-    mv /tmp/data/ASN.mmdb /etc/mihomo/run/ASN.mmdb && \
-    mv /tmp/data/geoip.metadb /etc/mihomo/run/geoip.metadb && \
-    ln -s /usr/share/v2ray/geosite.dat /etc/mihomo/run/geosite.dat && \
-    ln -s /usr/share/v2ray/geoip.dat /etc/mihomo/run/geoip.dat && \
-    mv /tmp/data/metacubexd /etc/mihomo/run/ui && \
+    mkdir -p /etc/nikki/run/ui && \
+    mv /tmp/data/ASN.mmdb /etc/nikki/run/ASN.mmdb && \
+    mv /tmp/data/geoip.metadb /etc/nikki/run/geoip.metadb && \
+    ln -s /usr/share/v2ray/geosite.dat /etc/nikki/run/geosite.dat && \
+    ln -s /usr/share/v2ray/geoip.dat /etc/nikki/run/geoip.dat && \
+    mv /tmp/data/metacubexd /etc/nikki/run/ui && \
     mv /tmp/data/china_list.txt /etc/homeproxy/resources/china_list.txt && \
     if grep -q '^mihomo:' /etc/group; then \
       chown root:mihomo /usr/bin/mihomo; \

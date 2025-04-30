@@ -102,11 +102,11 @@ docker run -d \
     -v $PWD/openwrt/rc.local:/etc/rc.local \
     -v $PWD/openwrt/shadow:/etc/shadow \
     -v $PWD/openwrt/sysctl.conf:/etc/sysctl.conf \
-    -v $PWD/openwrt/mihomo/profiles:/etc/mihomo/profiles \
-    -v $PWD/openwrt/mihomo/subscriptions:/etc/mihomo/subscriptions \
-    -v $PWD/openwrt/mihomo/proxies:/etc/mihomo/run/proxies \
-    -v $PWD/openwrt/mihomo/rules:/etc/mihomo/run/rules \
-    -v $PWD/openwrt/mihomo/cache.db:/etc/mihomo/run/cache.db \
+    -v $PWD/openwrt/mihomo/profiles:/etc/nikki/profiles \
+    -v $PWD/openwrt/mihomo/subscriptions:/etc/nikki/subscriptions \
+    -v $PWD/openwrt/mihomo/proxies:/etc/nikki/run/proxies \
+    -v $PWD/openwrt/mihomo/rules:/etc/nikki/run/rules \
+    -v $PWD/openwrt/mihomo/cache.db:/etc/nikki/run/cache.db \
     --ip 192.168.1.254 \
     --name=openwrt \
     --hostname owrt \

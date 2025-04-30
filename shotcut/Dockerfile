@@ -23,8 +23,7 @@ RUN set -ex && \
   mkdir -p \
     /app/shotcut && \
   if [ -z ${SHOTCUT_RELEASE+x} ]; then \
-    SHOTCUT_RELEASE=$(curl -sX GET "https://api.github.com/repos/mltframework/shotcut/releases/latest" \
-    | jq -r .tag_name); \
+    SHOTCUT_RELEASE=$(curl -sX GET "https://api.github.com/repos/mltframework/shotcut/releases/latest"| awk '/tag_name/{print $4;exit}' FS='[""]'); \
   fi && \
   SHOTCUT_SHORT_VER=$(echo ${SHOTCUT_RELEASE} | sed 's|[v.]||g') && \
   curl -o \

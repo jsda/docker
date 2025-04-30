@@ -12,11 +12,11 @@ RUN set -ex && \
     mkdir -p /var/lock /var/log /var/cache/apk && touch /var/log/apk.log && \
     apk add --no-cache --no-logfile --no-interactive --force-overwrite curl && \
     mkdir -p /tmp/apk && cd /tmp/apk && \
-    miho_mo=$(curl -sX GET "https://api.github.com/repos/morytyann/OpenWrt-mihomo/releases/latest" \
+    miho_mo=$(curl -sX GET "https://api.github.com/repos/nikkinikki-org/OpenWrt-nikki/releases/latest" \
       | awk '/tag_name/{print $4;exit}' FS='[""]' \
       | sed 's/"//g;s/v//g;s/release-//g') && \
-    curl -sL -o ./miho_mo.tar.gz https://github.com/morytyann/OpenWrt-mihomo/releases/download/v${miho_mo}/mihomo_$ARCH-SNAPSHOT.tar.gz && \
-    tar -zxf ./miho_mo.tar.gz &&  rm -rf ./miho_mo.tar.gz && \
+    curl -sL -o ./nikki.tar.gz https://github.com/nikkinikki-org/OpenWrt-nikki/releases/download/v${miho_mo}/nikki_$ARCH-SNAPSHOT.tar.gz && \
+    tar -zxf ./nikki.tar.gz &&  rm -rf ./nikki.tar.gz && \
     apk add --no-cache --no-logfile --no-interactive --force-overwrite --allow-untrusted /tmp/apk/*.apk && rm -rf /tmp/apk && \
     apk add --no-cache --no-logfile --no-interactive --force-overwrite \
     dnsmasq-full \
@@ -42,12 +42,12 @@ RUN set -ex && \
     cd /tmp && \
     curl -sL -o /usr/share/v2ray/geosite.dat $GEO_SITE && \
     curl -sL -o /usr/share/v2ray/geoip.dat $GEO_IP && \
-    mkdir -p /etc/mihomo/run/ui && \
-    curl -sL -o /etc/mihomo/run/ASN.mmdb $ASN_DB && \
-    curl -sL -o /etc/mihomo/run/geoip.metadb $META_DB && \
-    ln -s /usr/share/v2ray/geosite.dat /etc/mihomo/run/geosite.dat && \
-    ln -s /usr/share/v2ray/geoip.dat /etc/mihomo/run/geoip.dat && \
-    cd /etc/mihomo/run/ui && \
+    mkdir -p /etc/nikki/run/ui && \
+    curl -sL -o /etc/nikki/run/ASN.mmdb $ASN_DB && \
+    curl -sL -o /etc/nikki/run/geoip.metadb $META_DB && \
+    ln -s /usr/share/v2ray/geosite.dat /etc/nikki/run/geosite.dat && \
+    ln -s /usr/share/v2ray/geoip.dat /etc/nikki/run/geoip.dat && \
+    cd /etc/nikki/run/ui && \
     curl -sL -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip -qo metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
     curl -sL -o /etc/homeproxy/resources/china_list.txt $CN_LIST && sed -i 's/^+\.//' /etc/homeproxy/resources/china_list.txt
 
