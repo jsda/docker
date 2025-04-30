@@ -36,6 +36,7 @@ RUN set -ex && \
     libdbus-1-3 \
     libfontconfig1 \
     libfreetype6 \
+    libsdl2-2.0-0 \
     apulse \
     pulseaudio \
     libasound2 \
