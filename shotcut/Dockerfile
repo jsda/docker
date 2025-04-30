@@ -13,6 +13,7 @@ RUN set -ex && \
   apt-get install -y --no-install-recommends \
     libjack-jackd2-0 \
     xz-utils \
+    libgl1 libegl1 libgles2-mesa libxrender1 libxkbcommon0 \
     apulse \
     pulseaudio \
     libasound2 \
@@ -29,7 +30,7 @@ RUN set -ex && \
   curl -o \
     /tmp/shotcut-tarball.txz -L \
     "https://github.com/mltframework/shotcut/releases/download/${SHOTCUT_RELEASE}/shotcut-linux-x86_64-${SHOTCUT_SHORT_VER}.txz" && \
-  tar xvf /tmp/shotcut-tarball.txz -C \
+  tar zxf /tmp/shotcut-tarball.txz -C \
     /app/shotcut --strip-components=2 && \
   echo "**** cleanup ****" && \
   apt-get clean && \
