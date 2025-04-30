@@ -3,18 +3,17 @@
 # Author: P3TERX
 # Blog: https://p3terx.com (chinese)
 #=================================================
-name: Docker images aria2
+name: Docker images shotcut
 
 on:
   workflow_dispatch:
-  workflow_call:
 #  push:
 #    branches:
 #      - @master
 #    paths:
-#      - 'aria2/*'
+#      - 'shotcut/*'
   schedule:
-    - cron: '45 2 * * 5'
+    - cron: '39 2 * * 5'
 
 jobs:
   publish:
@@ -42,19 +41,19 @@ jobs:
       with:
         context: .
         platforms: |
-          linux/amd64,linux/arm64
-        file: aria2/Dockerfile
+          linux/amd64
+        file: shotcut/Dockerfile
         push: true
         tags: |
-          ${{ secrets.DOCKER_USERNAME }}/aria2:latest
+          ${{ secrets.DOCKER_USERNAME }}/shotcut:latest
 
     - name: Docker Hub Description
       uses: peter-evans/dockerhub-description@main
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: ${{ secrets.DOCKER_USERNAME }}/aria2
-        readme-filepath: aria2/README.md
+        repository: ${{ secrets.DOCKER_USERNAME }}/shotcut
+        readme-filepath: shotcut/README.md
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main

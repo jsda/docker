@@ -1,9 +1,15 @@
 FROM alpine:latest AS builder
 
-RUN apk add --no-cache bash curl wget && \
+RUN set -ex && \
+    apk add --no-cache bash curl wget && \
     # aria2
-    wget -q https://raw.githubusercontent.com/jsda/aria2-builder/refs/heads/amd64/aria2-amd64.zip && \
-    unzip -oq aria2-amd64.zip && rm -rf aria2-amd64.zip && chmod +x aria2c && \
+    if [ "$TARGETARCH" = "amd64" ]; then \
+        export TAR_ARCH=amd64; \
+    else \
+        export TAR_ARCH=arm64; \
+    fi && \
+    wget -q https://raw.githubusercontent.com/jsda/aria2-builder/refs/heads/${TAR_ARCH}/aria2-${TAR_ARCH}.zip && \
+    unzip -oq aria2-*.zip && rm -rf aria2-*.zip && chmod +x aria2c && \
     # AriaNg
     mkdir -p /root/AriaNg && cd /root/AriaNg && \
     Aria_Ng=$(curl -sX GET "https://api.github.com/repos/mayswind/AriaNg/releases/latest" \
