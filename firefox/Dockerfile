@@ -14,7 +14,6 @@ RUN apt-get update \
       --no-install-recommends \
       && apt-get install -y \
       firefox-esr \
-      firefox-esr-l10n-zh-CN \
       dbus-x11 \
       libx11-xcb1 \
       apulse \

@@ -40,7 +40,6 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/openwrt:iwrt
-            ${{ secrets.DOCKER_USERNAME }}/openwrt:test
 
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@main
@@ -49,9 +48,3 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/openwrt
           readme-filepath: openwrt/README.md
-
-      - name: Delete workflow runs
-        uses: GitRML/delete-workflow-runs@main
-        with:
-          retain_days: 3
-          keep_minimum_runs: 3
