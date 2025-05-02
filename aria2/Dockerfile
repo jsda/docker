@@ -1,6 +1,6 @@
 FROM alpine:latest AS builder
 
-ARG TARGETARCH=amd64
+ARG TARGETARCH
 
 RUN set -ex && \
     apk add --no-cache bash curl wget && \
