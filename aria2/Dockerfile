@@ -3,11 +3,13 @@ FROM alpine:latest AS builder
 RUN set -ex && \
     apk add --no-cache bash curl wget && \
     # aria2
+    echo "TARGETARCH=$TARGETARCH" && \
     if [ "$TARGETARCH" = "amd64" ]; then \
-        export TAR_ARCH=amd64; \
-    else \
         export TAR_ARCH=arm64; \
+    else \
+        export TAR_ARCH=amd64; \
     fi && \
+    echo "TAR_ARCH=$TAR_ARCH" && \
     wget -q https://raw.githubusercontent.com/jsda/aria2-builder/refs/heads/${TAR_ARCH}/aria2-${TAR_ARCH}.zip && \
     unzip -oq aria2-*.zip && rm -rf aria2-*.zip && chmod +x aria2c && \
     # AriaNg
