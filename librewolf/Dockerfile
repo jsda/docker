@@ -9,6 +9,7 @@ RUN apt update -yqq && \
     apt upgrade -yqq && \
     apt install -yqq extrepo && \
     extrepo enable librewolf && \
+    apt update -yqq && \
     apt install -yqq locales ttf-wqy-zenhei && \
     localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 && \
     apt install -yqq \
