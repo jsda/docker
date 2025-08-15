@@ -7,7 +7,6 @@ RUN set -e && \
 	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
 	apt-get install -yqq \
 	apt-utils \
-	software-properties-common \
     xz-utils \
     curl \
     apt-utils \
@@ -15,7 +14,6 @@ RUN set -e && \
     dunst \
     hunspell-en-us \
     python3-dbus \
-    software-properties-common \
     libx11-xcb1 \
     libpulse0 \
     libdrm2 \
