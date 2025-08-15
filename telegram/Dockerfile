@@ -4,7 +4,7 @@ RUN set -e && \
 	apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y locales ttf-wqy-zenhei && \
-	# localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
+	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
 	apt-get install -yqq \
 	apt-utils \
 	software-properties-common \
@@ -25,6 +25,7 @@ RUN set -e && \
     libsm6 \
     libegl1-mesa-dev \
     libgl1-mesa-glx \
+    libxcb-cursor0 \
     --no-install-recommends && \
   apt install -yqq fcitx5 fcitx5-rime && \
 	cd /tmp && \
