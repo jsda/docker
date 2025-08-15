@@ -22,7 +22,7 @@ RUN apt-get update \
       hicolor-icon-theme \
       libasound2 \
       libgl1-mesa-dri \
-      libgl1-mesa-glx \
+      libgl1 libglx-mesa0 mesa-utils \
       libpulse0 \
       fonts-noto \
       fonts-noto-cjk \

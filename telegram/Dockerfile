@@ -18,14 +18,13 @@ RUN set -e && \
     software-properties-common \
     libx11-xcb1 \
     libpulse0 \
-    gconf2 \
     libdrm2 \
     libgtk-3-0 \
     libice6 \
     libsm6 \
     libegl1-mesa-dev \
-    libgl1-mesa-glx \
     libxcb-cursor0 \
+    libgl1 libglx-mesa0 mesa-utils \
     --no-install-recommends && \
   apt install -yqq fcitx5 fcitx5-rime && \
 	cd /tmp && \
