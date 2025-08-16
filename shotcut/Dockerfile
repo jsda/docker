@@ -13,7 +13,7 @@ RUN set -ex && \
   apt-get install -y --no-install-recommends \
     libjack-jackd2-0 \
     xz-utils \
-    libgl1 libegl1 libgles2-mesa libxrender1 libxkbcommon0 \
+    libgl1 libegl1 libgles2 libxrender1 libxkbcommon0 \
     dbus-x11 \
     libx11-xcb1 \
     libxcb1 \
