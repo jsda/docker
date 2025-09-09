@@ -28,6 +28,8 @@ RUN apt-get update \
       fonts-noto-cjk \
       fonts-noto-color-emoji \
       pulseaudio \
+      pciutils \
+      libpci3 \
       --no-install-recommends \
     && apt-get autoclean -y \
     && groupadd -r user \

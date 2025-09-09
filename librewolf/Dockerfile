@@ -32,6 +32,8 @@ RUN apt update -yqq && \
       fonts-noto-cjk \
       fonts-noto-color-emoji \
       pulseaudio \
+      pciutils \
+      libpci3 \
       --no-install-recommends && \
     apt autoclean -yqq && \
     mkdir -p /root/Downloads /data/Profiles && \
