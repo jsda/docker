@@ -42,7 +42,8 @@ RUN set -ex && \
     libasound2 \
     libgl1-mesa-dri \
     libgl1 libglx-mesa0 mesa-utils \
-    libpulse0 && \
+    libpulse0 \
+    libgpg-error0 && \
   echo "**** install shotcut ****" && \
   mkdir -p \
     /app/shotcut && \

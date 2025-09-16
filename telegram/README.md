@@ -8,7 +8,7 @@ docker run -it --rm \
 	-v /etc/localtime:/etc/localtime:ro \
 	-e DISPLAY=unix$DISPLAY \
 	-e XAUTHORITY=/tmp/xauth \
-	-e DISPLAY=unix$DISPLAY \
+	-e DISPLAY=$DISPLAY \
 	--device /dev/snd \
 	-v /dev/shm:/dev/shm:ro \
 	-v $XAUTHORITY:/tmp/xauth:ro \

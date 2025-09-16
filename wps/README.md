@@ -7,7 +7,7 @@ docker run -it --rm \
 	-v $HOME/.local/share/fcitx5:/root/.local/share/fcitx5:ro \
 	-v $HOME/.config/fcitx5:/root/.config/fcitx5:ro \
 	-v /tmp/.X11-unix:/tmp/.X11-unix:ro \
-	-e DISPLAY=unix$DISPLAY \
+	-e DISPLAY=$DISPLAY \
 	-e XDG_RUNTIME_DIR=/run/user/$(id -u) \
 	-e STARTUP=wps \
 	--device /dev/snd \

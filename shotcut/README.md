@@ -9,7 +9,7 @@ docker run -it --rm \
   -v $HOME/Downloads:/Downloads \
   -v /usr/share/fonts:/usr/share/fonts:ro \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
-  -e DISPLAY=unix$DISPLAY \
+  -e DISPLAY=$DISPLAY \
   -e PULSE_SERVER=unix:$XDG_RUNTIME_DIR/pulse/native \
   -v $XDG_RUNTIME_DIR/pulse:$XDG_RUNTIME_DIR/pulse:ro \
   --device /dev/snd \
