@@ -38,8 +38,8 @@ jobs:
     - name: Sync Packages
       run: ./up.sh
 
-      - name: Delete Old Workflows
-        uses: Mattraks/delete-workflow-runs@main
-        with:
-          retain_days: 7
-          keep_minimum_runs: 7
+    - name: Delete Old Workflows
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        retain_days: 7
+        keep_minimum_runs: 7
