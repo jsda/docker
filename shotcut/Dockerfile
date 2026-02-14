@@ -1,6 +1,7 @@
 FROM debian:stable-slim
 
 ARG SHOTCUT_RELEASE
+ARG GITHUB_TOKEN
 
 RUN set -ex && \
   apt update && \
@@ -48,12 +49,14 @@ RUN set -ex && \
   mkdir -p \
     /app/shotcut && \
   if [ -z ${SHOTCUT_RELEASE+x} ]; then \
-    SHOTCUT_RELEASE=$(curl -sX GET "https://api.github.com/repos/mltframework/shotcut/releases/latest"| awk '/tag_name/{print $4;exit}' FS='[""]'); \
+    SHOTCUT_RELEASE=$(curl -H "Authorization: Bearer $GITHUB_TOKEN" -sL "https://api.github.com/repos/mltframework/shotcut/releases/latest" \
+      | awk '/tag_name/{print $4;exit}' FS='[""]' \
+      | sed 's/"//g;s/v//g;s/release-//g')
   fi && \
   SHOTCUT_SHORT_VER=$(echo ${SHOTCUT_RELEASE} | sed 's|[v.]||g') && \
   curl -o \
     /tmp/shotcut-tarball.txz -L \
-    "https://github.com/mltframework/shotcut/releases/download/${SHOTCUT_RELEASE}/shotcut-linux-x86_64-${SHOTCUT_SHORT_VER}.txz" && \
+    "https://github.com/mltframework/shotcut/releases/download/${SHOTCUT_RELEASE}/shotcut-linux-x86_64-${SHOTCUT_RELEASE}.txz" && \
   tar xJf /tmp/shotcut-tarball.txz -C \
     /app/shotcut --strip-components=2 && \
   echo "**** cleanup ****" && \

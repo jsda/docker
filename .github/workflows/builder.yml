@@ -12,8 +12,8 @@ on:
 #      - @master
 #    paths:
 #      - 'ubuntu/*'
-  schedule:
-    - cron: '30 2 * * 5'
+#  schedule:
+#    - cron: '30 2 * * 5'
 #  watch:
 #    types: [started]
 

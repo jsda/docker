@@ -1,8 +1,9 @@
 FROM alpine:latest AS builder
 
+ARG GITHUB_TOKEN
 ARG OPVER=https://downloads.openwrt.org/releases/24.10-SNAPSHOT/targets/x86/64
 ARG ARCH=x86_64
-ARG IMMORTAL=https://downloads.immortalwrt.org/releases/packages-24.10/x86_64
+ARG IMMORTAL=https://immortalwrt.kyarucloud.moe/releases/packages-24.10/x86_64
 ARG GEO_SITE=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geosite.dat
 ARG GEO_IP=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geoip.dat
 ARG CN_LIST=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/cn.list
@@ -31,32 +32,32 @@ RUN set -ex && \
     curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="libcron_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     # OpenWrt-nikki
-    curl -sL https://api.github.com/repos/nikkinikki-org/OpenWrt-nikki/releases/latest \
+    curl -H "Authorization: Bearer $GITHUB_TOKEN" -sL "https://api.github.com/repos/nikkinikki-org/OpenWrt-nikki/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("nikki_'$ARCH'-openwrt-24.10.tar.gz$")) | .browser_download_url' \
     | wget -qi - && \
     tar -zxf ./nikki_*.tar.gz && rm -rf nikki_*.tar.gz && \
     cd /tmp && \
     # sing-box
-    curl -sL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
+    curl -H "Authorization: Bearer $GITHUB_TOKEN" -sL "https://api.github.com/repos/SagerNet/sing-box/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("sing-box-.*-linux-amd64.tar.gz$")) | .browser_download_url' \
     | wget -qi - && \
     tar -zxf ./sing-box*.tar.gz && mv -f sing-box-*/sing-box /tmp/core && rm -rf sing-box* && \
     # mihomo
-    curl -sL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
+    curl -H "Authorization: Bearer $GITHUB_TOKEN" -sL "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("mihomo-linux-amd64-compatible-v.*.gz$")) | .browser_download_url' \
     | wget -qi - && \
     gzip -d ./mihomo*.gz && mv -f mihomo* /tmp/core/mihomo && \
     # daed
-    #curl -sL https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
+    #curl -H "Authorization: Bearer $GITHUB_TOKEN" -sL "https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest \
     #| jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
     #| wget -qi - && \
     #tar -zxf ./daed*.ipk -C . ./data.tar.gz && tar -zxf ./data.tar.gz --strip-components=3 -C . ./usr/bin/daed && mv daed /tmp/core && rm -rf daed* data.tar.gz && \
-    curl -sL https://api.github.com/repos/daeuniverse/daed/releases/latest \
+    curl -H "Authorization: Bearer $GITHUB_TOKEN" -sL "https://api.github.com/repos/daeuniverse/daed/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
     | wget -qi - && \
     unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
     # curl
-    curl -sL https://api.github.com/repos/stunnel/static-curl/releases/latest \
+    curl -H "Authorization: Bearer $GITHUB_TOKEN" -sL "https://api.github.com/repos/stunnel/static-curl/releases/latest \
     | jq -r '.assets[] | select(.browser_download_url | test("curl-linux-x86_64-glibc-.*.tar.xz$")) | .browser_download_url' \
     | wget -qi - && \
     tar -xJf ./curl*.tar.xz && mv -f curl /tmp/core && rm -rf curl* && \

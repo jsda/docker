@@ -40,6 +40,8 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@master
       with:
+        build-args: |
+          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         context: .
         platforms: |
           linux/amd64,linux/arm64
