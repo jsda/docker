@@ -1,9 +1,12 @@
+# syntax=docker/dockerfile:stable
+
 FROM debian:stable-slim
 
 ARG SHOTCUT_RELEASE
-ARG GITHUB_TOKEN
 
-RUN set -ex && \
+RUN --mount=type=secret,id=github_token \
+  TOKEN=$(cat /run/secrets/github_token) && \
+  set -ex && \
   apt update && \
   apt upgrade -yqq && \
   apt install -yqq locales ttf-wqy-zenhei curl && \
@@ -48,7 +51,7 @@ RUN set -ex && \
   echo "**** install shotcut ****" && \
   mkdir -p \
     /app/shotcut && \
-  SHOTCUT_RELEASE=$(curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -sL "https://api.github.com/repos/mltframework/shotcut/releases/latest" \
+  SHOTCUT_RELEASE=$(curl -H "Authorization: Bearer ${TOKEN}" -sL "https://api.github.com/repos/mltframework/shotcut/releases/latest" \
     | awk '/tag_name/{print $4;exit}' FS='[""]' \
     | sed 's/"//g;s/v//g;s/release-//g') && \
   curl -o \
