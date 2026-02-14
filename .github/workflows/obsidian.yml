@@ -44,6 +44,8 @@ jobs:
           linux/amd64
         file: obsidian/Dockerfile
         push: true
+        secrets: |
+          "github_token=${{ secrets.GITHUB_TOKEN }}"
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/obsidian:latest
 

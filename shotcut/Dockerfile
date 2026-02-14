@@ -7,6 +7,7 @@ ARG SHOTCUT_RELEASE
 RUN --mount=type=secret,id=github_token \
   TOKEN=$(cat /run/secrets/github_token) && \
   set -ex && \
+  sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
   apt update && \
   apt upgrade -yqq && \
   apt install -yqq locales ttf-wqy-zenhei curl && \
@@ -56,7 +57,7 @@ RUN --mount=type=secret,id=github_token \
     | sed 's/"//g;s/v//g;s/release-//g') && \
   curl -o \
     /tmp/shotcut-tarball.txz -L \
-    "https://github.com/mltframework/shotcut/releases/download/${SHOTCUT_RELEASE}/shotcut-linux-x86_64-${SHOTCUT_RELEASE}.txz" && \
+    "https://github.com/mltframework/shotcut/releases/download/v${SHOTCUT_RELEASE}/shotcut-linux-x86_64-${SHOTCUT_RELEASE}.txz" && \
   tar xJf /tmp/shotcut-tarball.txz -C \
     /app/shotcut --strip-components=2 && \
   echo "**** cleanup ****" && \

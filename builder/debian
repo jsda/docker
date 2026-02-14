@@ -5,6 +5,7 @@ ARG DEPENDS=$DEPENDS
 
 # Install dependencies
 RUN \
+  sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
   apt update -yqq && \
   apt upgrade -yqq && \
   echo "Asia/Taipei" > /etc/timezone && \

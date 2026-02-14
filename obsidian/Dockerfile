@@ -1,17 +1,22 @@
+# syntax=docker/dockerfile:labs
+
 FROM debian:stable-slim
 
 ARG OBSIDIAN_VERSION
 
-RUN set -e && \
+RUN --mount=type=secret,id=github_token \
+	TOKEN=$(cat /run/secrets/github_token) && \
+	set -ex && \
+	sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
 	apt update && \
 	apt upgrade -yqq && \
 	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates libgbm1 libdrm2 libasound2 xdg-utils && \
 	localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 && \
 	DEBIAN_FRONTEND=noninteractive \
 	echo "**** install obsidian ****" && \
-	if [ -z ${OBSIDIAN_VERSION+x} ]; then \
-		OBSIDIAN_VERSION=$(curl -sX GET "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest"| awk '/tag_name/{print $4;exit}' FS='[""]'); \
-	fi && \
+	OBSIDIAN_VERSION=$(curl -H "Authorization: Bearer ${TOKEN}" -sL "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest" \
+		| awk '/tag_name/{print $4;exit}' FS='[""]' \
+		| sed 's/"//g;s/v//g;s/release-//g') && \
 	apt install -y --no-install-recommends \
 		git \
 		libgtk-3-bin \
@@ -22,7 +27,7 @@ RUN set -e && \
 	cd /tmp && \
 	curl -o \
 		/tmp/obsidian.app -L \
-		"https://github.com/obsidianmd/obsidian-releases/releases/download/${OBSIDIAN_VERSION}/Obsidian-$(echo ${OBSIDIAN_VERSION} | sed 's/v//g').AppImage" && \
+		"https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/Obsidian-${OBSIDIAN_VERSION}.AppImage" && \
 	chmod +x /tmp/obsidian.app && \
 	./obsidian.app --appimage-extract && \
 	mv squashfs-root /opt/obsidian && \

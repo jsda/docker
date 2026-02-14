@@ -1,6 +1,7 @@
 FROM debian:stable-slim
 
 RUN set -e && \
+	sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
 	apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y locales ttf-wqy-zenhei && \

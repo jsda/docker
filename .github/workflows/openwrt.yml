@@ -38,13 +38,13 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@master
         with:
-          build-args: |
-            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           context: .
           platforms: |
             linux/amd64
           file: openwrt/Dockerfile
           push: true
+          secrets: |
+            "github_token=${{ secrets.GITHUB_TOKEN }}"
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/openwrt:latest
             ${{ secrets.DOCKER_USERNAME }}/openwrt:test
