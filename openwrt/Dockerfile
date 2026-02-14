@@ -2,7 +2,6 @@
 
 FROM alpine:latest AS builder
 
-ARG GITHUB_TOKEN
 ARG OPVER=https://downloads.openwrt.org/releases/24.10-SNAPSHOT/targets/x86/64
 ARG ARCH=x86_64
 ARG IMMORTAL=https://immortalwrt.kyarucloud.moe/releases/packages-24.10/x86_64

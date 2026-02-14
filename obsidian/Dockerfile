@@ -7,7 +7,6 @@ ARG OBSIDIAN_VERSION
 RUN --mount=type=secret,id=github_token \
 	TOKEN=$(cat /run/secrets/github_token) && \
 	set -ex && \
-	sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
 	apt update && \
 	apt upgrade -yqq && \
 	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates libgbm1 libdrm2 libasound2 xdg-utils && \

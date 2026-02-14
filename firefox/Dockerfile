@@ -4,8 +4,7 @@ LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 
 # COPY firefox/local.conf /etc/fonts/local.conf
 
-RUN sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
-    apt-get update \
+RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y locales ttf-wqy-zenhei \
     && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \

@@ -2,8 +2,7 @@ FROM debian:stable-slim
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 # https://github.com/jessfraz/dockerfiles/tree/master/firefox
 
-RUN sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
-    apt update -yqq && \
+RUN apt update -yqq && \
     apt install ca-certificates -yqq && \
     sed -i 's|http:|https:|' /etc/apt/sources.list.d/* && \
     apt update -yqq && \
