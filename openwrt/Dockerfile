@@ -50,20 +50,6 @@ RUN --mount=type=secret,id=github_token \
     | jq -r '.assets[] | select(.browser_download_url | test("mihomo-linux-amd64-compatible-v.*.gz$")) | .browser_download_url' \
     | wget -qi - && \
     gzip -d ./mihomo*.gz && mv -f mihomo* /tmp/core/mihomo && \
-    # daed
-    #curl -H "Authorization: Bearer ${TOKEN}" -sL "https://api.github.com/repos/QiuSimons/luci-app-daed/releases/latest" \
-    #| jq -r '.assets[] | select(.browser_download_url | test("daed.*'$ARCH'.ipk$")) | .browser_download_url' \
-    #| wget -qi - && \
-    #tar -zxf ./daed*.ipk -C . ./data.tar.gz && tar -zxf ./data.tar.gz --strip-components=3 -C . ./usr/bin/daed && mv daed /tmp/core && rm -rf daed* data.tar.gz && \
-    curl -H "Authorization: Bearer ${TOKEN}" -sL "https://api.github.com/repos/daeuniverse/daed/releases/latest" \
-    | jq -r '.assets[] | select(.browser_download_url | test("daed-linux-'$ARCH'.zip$")) | .browser_download_url' \
-    | wget -qi - && \
-    unzip -qo ./daed*.zip && mv -f daed-linux-x86_64 /tmp/core/daed && rm -rf daed* && \
-    # curl
-    curl -H "Authorization: Bearer ${TOKEN}" -sL "https://api.github.com/repos/stunnel/static-curl/releases/latest" \
-    | jq -r '.assets[] | select(.browser_download_url | test("curl-linux-x86_64-glibc-.*.tar.xz$")) | .browser_download_url' \
-    | wget -qi - && \
-    tar -xJf ./curl*.tar.xz && mv -f curl /tmp/core && rm -rf curl* && \
     cd /tmp/data && \
     curl -sL -o ./geosite.dat $GEO_SITE && \
     curl -sL -o ./geoip.dat $GEO_IP && \
@@ -94,6 +80,7 @@ RUN set -ex && \
     luci-i18n-firewall-zh-cn \
     luci-i18n-package-manager-zh-cn \
     luci-i18n-ddns-zh-cn ddns-scripts-cloudflare ddns-scripts-dnspod \
+    curl \
     nano \
     openssh-sftp-server \
     kmod-veth \
