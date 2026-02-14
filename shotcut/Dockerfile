@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:stable
+# syntax=docker/dockerfile:labs
 
 FROM debian:stable-slim
 
