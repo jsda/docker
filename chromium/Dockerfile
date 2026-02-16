@@ -2,7 +2,10 @@ FROM debian:stable-slim
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 
 # Install Chromium
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+      apt install -yqq ca-certificates && \
+      sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
+      apt-get install -y \
       chromium \
       chromium-l10n \
       fonts-liberation \

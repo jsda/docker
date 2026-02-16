@@ -5,7 +5,6 @@ LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 RUN apt update -yqq && \
     apt install ca-certificates -yqq && \
     sed -i 's|http:|https:|' /etc/apt/sources.list.d/* && \
-    apt update -yqq && \
     apt upgrade -yqq && \
     apt install -yqq extrepo && \
     extrepo enable librewolf && \

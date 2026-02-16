@@ -5,6 +5,8 @@ ARG WPS_VERSION
 
 RUN set -ex && \
 	apt update && \
+	apt install -yqq ca-certificates && \
+  sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
 	apt upgrade -yqq && \
 	apt install -yqq locales ttf-wqy-zenhei curl ca-certificates libgbm1 libdrm2 libasound2 xdg-utils && \
 	localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 && \

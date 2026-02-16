@@ -2,6 +2,8 @@ FROM debian:stable-slim
 
 RUN set -e && \
 	apt-get update && \
+	apt install -yqq ca-certificates && \
+  sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
 	apt-get upgrade -y && \
 	apt-get install -y locales ttf-wqy-zenhei && \
 	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \

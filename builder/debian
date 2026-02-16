@@ -6,6 +6,8 @@ ARG DEPENDS=$DEPENDS
 # Install dependencies
 RUN \
   apt update -yqq && \
+  apt install -yqq ca-certificates && \
+  sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
   apt upgrade -yqq && \
   echo "Asia/Taipei" > /etc/timezone && \
   apt install -yqq locales && \
