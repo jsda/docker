@@ -2,7 +2,8 @@ FROM debian:stable-slim
 LABEL maintainer "Jessie Frazelle <jess@linux.com>"
 # https://github.com/jessfraz/dockerfiles/tree/master/firefox
 
-RUN apt update -yqq && \
+RUN set -euo pipefail && \
+    apt update -yqq && \
     apt install ca-certificates -yqq && \
     sed -i 's|http:|https:|' /etc/apt/sources.list.d/* && \
     apt upgrade -yqq && \
@@ -16,6 +17,7 @@ RUN apt update -yqq && \
       gnupg \
       --no-install-recommends && \
       apt install -yqq \
+      apparmor \
       librewolf \
       dbus-x11 \
       libx11-xcb1 \

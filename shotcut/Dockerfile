@@ -6,7 +6,7 @@ ARG SHOTCUT_RELEASE
 
 RUN --mount=type=secret,id=github_token \
   TOKEN=$(cat /run/secrets/github_token) && \
-  set -ex && \
+  set -euo pipefail && \
   apt update && \
   apt install -yqq ca-certificates && \
   sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources && \
@@ -60,7 +60,7 @@ RUN --mount=type=secret,id=github_token \
     /tmp/shotcut-tarball.txz -L \
     "https://github.com/mltframework/shotcut/releases/download/v${SHOTCUT_RELEASE}/shotcut-linux-x86_64-${SHOTCUT_RELEASE}.txz" && \
   tar xJf /tmp/shotcut-tarball.txz -C \
-    /app/shotcut --strip-components=2 && \
+    /app/shotcut --strip-components=1 && \
   echo "**** cleanup ****" && \
   apt-get clean && \
   apt purge -y curl && \

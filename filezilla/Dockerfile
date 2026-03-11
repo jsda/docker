@@ -1,6 +1,6 @@
 FROM debian:stable-slim
 
-RUN set -e && \
+RUN set -euo pipefail \
   && apt-get update \
   && apt install -yqq ca-certificates \
   && sed -i 's|http://|https://|g' /etc/apt/sources.list.d/*.sources \

@@ -4,7 +4,7 @@ FROM alpine:latest AS builder
 
 ARG OPVER=https://downloads.openwrt.org/releases/24.10-SNAPSHOT/targets/x86/64
 ARG ARCH=x86_64
-ARG IMMORTAL=https://immortalwrt.kyarucloud.moe/releases/packages-24.10/x86_64
+ARG IMMORTAL=https://downloads.immortalwrt.org/releases/packages-25.12/x86_64
 ARG GEO_SITE=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geosite.dat
 ARG GEO_IP=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/release/geoip.dat
 ARG CN_LIST=https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/cn.list
@@ -20,7 +20,7 @@ RUN apk add --no-cache curl jq grep sed wget && \
 
 RUN --mount=type=secret,id=github_token \
     TOKEN=$(cat /run/secrets/github_token) && \
-    set -ex && \
+    set -euo pipefail && \
     mkdir -p /tmp/ipk /tmp/core /tmp/data && cd /tmp/ipk && \
     # immortalwrt
     # curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
