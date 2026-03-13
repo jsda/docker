@@ -12,8 +12,8 @@ on:
 #      - @master
 #    paths:
 #      - 'librewolf/*'
-  schedule:
-    - cron: '41 2 * * 5'
+#  schedule:
+#    - cron: '41 2 * * 5'
 
 jobs:
   publish:
