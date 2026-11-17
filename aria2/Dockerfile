@@ -37,6 +37,7 @@ FROM alpine:latest
 COPY --from=builder /aria2c /usr/bin/
 COPY --from=builder /root/.aria2 /root/.aria2
 COPY --from=builder /root/AriaNg /root/AriaNg
+COPY --from=builder /root/Download /root/Download
 # COPY --from=builder /usr/bin/darkhttpd /usr/bin/
 
 RUN apk add --no-cache darkhttpd bash curl jq
