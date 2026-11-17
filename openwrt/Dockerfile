@@ -14,7 +14,7 @@ ARG META_DB=https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest
 RUN apk add --no-cache curl jq grep sed wget && \
     ROOTFS_URL=$(curl -s $OPVER/ | grep -Eo 'href="openwrt-.*?x86-64-rootfs\.tar.gz"' | sed 's|href="||; s|"$||; s|^|'$OPVER'/|') && \
     echo "$ROOTFS_URL" && \
-    curl -sL -o /rootfs.tar.gz $ROOTFS_URL && \
+    curl -fsSL -o /rootfs.tar.gz $ROOTFS_URL && \
     mkdir -p /rootfs && \
     tar -zxf /rootfs.tar.gz -C /rootfs/ --strip-components 1
 
@@ -23,17 +23,17 @@ RUN --mount=type=secret,id=github_token \
     set -euo pipefail && \
     mkdir -p /tmp/ipk /tmp/core /tmp/data && cd /tmp/ipk && \
     # immortalwrt
-    # curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
-    # curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-socat-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
-    curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
-    curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
-    curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
-    curl -sL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
-    curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geosite_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
-    curl -sL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="libcron_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
+    # curl -fsSL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-socat_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    # curl -fsSL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-socat-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -fsSL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-homeproxy_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -fsSL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-homeproxy-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -fsSL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="chinadns-ng_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
+    curl -fsSL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-app-daed.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -fsSL -O $(curl -s $IMMORTAL/luci/ | grep -Eo 'href="luci-i18n-daed-zh-cn_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/luci/|') && \
+    curl -fsSL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
+    curl -fsSL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geosite_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
+    curl -fsSL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="daed-geoip_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
+    curl -fsSL -O $(curl -s $IMMORTAL/packages/ | grep -Eo 'href="libcron_.*?\.ipk"' | sed 's|href="||; s|"$||; s|^|'$IMMORTAL'/packages/|') && \
     # OpenWrt-nikki
     curl -H "Authorization: Bearer ${TOKEN}" -sL "https://api.github.com/repos/nikkinikki-org/OpenWrt-nikki/releases/latest" \
     | jq -r '.assets[] | select(.browser_download_url | test("nikki_'$ARCH'-openwrt-24.10.tar.gz$")) | .browser_download_url' \
@@ -51,12 +51,12 @@ RUN --mount=type=secret,id=github_token \
     | wget -qi - && \
     gzip -d ./mihomo*.gz && mv -f mihomo* /tmp/core/mihomo && \
     cd /tmp/data && \
-    curl -sL -o ./geosite.dat $GEO_SITE && \
-    curl -sL -o ./geoip.dat $GEO_IP && \
-    curl -sL -o ./ASN.mmdb $ASN_DB && \
-    curl -sL -o ./geoip.metadb $META_DB && \
-    curl -sL -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip -qo metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
-    curl -sL -o ./china_list.txt $CN_LIST && sed -i 's/^+\.//' ./china_list.txt
+    curl -fsSL -o ./geosite.dat $GEO_SITE && \
+    curl -fsSL -o ./geoip.dat $GEO_IP && \
+    curl -fsSL -o ./ASN.mmdb $ASN_DB && \
+    curl -fsSL -o ./geoip.metadb $META_DB && \
+    curl -fsSL -o metacubexd.zip https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && unzip -qo metacubexd.zip && rm -rf metacubexd.zip && mv metacubexd* metacubexd && \
+    curl -fsSL -o ./china_list.txt $CN_LIST && sed -i 's/^+\.//' ./china_list.txt
 
 FROM scratch
 COPY --from=builder /rootfs/ /

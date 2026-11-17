@@ -40,6 +40,7 @@ COPY --from=builder /root/AriaNg /root/AriaNg
 # COPY --from=builder /usr/bin/darkhttpd /usr/bin/
 
 RUN apk add --no-cache darkhttpd bash curl jq
+RUN chown -R 1000:1000 /root/.aria2 /root/AriaNg /root/Download
 
 ENV PUID=0 PGID=0 UMASK=022
 ENV RPC_SECRET=""
